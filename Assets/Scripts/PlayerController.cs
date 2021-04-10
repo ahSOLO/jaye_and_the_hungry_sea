@@ -39,14 +39,14 @@ public class PlayerController : MonoBehaviour
             float angle = -90 + Mathf.Atan2(lastDirection.y, lastDirection.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
             rb.MoveRotation(Quaternion.RotateTowards(this.transform.rotation, rotation, rotationSpeed));
-            
-            speed = Mathf.Min(maxSpeed, speed + acceleration);
+
+            speed = Mathf.Lerp(speed, maxSpeed, acceleration);
         } 
         else
         {
-            speed = Mathf.Max(0, speed - acceleration);
+            speed = Mathf.Lerp(speed, 0, acceleration);
         }
 
-        rb.velocity = lastDirection.normalized * speed;
+        rb.velocity = transform.up * speed;
     }
 }
