@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float maxSpeed = 5f;
-    [SerializeField] private float rotationSpeed = 5f;
-    [SerializeField] private float acceleration = 1f;
+    [SerializeField] private float maxSpeed = 4f;
+    [SerializeField] private float rotationSpeed = 2.5f;
+    [SerializeField] private float acceleration = 0.05f;
     private float speed;
     private Rigidbody2D rb;
     private Vector3 inputDirection;
