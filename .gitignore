@@ -55,8 +55,8 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-# Ignore PSD folder
-/PSD/
+# Ignore PSD folder and PSD files
+/Assets/PSD/
 *.psd
 
 # Crashlytics generated file
