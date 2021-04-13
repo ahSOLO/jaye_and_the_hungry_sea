@@ -58,6 +58,10 @@ sysinfo.txt
 # Ignore PSD folder and PSD files
 /Assets/PSD/
 *.psd
+*.psb
+
+# Ignore music & sounds
+/Assets/Music & Sound/
 
 # Crashlytics generated file
 crashlytics-build.properties

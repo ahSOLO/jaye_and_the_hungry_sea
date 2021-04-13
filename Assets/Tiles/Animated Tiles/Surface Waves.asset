@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: Surface Waves
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: -5214803063954961562, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: -6436185808072783489, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: 8624052041708297913, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: -3141126259355963467, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: 284813294947672180, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: 6454056997024921914, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: -5724066892083488420, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: 5030540075643674783, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: -329570660520128298, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: 5606726642827807494, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: -2513073777995269763, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  m_MinSpeed: 4
+  m_MaxSpeed: 8
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0

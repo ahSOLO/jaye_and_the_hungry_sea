@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float acceleration = 0.05f;
     private float speed;
     private Rigidbody2D rb;
+    private Animator anim;
     private Vector3 inputDirection;
     private Vector3 lastDirection;
     
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -41,10 +43,14 @@ public class PlayerController : MonoBehaviour
             rb.MoveRotation(Quaternion.RotateTowards(this.transform.rotation, rotation, rotationSpeed));
 
             speed = Mathf.Lerp(speed, maxSpeed, acceleration);
+
+            anim.SetBool("isRowing", true);
         } 
         else
         {
             speed = Mathf.Lerp(speed, 0, acceleration);
+
+            anim.SetBool("isRowing", false);
         }
 
         rb.velocity = transform.up * speed;
