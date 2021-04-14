@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5681613867592350393}
   - component: {fileID: 5681613867592350392}
   - component: {fileID: 5681613867592350395}
+  - component: {fileID: 3131304614792735836}
   m_Layer: 0
   m_Name: Lightning 3
   m_TagString: Untagged
@@ -69,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2024298291
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 1792820001011588693, guid: 6fad26275fb482442b634cdb90f22f88, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -102,3 +103,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3131304614792735836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5681613867592350394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a142f89d6285334c8297bf12828ee64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
