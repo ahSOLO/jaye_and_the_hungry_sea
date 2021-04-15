@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Boat Rowing
+  m_Name: Boat Fast Rowing
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -21,29 +21,29 @@ AnimationClip:
   - curve:
     - time: 0
       value: {fileID: -1948626401717600069, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 0.125
+    - time: 0.083333336
       value: {fileID: 5983198555702996418, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 0.25
+    - time: 0.16666667
       value: {fileID: 8784247168781626502, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 0.375
+    - time: 0.25
       value: {fileID: -195819073937573324, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 0.5
+    - time: 0.33333334
       value: {fileID: 9096445351764455260, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 0.625
+    - time: 0.41666666
       value: {fileID: 8567968888409998564, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 0.75
+    - time: 0.5
       value: {fileID: 326479600235986647, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 0.875
+    - time: 0.5833333
       value: {fileID: -1324082291293296242, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 1
+    - time: 0.6666667
       value: {fileID: 9087848661307106282, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 1.125
+    - time: 0.75
       value: {fileID: 747098286328325625, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 1.25
+    - time: 0.8333333
       value: {fileID: 8534171799592061876, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 1.375
+    - time: 0.9166667
       value: {fileID: 8923104635871239554, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
-    - time: 1.4583334
+    - time: 0.9583333
       value: {fileID: 8923104635871239554, guid: 48ea33f58ca2bef4eb8dcf18bc8d24cc, type: 3}
     attribute: m_Sprite
     path: 
@@ -82,7 +82,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.5
+    m_StopTime: 1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

@@ -7,6 +7,7 @@ TagManager:
   - Bottle
   - Wall-V
   - Wall-H
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -41,6 +42,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3975334657
+    locked: 0
+  - name: Boat Light
+    uniqueID: 2234107835
+    locked: 0
+  - name: Underwater Lantern
+    uniqueID: 161393577
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

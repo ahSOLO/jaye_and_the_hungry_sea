@@ -10,7 +10,6 @@ public class EffectsController : MonoBehaviour
     public static EffectsController eC;
 
     // Object References
-    public List<GameObject> rainEffects;
     public List<GameObject> lightningEffects;
     public List<GameObject> ripplesTilemapObjs;
     public GameObject surfaceWaveTilemapObj;
@@ -23,7 +22,7 @@ public class EffectsController : MonoBehaviour
     public GameObject particleRipplesObj;
 
     // States
-    private enum rainState { off, soft, medium, heavy, particleSoft, particleMedium, particleHeavy };
+    private enum rainState { off, soft, medium, heavy };
     private rainState rState;
 
     public bool isFlashing;
@@ -89,7 +88,7 @@ public class EffectsController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-7f, 7f), player.transform.position.y + Random.Range(2.0f, 4f), 0);
+            Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-8f, 8f), player.transform.position.y + Random.Range(2.0f, 7f), 0);
             Instantiate(lightningEffects[Random.Range(0, lightningEffects.Count)], spawnPosition, Quaternion.identity, lightningGenerator.transform);
         }
 
@@ -99,60 +98,33 @@ public class EffectsController : MonoBehaviour
             var ripplesEm = particleRipples.emission;
             switch (rState)
             {
-                case rainState.particleHeavy:
+                case rainState.heavy:
                     rState = rainState.off;
-                    rainEffects[2].SetActive(false);
                     ripplesTilemapObjs[0].SetActive(false);
-                    ripplesTilemapObjs[1].SetActive(false);
-
                     particleRainObj.SetActive(false);
                     particleRipplesObj.SetActive(false);
                     break;
                 case rainState.off:
                     rState = rainState.soft;
-                    rainEffects[0].SetActive(true);
-                    ripplesTilemapObjs[0].SetActive(true);
-                    break;
-                case rainState.soft:
-                    rState = rainState.medium;
-                    rainEffects[0].SetActive(false);
-                    rainEffects[1].SetActive(true);
-                    ripplesTilemapObjs[0].SetActive(false);
-                    ripplesTilemapObjs[1].SetActive(true);
-                    break;
-                case rainState.medium:
-                    rState = rainState.heavy;
-                    rainEffects[1].SetActive(false);
-                    rainEffects[2].SetActive(true);
-                    ripplesTilemapObjs[1].SetActive(true);
-                    break;
-                case rainState.heavy:
-                    rState = rainState.particleSoft;
-                    rainEffects[2].SetActive(false);
-                    ripplesTilemapObjs[1].SetActive(false);
-
                     particleRainObj.SetActive(true);
                     particleRipplesObj.SetActive(true);
                     
                     rainEm.rateOverTime = 150f;
                     ripplesEm.rateOverTime = 100f;
-                    
                     break;
-                case rainState.particleSoft:
-                    rState = rainState.particleMedium;
+                case rainState.soft:
+                    rState = rainState.medium;
 
                     rainEm.rateOverTime = 300f;
                     ripplesEm.rateOverTime = 200f;
-
                     break;
-                case rainState.particleMedium:
-                    rState = rainState.particleHeavy;
+                case rainState.medium:
+                    rState = rainState.heavy;
 
                     rainEm.rateOverTime = 600f;
                     ripplesEm.rateOverTime = 400f;
                     ripplesTilemapObjs[0].SetActive(true);
                     break;
-
             }
         }
     }
