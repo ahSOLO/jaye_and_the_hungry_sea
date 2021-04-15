@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bottle
+  - Wall-V
+  - Wall-H
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -12,7 +16,7 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - Non-Collidable
   - 
   - 
   - 
@@ -38,6 +42,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3975334657
+    locked: 0
+  - name: Boat Light
+    uniqueID: 2234107835
+    locked: 0
+  - name: Underwater Lantern
+    uniqueID: 161393577
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Lantern
+    uniqueID: 4272950041
+    locked: 0
+  - name: Weather
+    uniqueID: 2024298291
     locked: 0
