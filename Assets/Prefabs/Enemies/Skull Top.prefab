@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2763072699541993082}
   - component: {fileID: 2763072699541993077}
   - component: {fileID: 2763072699541993076}
+  - component: {fileID: -5093174134902876722}
   m_Layer: 0
   m_Name: Skull Top
   m_TagString: Enemy
@@ -103,7 +104,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: be0e74302d0c3304294a4232d678ca5e, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!60 &2763072699541993076
 PolygonCollider2D:
@@ -583,3 +584,18 @@ PolygonCollider2D:
       - {x: 1.1666666, y: -13.708333}
       - {x: 1.2777778, y: -13.666667}
       - {x: 1.4861112, y: -13.555555}
+--- !u!114 &-5093174134902876722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2763072699541993078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5453980cf083ae4f953595e5062d3fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swayHorizontal: 0
+  startLeft: 0
+  swaySpeed: 0.1

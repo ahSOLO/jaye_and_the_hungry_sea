@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4733570409421534365}
   - component: {fileID: 4733570409421534364}
   - component: {fileID: 2213912632287829945}
+  - component: {fileID: 1956378986887160314}
   m_Layer: 0
   m_Name: Hand 1
   m_TagString: Enemy
@@ -103,7 +104,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: be0e74302d0c3304294a4232d678ca5e, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!60 &2213912632287829945
 PolygonCollider2D:
@@ -187,3 +188,15 @@ PolygonCollider2D:
       - {x: 3.6178074, y: 10.792484}
       - {x: 3.498949, y: 9.06142}
       - {x: 2.7345598, y: 7.6521444}
+--- !u!114 &1956378986887160314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4733570409421534366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5453980cf083ae4f953595e5062d3fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

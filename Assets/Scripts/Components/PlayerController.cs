@@ -5,13 +5,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     // Movement variables
-    [SerializeField] private float maxSpeed = 4f;
-    [SerializeField] private float rotationSpeed = 2.5f;
-    [SerializeField] private float acceleration = 0.05f;
+    [SerializeField] private float maxSpeed = 2.2f;
+    [SerializeField] private float rotationSpeed = 2.4f;
+    [SerializeField] private float acceleration = 0.02f;
     private bool rowFast;
     private float speed;
     private Vector3 inputDirection;
     private Vector3 lastDirection;
+
+    // Physics variables
+    private Vector2 bounceDir;
+    [SerializeField] private float bounceMagMax = 3f;
+    private float bounceMag = 3f;
 
     // Anim variables
     private enum animState { idle = 0, rowing = 1, fastRowing = 2}
@@ -34,7 +39,7 @@ public class PlayerController : MonoBehaviour
     private int health;
     private bool isInvulnerable;
     private float invulnerableTimer;
-    [SerializeField] private float invulnerableTime = 2f;
+    private float invulnerableTime;
 
 
     // Start is called before the first frame update
@@ -51,6 +56,10 @@ public class PlayerController : MonoBehaviour
         aState = animState.idle;
         
         health = 3;
+
+        bounceDir = Vector2.zero;
+
+        invulnerableTime = 1.5f;
     }
 
     private void FixedUpdate()
@@ -73,7 +82,6 @@ public class PlayerController : MonoBehaviour
             if (invulnerableTimer < 0)
             {
                 isInvulnerable = false;
-                col.isTrigger = false;
             }
         }
 
@@ -92,7 +100,16 @@ public class PlayerController : MonoBehaviour
 
     // Move function
     void MoveCharacter()
-    {        
+    {
+        // Disable movement if character recently hit enemy, bounce character away from collision point
+        if (isInvulnerable)
+        {
+            rb.velocity = bounceDir * bounceMag;
+            bounceMag *= 0.95f;
+            aState = animState.idle;
+            return;
+        }
+
         if (inputDirection != Vector3.zero)
         {
             lastDirection = inputDirection;
@@ -100,7 +117,7 @@ public class PlayerController : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
             rb.MoveRotation(Quaternion.RotateTowards(this.transform.rotation, rotation, rotationSpeed));
 
-            if (rowFast == true)
+            if (rowFast)
             {
                 speed = Mathf.Lerp(speed, maxSpeed * 1.6f, acceleration * 1.6f);
                 aState = animState.fastRowing;
@@ -110,8 +127,7 @@ public class PlayerController : MonoBehaviour
                 speed = Mathf.Lerp(speed, maxSpeed, acceleration);
                 aState = animState.rowing;
             }
-
-        } 
+        }
         else
         {
             speed = Mathf.Lerp(speed, 0, acceleration);
@@ -141,7 +157,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
-    {
+    {        
         GameObject colObject = collision.collider.gameObject;
 
         if (colObject.tag == "Bottle")
@@ -149,14 +165,11 @@ public class PlayerController : MonoBehaviour
             colObject.GetComponent<BottleProperties>().Invoke("Collect", 0);
             Debug.Log("Collected a Bottle!");
         }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        GameObject colObject = collision.collider.gameObject;
-
-        if (colObject.tag == "Enemy" && !isInvulnerable)
+        else if (colObject.tag == "Enemy" && !isInvulnerable)
         {
+            Vector2 dir = collision.contacts[0].point - new Vector2(transform.position.x, transform.position.y);
+            bounceDir = -dir.normalized;
+            bounceMag = bounceMagMax;
             TakeDamage();
         }
     }
@@ -198,14 +211,14 @@ public class PlayerController : MonoBehaviour
 
         if (health < 1)
         {
-            Destroy(gameObject, 2f);
+            Destroy(gameObject, 1.5f);
         }
 
         invulnerableTimer = invulnerableTime;
         isInvulnerable = true;
-        col.isTrigger = true;
+        speed = 0f;
 
-        CinemachineShake.cSInstance.ShakeCamera(5f, 2f);
+        CinemachineShake.cSInstance.ShakeCamera(5f, 1.5f);
     }
 
     void Heal()
