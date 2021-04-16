@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxSpeed = 2.2f;
     [SerializeField] private float rotationSpeed = 2.4f;
     [SerializeField] private float acceleration = 0.02f;
+    [SerializeField] private float fastRowMultiplier = 1.6f;
     private bool rowFast;
     private float speed;
     private Vector3 inputDirection;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 bounceDir;
     [SerializeField] private float bounceMagMax = 3f;
     private float bounceMag = 3f;
+    private Vector2 velocityBeforePhysics;
 
     // Anim variables
     private enum animState { idle = 0, rowing = 1, fastRowing = 2}
@@ -41,9 +43,13 @@ public class PlayerController : MonoBehaviour
     private float invulnerableTimer;
     private float invulnerableTime;
 
+    // Audio variables
+    private float creakTimer;
+    [SerializeField] private float avgCreakTime = 4f;
+    [SerializeField] private float creakVolume = 0.4f;
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         col = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
@@ -60,11 +66,14 @@ public class PlayerController : MonoBehaviour
         bounceDir = Vector2.zero;
 
         invulnerableTime = 1.5f;
+
+        creakTimer = avgCreakTime;
     }
 
     private void FixedUpdate()
     {
         MoveCharacter();
+        velocityBeforePhysics = rb.velocity;
 
         // FixedUpdate happens before OnTriggerStay so this defaults to false each frame
         isTouchingWall = false;
@@ -96,6 +105,17 @@ public class PlayerController : MonoBehaviour
 
         anim.SetInteger("state", (int) aState);
         lightAnim.SetInteger("state", (int) aState);
+
+        // Creak sound
+        if (rb.velocity.magnitude > 1)
+        {
+            creakTimer -= Time.deltaTime;
+            if (creakTimer < 0)
+            {
+                AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.boatCreak, transform.position, creakVolume);
+                creakTimer = Random.Range(avgCreakTime - 1f, avgCreakTime + 1f);
+            }
+        }
     }
 
     // Move function
@@ -111,7 +131,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if (inputDirection != Vector3.zero)
-        {
+        {            
             lastDirection = inputDirection;
             float angle = -90 + Mathf.Atan2(lastDirection.y, lastDirection.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
@@ -119,7 +139,7 @@ public class PlayerController : MonoBehaviour
 
             if (rowFast)
             {
-                speed = Mathf.Lerp(speed, maxSpeed * 1.6f, acceleration * 1.6f);
+                speed = Mathf.Lerp(speed, maxSpeed * fastRowMultiplier, acceleration * fastRowMultiplier);
                 aState = animState.fastRowing;
             }
             else
@@ -163,14 +183,33 @@ public class PlayerController : MonoBehaviour
         if (colObject.tag == "Bottle")
         {
             colObject.GetComponent<BottleProperties>().Invoke("Collect", 0);
+            AudioController.aC.PlaySFXAtPoint(AudioController.aC.bottlePickUp, collision.contacts[0].point, 0.25f);
             Debug.Log("Collected a Bottle!");
         }
         else if (colObject.tag == "Enemy" && !isInvulnerable)
         {
             Vector2 dir = collision.contacts[0].point - new Vector2(transform.position.x, transform.position.y);
+            AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.hitEnemy, collision.contacts[0].point, 0.4f);
             bounceDir = -dir.normalized;
             bounceMag = bounceMagMax;
             TakeDamage();
+        }
+        else if (colObject.tag == "HardDebris")
+        {
+            float impactVolume = velocityBeforePhysics.sqrMagnitude / Mathf.Pow(maxSpeed * fastRowMultiplier, 2) * 0.6f;
+            AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.hitHardDebris, collision.contacts[0].point, impactVolume);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "RainUp")
+        {
+            EffectsController.eC.Invoke("IncreaseRainState", 0f);
+        }
+        else if (collision.gameObject.tag == "RainDown")
+        {
+            EffectsController.eC.Invoke("DecreaseRainState", 0f);
         }
     }
 
@@ -211,14 +250,17 @@ public class PlayerController : MonoBehaviour
 
         if (health < 1)
         {
-            Destroy(gameObject, 1.5f);
+            invulnerableTime = 2f;
+            StartCoroutine(EffectsController.eC.PlayerDeath(2f));
+            Destroy(gameObject, 2f);
         }
 
         invulnerableTimer = invulnerableTime;
         isInvulnerable = true;
         speed = 0f;
 
-        CinemachineShake.cSInstance.ShakeCamera(5f, 1.5f);
+        CinemachineShake.cSInstance.ShakeCamera(5f, invulnerableTime);
+        invulnerableTime = 1.5f;
     }
 
     void Heal()

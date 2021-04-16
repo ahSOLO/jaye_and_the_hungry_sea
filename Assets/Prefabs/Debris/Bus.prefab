@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5408951972097629665}
   m_Layer: 0
   m_Name: Bus
-  m_TagString: Untagged
+  m_TagString: HardDebris
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
