@@ -10,7 +10,7 @@ public class InventoryManager : MonoBehaviour
     public List<Bottle> inventory = new List<Bottle>();
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         //Assign Singleton
         if (iM == null) iM = this;

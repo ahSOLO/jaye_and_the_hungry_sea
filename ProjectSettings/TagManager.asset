@@ -8,6 +8,9 @@ TagManager:
   - Wall-V
   - Wall-H
   - Enemy
+  - RainUp
+  - RainDown
+  - HardDebris
   layers:
   - Default
   - TransparentFX

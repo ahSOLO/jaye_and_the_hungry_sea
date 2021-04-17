@@ -14,13 +14,7 @@ public class BottleProperties : MonoBehaviour
         bottle.id = bottleId;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void Collect()
+    public void Collect()
     {
         bottle.isCollected = true;
         InventoryManager.iM.inventory.Add(bottle);
