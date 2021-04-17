@@ -6,9 +6,12 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public static GameController gC;
-    public GameObject pauseMenu;
+
+    public enum GameState {title, pauseMenu, boating, notes};
+    public GameState gState;
+
     private bool isPaused = false;
-    private bool isAxisInUse = false;
+    private bool isPauseAxisInUse = false;
     
     // Start is called before the first frame update
     void OnEnable()
@@ -21,28 +24,34 @@ public class GameController : MonoBehaviour
         else Destroy(gameObject);
 
         Application.targetFrameRate = 60;
+
+        gState = GameState.title;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxisRaw("PauseMenu") != 0)
+        if (Input.GetAxisRaw("PauseMenu") == 1 && gState == GameState.boating)
         {
-            if (isAxisInUse) return;
+            if (isPauseAxisInUse) return;
             switch (isPaused)
             {
                 case false:
                     PauseGame();
+                    gState = GameState.pauseMenu;
+                    UIManager.uIM.OpenPauseMenu();
                     break;
                 case true:
-                    UnpauseGame();
+                    UnPauseGame();
+                    gState = GameState.boating;
+                    UIManager.uIM.ClosePauseMenu();
                     break;
             }
-            isAxisInUse = true;
+            isPauseAxisInUse = true;
         }
         else
         {
-            isAxisInUse = false;
+            isPauseAxisInUse = false;
         }
     }
 
@@ -52,24 +61,34 @@ public class GameController : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "1_Level1")
         {
             AudioController.aC.PlayMusic(AudioController.aC.firstLevelMusic, 0.6f);
+            gState = GameState.boating;
         }
     }
 
-    void PauseGame()
+    public void PauseGame()
     {
-        pauseMenu.SetActive(true);
         Time.timeScale = 0;
         isPaused = true;
         AudioController.aC.musicSource.volume = 0.2f;
         AudioController.aC.PauseActiveSources();
     }
 
-    void UnpauseGame()
+    public void UnPauseGame()
     {
-        pauseMenu.SetActive(false);
         Time.timeScale = 1;
         isPaused = false;
         AudioController.aC.musicSource.volume = 0.6f;
         AudioController.aC.UnPauseAudioSources();
+    }
+
+    public void RestartScene()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

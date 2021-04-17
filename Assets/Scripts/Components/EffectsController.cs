@@ -6,7 +6,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class EffectsController : MonoBehaviour
 {
-    // Singleton variable
+    // Static var
     public static EffectsController eC;
 
     // Object References
@@ -23,8 +23,8 @@ public class EffectsController : MonoBehaviour
     public GameObject globalLightObj;
 
     // States
-    private enum rainState { off, soft, medium, heavy, thunderStorm };
-    private rainState rState;
+    private enum RainState { off, soft, medium, heavy, thunderStorm };
+    private RainState rState;
 
     // Lightning vars
     public bool isFlashing;
@@ -58,15 +58,13 @@ public class EffectsController : MonoBehaviour
 
     private void OnEnable()
     {
-        //Assign Singleton
-        if (eC == null) eC = this;
-        else Destroy(gameObject);
+        eC = this;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        rState = rainState.off;
+        rState = RainState.off;
         isFlashing = false;
         lightningTimer = 0f;
 
@@ -114,7 +112,7 @@ public class EffectsController : MonoBehaviour
             if (!weatherToggleDecrease)
             {
                 IncreaseRainState();
-                if (rState == rainState.thunderStorm)
+                if (rState == RainState.thunderStorm)
                 {
                     weatherToggleDecrease = true;
                 }
@@ -122,7 +120,7 @@ public class EffectsController : MonoBehaviour
             else
             {
                 DecreaseRainState();
-                if (rState == rainState.off)
+                if (rState == RainState.off)
                 {
                     weatherToggleDecrease = false;
                 }
@@ -138,7 +136,7 @@ public class EffectsController : MonoBehaviour
         var ripplesEm = particleRipples.emission;
         switch (rState)
         {
-            case rainState.off:
+            case RainState.off:
                 ripplesTilemapObjs[0].SetActive(false);
                 particleRainObj.SetActive(false);
                 particleRipplesObj.SetActive(false);
@@ -146,7 +144,7 @@ public class EffectsController : MonoBehaviour
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource1, fadeDuration, 0f));
 
                 break;
-            case rainState.soft:
+            case RainState.soft:
                 particleRainObj.SetActive(true);
                 particleRipplesObj.SetActive(true);
 
@@ -158,7 +156,7 @@ public class EffectsController : MonoBehaviour
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource1, fadeDuration, rainSoftVolume));
 
                 break;
-            case rainState.medium:
+            case RainState.medium:
                 rainEm.rateOverTime = 400f;
                 ripplesEm.rateOverTime = 250f;
                 ripplesTilemapObjs[0].SetActive(false);
@@ -169,7 +167,7 @@ public class EffectsController : MonoBehaviour
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource2, fadeDuration, rainHardVolume));
 
                 break;
-            case rainState.heavy:
+            case RainState.heavy:
                 rainEm.rateOverTime = 700f;
                 ripplesEm.rateOverTime = 450f;
                 ripplesTilemapObjs[0].SetActive(true);
@@ -179,7 +177,7 @@ public class EffectsController : MonoBehaviour
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource3, fadeDuration, rainHardVolume));
 
                 break;
-            case rainState.thunderStorm:
+            case RainState.thunderStorm:
                 rainEm.rateOverTime = 1200f;
                 ripplesEm.rateOverTime = 800f;
 
@@ -192,7 +190,7 @@ public class EffectsController : MonoBehaviour
     void Lightning()
     {
         lightningTimer -= Time.deltaTime;
-        if (lightningTimer <= 0f && rState >= rainState.heavy)
+        if (lightningTimer <= 0f && rState >= RainState.heavy)
         {            
             Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-8f, 8f), player.transform.position.y + Random.Range(2.0f, 7f), 0);
             Instantiate(lightningEffects[Random.Range(0, lightningEffects.Count)], spawnPosition, Quaternion.identity, lightningGenerator.transform);
@@ -200,7 +198,7 @@ public class EffectsController : MonoBehaviour
             float timerMin = 4f;
             float timerMax = 8f;
 
-            if (rState == rainState.thunderStorm)
+            if (rState == RainState.thunderStorm)
             {
                 timerMin = 2f;
                 timerMax = 4f;
@@ -214,19 +212,19 @@ public class EffectsController : MonoBehaviour
     {
         switch (rState)
         {
-            case rainState.off:
-                rState = rainState.soft;
+            case RainState.off:
+                rState = RainState.soft;
                 break;
-            case rainState.soft:
-                rState = rainState.medium;
+            case RainState.soft:
+                rState = RainState.medium;
                 break;
-            case rainState.medium:
-                rState = rainState.heavy;
+            case RainState.medium:
+                rState = RainState.heavy;
                 break;
-            case rainState.heavy:
-                rState = rainState.thunderStorm;
+            case RainState.heavy:
+                rState = RainState.thunderStorm;
                 break;
-            case rainState.thunderStorm:
+            case RainState.thunderStorm:
                 break;
         }
         Rain();
@@ -236,19 +234,19 @@ public class EffectsController : MonoBehaviour
     {
         switch (rState)
         {
-            case rainState.off:
+            case RainState.off:
                 break;
-            case rainState.soft:
-                rState = rainState.off;
+            case RainState.soft:
+                rState = RainState.off;
                 break;
-            case rainState.medium:
-                rState = rainState.soft;
+            case RainState.medium:
+                rState = RainState.soft;
                 break;
-            case rainState.heavy:
-                rState = rainState.medium;
+            case RainState.heavy:
+                rState = RainState.medium;
                 break;
-            case rainState.thunderStorm:
-                rState = rainState.heavy;
+            case RainState.thunderStorm:
+                rState = RainState.heavy;
                 break;
         }
         Rain();
@@ -266,6 +264,9 @@ public class EffectsController : MonoBehaviour
         }
 
         AudioController.aC.PlaySFXAtPoint(AudioController.aC.playerDeath, playerPosition, 0.4f);
-        yield break;
+        
+        yield return new WaitForSeconds(4f);
+
+        GameController.gC.RestartScene();
     }
 }

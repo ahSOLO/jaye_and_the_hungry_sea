@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -184,7 +184,7 @@ public class PlayerController : MonoBehaviour
         {
             colObject.GetComponent<BottleProperties>().Collect();
             AudioController.aC.PlaySFXAtPoint(AudioController.aC.bottlePickUp, collision.contacts[0].point, 0.25f);
-            Debug.Log("Collected a Bottle!");
+            UIManager.uIM.SetHelperMessageText("To Read Notes: Press 'i' or the ▲|Y Button", 4f);
         }
         else if (colObject.tag == "Enemy" && !isInvulnerable)
         {
@@ -253,7 +253,7 @@ public class PlayerController : MonoBehaviour
         if (health < 1)
         {
             invulnerableTime = 2f;
-            StartCoroutine(EffectsController.eC.PlayerDeath(2f, transform.position));
+            EffectsController.eC.StartCoroutine(EffectsController.eC.PlayerDeath(2f, transform.position));
             Destroy(gameObject, 2f);
         }
 

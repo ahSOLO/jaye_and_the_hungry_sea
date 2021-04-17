@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
-    // Singleton
+    // Static var
     public static AudioController aC;
 
     // Audio Sources
@@ -28,12 +28,13 @@ public class AudioController : MonoBehaviour
     public AudioClip rainHard;
     public AudioClip rainThunder;
     public AudioClip playerDeath;
+    public AudioClip openNotes;
+    public AudioClip closeNotes;
+    public AudioClip[] changeNotes;
 
     void OnEnable()
     {
-        // Assign singleton - destroy all duplicates in existence
-        if (aC == null) aC = this;
-        else Destroy(gameObject);
+        aC = this;
     }
 
     public void PlayMusic(AudioClip clip, float volume) // Plays clip on Music Audiosource
