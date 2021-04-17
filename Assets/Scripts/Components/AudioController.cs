@@ -10,7 +10,9 @@ public class AudioController : MonoBehaviour
     // Audio Sources
     public AudioSource musicSource;
     public AudioSource sFXSource;
-    public AudioSource ambientSource;
+    public AudioSource rainSource1;
+    public AudioSource rainSource2;
+    public AudioSource rainSource3;
 
     // Music Clips
     public AudioClip firstLevelMusic;
@@ -22,6 +24,10 @@ public class AudioController : MonoBehaviour
     public AudioClip[] boatCreak;
     public AudioClip[] hitHardDebris;
     public AudioClip[] hitEnemy;
+    public AudioClip rainSoft;
+    public AudioClip rainHard;
+    public AudioClip rainThunder;
+    public AudioClip playerDeath;
 
     void OnEnable()
     {
@@ -30,7 +36,7 @@ public class AudioController : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void PlayMusic(AudioClip clip, float volume) // Plays music on music audiosource
+    public void PlayMusic(AudioClip clip, float volume) // Plays clip on Music Audiosource
     {
         musicSource.volume = volume;
         musicSource.clip = clip;
@@ -39,13 +45,17 @@ public class AudioController : MonoBehaviour
 
     public void Play(AudioSource audioSource, AudioClip[] audioClips, float volume) // Plays random clip from array on specified audiosource
     {
-        AudioClip clip = GetRandomClip(audioClips);
-        audioSource.PlayOneShot(clip, volume);
+        AudioClip audioClip = GetRandomClip(audioClips);
+        audioSource.clip = audioClip;
+        audioSource.volume = volume;
+        audioSource.Play();
     }
 
     public void Play(AudioSource audioSource, AudioClip audioClip, float volume) // Plays one shot clip on specified audiosource
     {
-        audioSource.PlayOneShot(audioClip, volume);
+        audioSource.clip = audioClip;
+        audioSource.volume = volume;
+        audioSource.Play();
     }
 
     public AudioSource PlayRandomSFXAtPoint(AudioClip[] audioClips, Vector3 position, float volume)
@@ -78,5 +88,29 @@ public class AudioController : MonoBehaviour
     public AudioClip GetRandomClip(AudioClip[] audioClips) // Gets a random audioclip from an audioclip array
     {
         return audioClips[Random.Range(0, audioClips.Length)];
+    }
+
+    public void PauseActiveSources()
+    {
+        PauseIfActive(sFXSource);
+        PauseIfActive(rainSource1);
+        PauseIfActive(rainSource2);
+        PauseIfActive(rainSource3);
+    }
+
+    private void PauseIfActive(AudioSource audioSource)
+    {
+        if (audioSource.isPlaying == true)
+        {
+            audioSource.Pause();
+        }
+    }
+
+    public void UnPauseAudioSources()
+    {
+        sFXSource.UnPause();
+        rainSource1.UnPause();
+        rainSource2.UnPause();
+        rainSource3.UnPause();
     }
 }

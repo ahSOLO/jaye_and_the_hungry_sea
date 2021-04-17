@@ -47,6 +47,14 @@ public class EffectsController : MonoBehaviour
     private ParticleSystem particleRain;
     private ParticleSystem particleRipples;
 
+    // Audio vars
+    private float fadeDuration = 2f;
+    private float rainSoftVolume = 0.15f;
+    private float rainHardVolume = 0.20f;
+    private float rainThunderVolume = 0.25f;
+
+    // Debug
+    private bool weatherToggleDecrease = false;
 
     private void OnEnable()
     {
@@ -102,27 +110,25 @@ public class EffectsController : MonoBehaviour
         {
             var rainEm = particleRain.emission;
             var ripplesEm = particleRipples.emission;
-            switch (rState)
+
+            if (!weatherToggleDecrease)
             {
-                case rainState.thunderStorm:
-                    rState = rainState.off;
-                    break;
-                case rainState.off:
-                    rState = rainState.soft;
-                    break;
-                case rainState.soft:
-                    rState = rainState.medium;
-                    break;
-                case rainState.medium:
-                    rState = rainState.heavy;
-                    break;
-                case rainState.heavy:
-                    rState = rainState.thunderStorm;
-                    break;
+                IncreaseRainState();
+                if (rState == rainState.thunderStorm)
+                {
+                    weatherToggleDecrease = true;
+                }
+            } 
+            else
+            {
+                DecreaseRainState();
+                if (rState == rainState.off)
+                {
+                    weatherToggleDecrease = false;
+                }
             }
             Rain();
         }
-
         Lightning();
     }
 
@@ -136,6 +142,9 @@ public class EffectsController : MonoBehaviour
                 ripplesTilemapObjs[0].SetActive(false);
                 particleRainObj.SetActive(false);
                 particleRipplesObj.SetActive(false);
+
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource1, fadeDuration, 0f));
+
                 break;
             case rainState.soft:
                 particleRainObj.SetActive(true);
@@ -143,20 +152,39 @@ public class EffectsController : MonoBehaviour
 
                 rainEm.rateOverTime = 175f;
                 ripplesEm.rateOverTime = 125f;
+
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource2, fadeDuration, 0f));
+                AudioController.aC.Play(AudioController.aC.rainSource1, AudioController.aC.rainSoft, 0f);
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource1, fadeDuration, rainSoftVolume));
+
                 break;
             case rainState.medium:
                 rainEm.rateOverTime = 400f;
                 ripplesEm.rateOverTime = 250f;
                 ripplesTilemapObjs[0].SetActive(false);
+
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource1, fadeDuration, 0f));
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource3, fadeDuration, 0f));
+                AudioController.aC.Play(AudioController.aC.rainSource2, AudioController.aC.rainHard, 0f);
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource2, fadeDuration, rainHardVolume));
+
                 break;
             case rainState.heavy:
                 rainEm.rateOverTime = 700f;
                 ripplesEm.rateOverTime = 450f;
                 ripplesTilemapObjs[0].SetActive(true);
+
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource2, fadeDuration, 0f));
+                AudioController.aC.Play(AudioController.aC.rainSource3, AudioController.aC.rainThunder, AudioController.aC.rainSource3.volume);
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource3, fadeDuration, rainHardVolume));
+
                 break;
             case rainState.thunderStorm:
                 rainEm.rateOverTime = 1200f;
                 ripplesEm.rateOverTime = 800f;
+
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource3, fadeDuration, rainThunderVolume));
+
                 break;
         }
     }
@@ -182,7 +210,7 @@ public class EffectsController : MonoBehaviour
         }
     }
 
-    void IncreaseRainState()
+    public void IncreaseRainState()
     {
         switch (rState)
         {
@@ -204,7 +232,7 @@ public class EffectsController : MonoBehaviour
         Rain();
     }
 
-    void DecreaseRainState()
+    public void DecreaseRainState()
     {
         switch (rState)
         {
@@ -226,7 +254,7 @@ public class EffectsController : MonoBehaviour
         Rain();
     }
 
-    public IEnumerator PlayerDeath(float timer)
+    public IEnumerator PlayerDeath(float timer, Vector3 playerPosition)
     {
         while (timer > 0)
         {
@@ -236,5 +264,8 @@ public class EffectsController : MonoBehaviour
             timer -= Time.deltaTime;
             yield return null;
         }
+
+        AudioController.aC.PlaySFXAtPoint(AudioController.aC.playerDeath, playerPosition, 0.4f);
+        yield break;
     }
 }

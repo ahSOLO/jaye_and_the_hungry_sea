@@ -182,7 +182,7 @@ public class PlayerController : MonoBehaviour
 
         if (colObject.tag == "Bottle")
         {
-            colObject.GetComponent<BottleProperties>().Invoke("Collect", 0);
+            colObject.GetComponent<BottleProperties>().Collect();
             AudioController.aC.PlaySFXAtPoint(AudioController.aC.bottlePickUp, collision.contacts[0].point, 0.25f);
             Debug.Log("Collected a Bottle!");
         }
@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (colObject.tag == "HardDebris")
         {
-            float impactVolume = velocityBeforePhysics.sqrMagnitude / Mathf.Pow(maxSpeed * fastRowMultiplier, 2) * 0.6f;
+            float impactVolume = collision.relativeVelocity.sqrMagnitude / Mathf.Pow(maxSpeed * fastRowMultiplier, 2) * 0.6f;
             AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.hitHardDebris, collision.contacts[0].point, impactVolume);
         }
     }
@@ -205,11 +205,13 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "RainUp")
         {
-            EffectsController.eC.Invoke("IncreaseRainState", 0f);
+            EffectsController.eC.IncreaseRainState();
+            Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "RainDown")
         {
-            EffectsController.eC.Invoke("DecreaseRainState", 0f);
+            EffectsController.eC.DecreaseRainState();
+            Destroy(collision.gameObject);
         }
     }
 
@@ -251,7 +253,7 @@ public class PlayerController : MonoBehaviour
         if (health < 1)
         {
             invulnerableTime = 2f;
-            StartCoroutine(EffectsController.eC.PlayerDeath(2f));
+            StartCoroutine(EffectsController.eC.PlayerDeath(2f, transform.position));
             Destroy(gameObject, 2f);
         }
 
