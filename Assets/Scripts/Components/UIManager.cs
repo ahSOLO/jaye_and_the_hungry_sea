@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     // UI vars
     public GameObject helperMessageObj;
     public TextMeshProUGUI helperMessage;
-    private float helperMessageTimer;
+    public float helperMessageTimer;
 
     // Pause Menu vars
     public GameObject pauseMenu;
@@ -36,10 +36,7 @@ public class UIManager : MonoBehaviour
         uIM = this;
 
         noteOpen = false;
-    }
 
-    private void Start()
-    {
         noteDisplayText = noteDisplayTextObj.GetComponent<TextMeshProUGUI>();
         noteTitle = noteTitleObj.GetComponent<TextMeshProUGUI>();
         helperMessage = helperMessageObj.GetComponent<TextMeshProUGUI>();

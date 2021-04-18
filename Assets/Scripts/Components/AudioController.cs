@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioController : MonoBehaviour
 {
@@ -34,7 +35,20 @@ public class AudioController : MonoBehaviour
 
     void OnEnable()
     {
-        aC = this;
+        if (aC == null) aC = this;
+        else Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject); // Persist between scenes
+        SceneManager.sceneLoaded += OnSceneLoad;
+    }
+
+    // Default music for each scene
+    public void OnSceneLoad(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().name == "2_Level1")
+        {
+            PlayMusic(firstLevelMusic, 0.6f);
+        }
     }
 
     public void PlayMusic(AudioClip clip, float volume) // Plays clip on Music Audiosource

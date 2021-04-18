@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // Static var
+    public static PlayerController pC;
+    
     // Movement variables
     [SerializeField] private float maxSpeed = 2.2f;
     [SerializeField] private float rotationSpeed = 2.4f;
     [SerializeField] private float acceleration = 0.02f;
     [SerializeField] private float fastRowMultiplier = 1.6f;
+    public bool canSteer;
     private bool rowFast;
     private float speed;
     private Vector3 inputDirection;
@@ -18,7 +22,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 bounceDir;
     [SerializeField] private float bounceMagMax = 3f;
     private float bounceMag = 3f;
-    private Vector2 velocityBeforePhysics;
 
     // Anim variables
     private enum animState { idle = 0, rowing = 1, fastRowing = 2}
@@ -58,6 +61,7 @@ public class PlayerController : MonoBehaviour
         lightAnim = boatLight.GetComponent<Animator>();
 
         rowFast = false;
+        StartCoroutine(allowSteerTimer(3f));
 
         aState = animState.idle;
         
@@ -73,7 +77,6 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         MoveCharacter();
-        velocityBeforePhysics = rb.velocity;
 
         // FixedUpdate happens before OnTriggerStay so this defaults to false each frame
         isTouchingWall = false;
@@ -82,8 +85,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        inputDirection.x = Input.GetAxisRaw("Horizontal");
-        inputDirection.y = Input.GetAxisRaw("Vertical");
+        if (canSteer)
+        {
+            inputDirection.x = Input.GetAxisRaw("Horizontal");
+            inputDirection.y = Input.GetAxisRaw("Vertical");
+        }
 
         if (invulnerableTimer > 0)
         {
@@ -182,6 +188,7 @@ public class PlayerController : MonoBehaviour
 
         if (colObject.tag == "Bottle")
         {
+            Heal();
             colObject.GetComponent<BottleProperties>().Collect();
             AudioController.aC.PlaySFXAtPoint(AudioController.aC.bottlePickUp, collision.contacts[0].point, 0.25f);
             UIManager.uIM.SetHelperMessageText("To Read Notes: Press 'i' or the ▲|Y Button", 4f);
@@ -212,6 +219,11 @@ public class PlayerController : MonoBehaviour
         {
             EffectsController.eC.DecreaseRainState();
             Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.tag == "LevelEnd")
+        {
+            StartCoroutine(GameController.gC.LoadNextSceneAsync(3f));
+            StartCoroutine(EffectsController.eC.Fade(1f, 3f));
         }
     }
 
@@ -269,8 +281,17 @@ public class PlayerController : MonoBehaviour
     {
         if (health < 3)
         {
-            health++;
             hearts[health].SetActive(true);
+            health++;
         }
+    }
+
+    public IEnumerator allowSteerTimer(float timer)
+    {
+        canSteer = false;
+        
+        yield return new WaitForSeconds(timer);
+
+        canSteer = true;
     }
 }

@@ -11,6 +11,7 @@ TagManager:
   - RainUp
   - RainDown
   - HardDebris
+  - LevelEnd
   layers:
   - Default
   - TransparentFX
@@ -47,6 +48,9 @@ TagManager:
   m_SortingLayers:
   - name: Background
     uniqueID: 3975334657
+    locked: 0
+  - name: Underwater Lightning
+    uniqueID: 1263344073
     locked: 0
   - name: Boat Light
     uniqueID: 2234107835

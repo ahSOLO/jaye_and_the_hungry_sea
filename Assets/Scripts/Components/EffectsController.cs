@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using UnityEngine.Experimental.Rendering.Universal;
 
 public class EffectsController : MonoBehaviour
@@ -21,6 +22,7 @@ public class EffectsController : MonoBehaviour
     public GameObject particleRainObj;
     public GameObject particleRipplesObj;
     public GameObject globalLightObj;
+    public GameObject fadeToBlackImgObj;
 
     // States
     private enum RainState { off, soft, medium, heavy, thunderStorm };
@@ -32,16 +34,13 @@ public class EffectsController : MonoBehaviour
 
     // Renderers
     private SpriteRenderer bgRenderer;
+    private Image fadeToBlackImg; 
 
     // Tilemap
     private Tilemap surfaceWaveTilemap;
 
-    // Lights
-    private Light2D lanternLight;
-
     // Lantern Variables
-    public float lanternInnerRadius;
-    public float lanternOuterRadius;
+    private Light2D lanternLight;
 
     // Particle Systems
     private ParticleSystem particleRain;
@@ -68,14 +67,18 @@ public class EffectsController : MonoBehaviour
         isFlashing = false;
         lightningTimer = 0f;
 
-        lanternLight = lantern.GetComponent<Light2D>();
-
         particleRain = particleRainObj.GetComponent<ParticleSystem>();
         particleRipples = particleRipplesObj.GetComponent<ParticleSystem>();
 
         //Get Renderers
         bgRenderer = background.GetComponent<SpriteRenderer>();
         surfaceWaveTilemap = surfaceWaveTilemapObj.GetComponent<Tilemap>();
+
+        fadeToBlackImgObj.SetActive(true);
+        fadeToBlackImg = fadeToBlackImgObj.GetComponent<Image>();
+        StartCoroutine(Fade(0f, 3f));
+
+        lanternLight = lantern.GetComponent<Light2D>();
     }
 
     // Update is called once per frame
@@ -86,16 +89,14 @@ public class EffectsController : MonoBehaviour
         {
             bgRenderer.color = Color.white;
             surfaceWaveTilemap.color = Color.black;
-            lanternLight.pointLightOuterRadius = 9f;
-            lanternLight.pointLightInnerRadius = 9f;
+            lantern.SetActive(false);
         }
 
         else
         {
             bgRenderer.color = Color.black;
             surfaceWaveTilemap.color = Color.white;
-            lanternLight.pointLightInnerRadius = lanternInnerRadius;
-            lanternLight.pointLightOuterRadius = lanternOuterRadius;
+            lantern.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -171,6 +172,7 @@ public class EffectsController : MonoBehaviour
                 rainEm.rateOverTime = 700f;
                 ripplesEm.rateOverTime = 450f;
                 ripplesTilemapObjs[0].SetActive(true);
+                lightningTimer = 2f;
 
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource2, fadeDuration, 0f));
                 AudioController.aC.Play(AudioController.aC.rainSource3, AudioController.aC.rainThunder, AudioController.aC.rainSource3.volume);
@@ -257,8 +259,8 @@ public class EffectsController : MonoBehaviour
         while (timer > 0)
         {
             globalLightObj.SetActive(false);
-            lanternInnerRadius = Mathf.Lerp(lanternInnerRadius, 0f, Time.deltaTime * 2f);
-            lanternOuterRadius = Mathf.Lerp(lanternOuterRadius, 0f, Time.deltaTime * 2f);
+            lanternLight.pointLightInnerRadius = Mathf.Lerp(lanternLight.pointLightInnerRadius, 0f, Time.deltaTime * 2f);
+            lanternLight.pointLightOuterRadius = Mathf.Lerp(lanternLight.pointLightOuterRadius, 0f, Time.deltaTime * 2f);
             timer -= Time.deltaTime;
             yield return null;
         }
@@ -268,5 +270,20 @@ public class EffectsController : MonoBehaviour
         yield return new WaitForSeconds(4f);
 
         GameController.gC.RestartScene();
+    }
+
+    public IEnumerator Fade(float target, float timer)
+    {
+        float currentTime = 0f;
+        float start = fadeToBlackImg.color.a;
+
+        while (currentTime < timer)
+        {
+            currentTime += Time.deltaTime;
+            Color newColor = new Color(fadeToBlackImg.color.r, fadeToBlackImg.color.g, fadeToBlackImg.color.b, Mathf.SmoothStep(start, target, currentTime / timer));
+            fadeToBlackImg.color = newColor;
+            yield return null;
+        }
+        yield break;
     }
 }
