@@ -12,6 +12,8 @@ TagManager:
   - RainDown
   - HardDebris
   - LevelEnd
+  - vCam
+  - Dialogue
   layers:
   - Default
   - TransparentFX

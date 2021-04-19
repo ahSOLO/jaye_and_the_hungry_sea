@@ -47,8 +47,14 @@ public class AudioController : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "2_Level1")
         {
-            PlayMusic(firstLevelMusic, 0.6f);
+            PlayMusic(firstLevelMusic, 0f);
+            StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
         }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoad;
     }
 
     public void PlayMusic(AudioClip clip, float volume) // Plays clip on Music Audiosource

@@ -13,6 +13,10 @@ public class UIManager : MonoBehaviour
     public GameObject helperMessageObj;
     public TextMeshProUGUI helperMessage;
     public float helperMessageTimer;
+    public GameObject dialogueBox;
+    public GameObject dialogueMsgObj;
+    public TextMeshProUGUI dialogueMsg;
+    private float dialogueTimer;
 
     // Pause Menu vars
     public GameObject pauseMenu;
@@ -40,6 +44,7 @@ public class UIManager : MonoBehaviour
         noteDisplayText = noteDisplayTextObj.GetComponent<TextMeshProUGUI>();
         noteTitle = noteTitleObj.GetComponent<TextMeshProUGUI>();
         helperMessage = helperMessageObj.GetComponent<TextMeshProUGUI>();
+        dialogueMsg = dialogueMsgObj.GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -93,14 +98,23 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        if (helperMessageTimer >= 0)
+        if (helperMessageTimer > 0)
         {
             helperMessageTimer -= Time.deltaTime;
-        } 
-        else
+        }
+        else if (helperMessageTimer <= 0)
         {
             helperMessage.text = "";
-        }                
+        }
+
+        if (dialogueTimer > 0)
+        {
+            dialogueTimer -= Time.deltaTime;
+        }
+        else if (dialogueTimer <= 0)
+        {
+            dialogueBox.SetActive(false);
+        }
     }
 
     public void OpenPauseMenu()
@@ -164,5 +178,12 @@ public class UIManager : MonoBehaviour
     {
         helperMessage.text = text;
         helperMessageTimer = timer;
+    }
+
+    public void showDialogue(float timer, string content, bool pauseGame = false, int characterId = 1, int barkId = 0, int triggerId = 0)
+    {
+        dialogueBox.SetActive(true);
+        dialogueTimer = timer;
+        dialogueMsg.text = content;
     }
 }

@@ -225,6 +225,12 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(GameController.gC.LoadNextSceneAsync(3f));
             StartCoroutine(EffectsController.eC.Fade(1f, 3f));
         }
+        else if (collision.gameObject.tag == "Dialogue")
+        {
+            Dialogue d = collision.gameObject.GetComponent<Dialogue>();
+            UIManager.uIM.showDialogue(d.duration, d.content, d.pauseGame, d.characterId, d.barkId, d.triggerId);
+            Destroy(collision.gameObject);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)

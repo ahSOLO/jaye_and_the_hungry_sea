@@ -1,0 +1,3 @@
+C1|B0|T0|I am character 1 talking... and I will talk all day if need be.
+C2|B0|T0|I am character 2 talking... and I will talk all day if need be.
+C3|B0|T0|I am character 3 talking... and I will talk all day if need be.

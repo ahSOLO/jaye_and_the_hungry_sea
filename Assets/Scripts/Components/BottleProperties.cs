@@ -21,7 +21,7 @@ public class BottleProperties : MonoBehaviour
     public void Collect()
     {
         bottle.isCollected = true;
-        InventoryManager.iM.inventory.Add(bottleId, bottle);
+        if (!InventoryManager.iM.inventory.ContainsKey(bottleId)) InventoryManager.iM.inventory.Add(bottleId, bottle);
         InventoryManager.iM.currentNote = bottleId;
         Destroy(gameObject);
     }

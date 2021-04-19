@@ -89,14 +89,14 @@ public class EffectsController : MonoBehaviour
         {
             bgRenderer.color = Color.white;
             surfaceWaveTilemap.color = Color.black;
-            lantern.SetActive(false);
+            if (lantern != null) lantern.SetActive(false);
         }
 
         else
         {
             bgRenderer.color = Color.black;
             surfaceWaveTilemap.color = Color.white;
-            lantern.SetActive(true);
+            if (lantern != null) lantern.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -149,8 +149,8 @@ public class EffectsController : MonoBehaviour
                 particleRainObj.SetActive(true);
                 particleRipplesObj.SetActive(true);
 
-                rainEm.rateOverTime = 175f;
-                ripplesEm.rateOverTime = 125f;
+                rainEm.rateOverTime = 225f;
+                ripplesEm.rateOverTime = 175f;
 
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource2, fadeDuration, 0f));
                 AudioController.aC.Play(AudioController.aC.rainSource1, AudioController.aC.rainSoft, 0f);
@@ -158,8 +158,8 @@ public class EffectsController : MonoBehaviour
 
                 break;
             case RainState.medium:
-                rainEm.rateOverTime = 400f;
-                ripplesEm.rateOverTime = 250f;
+                rainEm.rateOverTime = 550f;
+                ripplesEm.rateOverTime = 300f;
                 ripplesTilemapObjs[0].SetActive(false);
 
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource1, fadeDuration, 0f));
@@ -169,8 +169,8 @@ public class EffectsController : MonoBehaviour
 
                 break;
             case RainState.heavy:
-                rainEm.rateOverTime = 700f;
-                ripplesEm.rateOverTime = 450f;
+                rainEm.rateOverTime = 1000f;
+                ripplesEm.rateOverTime = 650f;
                 ripplesTilemapObjs[0].SetActive(true);
                 lightningTimer = 2f;
 
@@ -180,8 +180,8 @@ public class EffectsController : MonoBehaviour
 
                 break;
             case RainState.thunderStorm:
-                rainEm.rateOverTime = 1200f;
-                ripplesEm.rateOverTime = 800f;
+                rainEm.rateOverTime = 1600f;
+                ripplesEm.rateOverTime = 1000f;
 
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource3, fadeDuration, rainThunderVolume));
 
@@ -194,7 +194,7 @@ public class EffectsController : MonoBehaviour
         lightningTimer -= Time.deltaTime;
         if (lightningTimer <= 0f && rState >= RainState.heavy)
         {            
-            Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-8f, 8f), player.transform.position.y + Random.Range(2.0f, 7f), 0);
+            Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-9f, 9f), player.transform.position.y + Random.Range(2.0f, 9f), 0);
             Instantiate(lightningEffects[Random.Range(0, lightningEffects.Count)], spawnPosition, Quaternion.identity, lightningGenerator.transform);
 
             float timerMin = 4f;

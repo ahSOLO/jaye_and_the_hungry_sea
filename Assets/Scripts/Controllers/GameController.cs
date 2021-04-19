@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour
 {
     public static GameController gC;
 
-    public enum GameState {title, pauseMenu, boating, notes};
+    public enum GameState {title, cutscene, pauseMenu, boating, notes};
     public GameState gState;
 
     private bool isPauseAxisInUse = false;
@@ -61,10 +61,24 @@ public class GameController : MonoBehaviour
     // On Scene Load, do the following...
     public void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
-        if (SceneManager.GetActiveScene().name == "2_Level1")
+        if (SceneManager.GetActiveScene().name == "0_Title")
+        {
+            gState = GameState.title;
+        }
+        
+        else if (SceneManager.GetActiveScene().name == "1_Introduction")
+        {
+            gState = GameState.cutscene;
+        }
+
+        else if (SceneManager.GetActiveScene().name == "2_Level1")
         {
             StartCoroutine(Tutorial());
             gState = GameState.boating;
+        }
+        else if (SceneManager.GetActiveScene().name == "3_Cutscene1")
+        {
+            gState = GameState.cutscene;
         }
     }
 
@@ -116,12 +130,12 @@ public class GameController : MonoBehaviour
 
     public IEnumerator Tutorial()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
 
         UIManager.uIM.helperMessage.text = "Move with WASD or the Controller left-stick";
-        UIManager.uIM.helperMessageTimer = 7f;
+        UIManager.uIM.helperMessageTimer = 5f;
 
-        yield return new WaitForSeconds(8f);
+        yield return new WaitForSeconds(6f);
 
         UIManager.uIM.helperMessage.text = "To turn without moving, press Q and E, or use the Left and Right controller triggers";
         UIManager.uIM.helperMessageTimer = 9f;
@@ -129,11 +143,6 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(10f);
 
         UIManager.uIM.helperMessage.text = "To row faster, hold Left-Shift, A (XBox), or X (PlayStation)";
-        UIManager.uIM.helperMessageTimer = 9f;
-
-        yield return new WaitForSeconds(10f);
-
-        UIManager.uIM.helperMessage.text = "Head north. Collect bottled notes. Avoid dangers.";
-        UIManager.uIM.helperMessageTimer = 9f;
+        UIManager.uIM.helperMessageTimer = 8f;
     }
 }
