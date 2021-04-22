@@ -46,7 +46,6 @@ public class CutsceneController : MonoBehaviour
 
     private int dialogueNodeNum;
 
-    // Start is called before the first frame update
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoad;
@@ -92,6 +91,8 @@ public class CutsceneController : MonoBehaviour
             }
         }
     }
+    
+    // Play music / initial triggers
     public void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
         if (SceneManager.GetActiveScene().name == "1_Introduction")
@@ -118,6 +119,13 @@ public class CutsceneController : MonoBehaviour
         ShowText();
     }
 
+    /* 
+        Txt files should have the following format: C1|B0|T0|Text content.
+        C#: The number of the character.
+        B#: The number of the audio bark, default is 0 (no bark).
+        T#: The custom cutscene trigger to initiate, default is 0 (no trigger).
+        Text content: The content to show on the cutscene. No quotes are necessary.
+    */
     private void ParseTextToDialogue()
     {
         string[] textArr = cutsceneScript.text.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -138,11 +146,12 @@ public class CutsceneController : MonoBehaviour
 
     private void ShowText()
     {
-        // If reached end of dictionary, go to next scene after a brief fade out period.
+        // If reached end of dictionary, go to next scene after a brief fade-out period.
         if (dialogueDict.ContainsKey(dialogueNodeNum) == false)
         {
             StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.musicSource, 2f, 0f));
             GameController.gC.LoadNextSceneAsync(2f);
+            return;
         }
 
         if (dialogueDict[dialogueNodeNum].barkId != 0)
@@ -175,7 +184,8 @@ public class CutsceneController : MonoBehaviour
         }
     }
 
-    private void SetImage(string layer, Sprite sprite, Dictionary<string, float> options = null)
+    // Main method for allowing triggers to interact with the cutscene image layers, should be called programmed by a separate script.
+    public void SetImage(string layer, Sprite sprite, Dictionary<string, float> options = null)
     {
         switch (layer)
         {
@@ -185,9 +195,20 @@ public class CutsceneController : MonoBehaviour
                 {
                     backgroundImg.transform.position = new Vector3 (options["xPosition"], options["yPosition"]);
                 }
-                else if (options.ContainsKey("xScale"))
+                if (options.ContainsKey("xScale"))
                 {
                     backgroundImg.transform.localScale = new Vector3(options["xScale"], options["yScale"]);
+                }
+                if (options.ContainsKey("isActive"))
+                {
+                    if (options["isActive"] == 1)
+                    {
+                        background.SetActive(true);
+                    }
+                    else
+                    {
+                        background.SetActive(false);
+                    }
                 }
                 break;
             case "back":
@@ -196,9 +217,20 @@ public class CutsceneController : MonoBehaviour
                 {
                     backImg.transform.position = new Vector3(options["xPosition"], options["yPosition"]);
                 }
-                else if (options.ContainsKey("xScale"))
+                if (options.ContainsKey("xScale"))
                 {
                     backImg.transform.localScale = new Vector3(options["xScale"], options["yScale"]);
+                }
+                if (options.ContainsKey("isActive"))
+                {
+                    if (options["isActive"] == 1)
+                    {
+                        background.SetActive(true);
+                    }
+                    else
+                    {
+                        background.SetActive(false);
+                    }
                 }
                 break;
             case "middle":
@@ -207,9 +239,20 @@ public class CutsceneController : MonoBehaviour
                 {
                     middleImg.transform.position = new Vector3(options["xPosition"], options["yPosition"]);
                 }
-                else if (options.ContainsKey("xScale"))
+                if (options.ContainsKey("xScale"))
                 {
                     middleImg.transform.localScale = new Vector3(options["xScale"], options["yScale"]);
+                }
+                if (options.ContainsKey("isActive"))
+                {
+                    if (options["isActive"] == 1)
+                    {
+                        background.SetActive(true);
+                    }
+                    else
+                    {
+                        background.SetActive(false);
+                    }
                 }
                 break;
             case "front":
@@ -218,9 +261,20 @@ public class CutsceneController : MonoBehaviour
                 {
                     frontImg.transform.position = new Vector3(options["xPosition"], options["yPosition"]);
                 }
-                else if (options.ContainsKey("xScale"))
+                if (options.ContainsKey("xScale"))
                 {
                     frontImg.transform.localScale = new Vector3(options["xScale"], options["yScale"]);
+                }
+                if (options.ContainsKey("isActive"))
+                {
+                    if (options["isActive"] == 1)
+                    {
+                        background.SetActive(true);
+                    }
+                    else
+                    {
+                        background.SetActive(false);
+                    }
                 }
                 break;
         }

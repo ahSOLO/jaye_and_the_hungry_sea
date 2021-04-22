@@ -4,17 +4,7 @@ using UnityEngine;
 
 public class Lightning : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // Called in Lightning animation event.
     void StartFlash()
     {
         EffectsController.eC.isFlashing = true;

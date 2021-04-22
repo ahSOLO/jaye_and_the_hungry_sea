@@ -48,9 +48,9 @@ public class EffectsController : MonoBehaviour
 
     // Audio vars
     private float fadeDuration = 2f;
-    private float rainSoftVolume = 0.15f;
-    private float rainHardVolume = 0.20f;
-    private float rainThunderVolume = 0.25f;
+    private float rainSoftVolume = 0.12f;
+    private float rainHardVolume = 0.15f;
+    private float rainThunderVolume = 0.20f;
 
     // Debug
     private bool weatherToggleDecrease = false;
@@ -76,15 +76,17 @@ public class EffectsController : MonoBehaviour
 
         fadeToBlackImgObj.SetActive(true);
         fadeToBlackImg = fadeToBlackImgObj.GetComponent<Image>();
-        StartCoroutine(Fade(0f, 3f));
 
         lanternLight = lantern.GetComponent<Light2D>();
+        
+        // Fade in the Scene
+        StartCoroutine(Fade(0f, 3f));
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Lightning
+        // Lightning color inversion effect
         if (isFlashing == true)
         {
             bgRenderer.color = Color.white;
@@ -99,12 +101,15 @@ public class EffectsController : MonoBehaviour
             if (lantern != null) lantern.SetActive(true);
         }
 
+        // Debug lightning
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-8f, 8f), player.transform.position.y + Random.Range(2.0f, 7f), 0);
             Instantiate(lightningEffects[Random.Range(0, lightningEffects.Count)], spawnPosition, Quaternion.identity, lightningGenerator.transform);
         }
 
+        // Debug rain
+        /*
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             var rainEm = particleRain.emission;
@@ -128,6 +133,8 @@ public class EffectsController : MonoBehaviour
             }
             Rain();
         }
+        */
+
         Lightning();
     }
 
@@ -135,6 +142,8 @@ public class EffectsController : MonoBehaviour
     {
         var rainEm = particleRain.emission;
         var ripplesEm = particleRipples.emission;
+
+        // Rain switches between 5 different states
         switch (rState)
         {
             case RainState.off:
@@ -192,7 +201,7 @@ public class EffectsController : MonoBehaviour
     void Lightning()
     {
         lightningTimer -= Time.deltaTime;
-        if (lightningTimer <= 0f && rState >= RainState.heavy)
+        if (lightningTimer <= 0f && rState >= RainState.heavy && player != null)
         {            
             Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-9f, 9f), player.transform.position.y + Random.Range(2.0f, 9f), 0);
             Instantiate(lightningEffects[Random.Range(0, lightningEffects.Count)], spawnPosition, Quaternion.identity, lightningGenerator.transform);
@@ -205,6 +214,8 @@ public class EffectsController : MonoBehaviour
                 timerMin = 2f;
                 timerMax = 4f;
             }
+
+            AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.thunderOneShot, player.transform.position, 0.5f);
 
             lightningTimer = Random.Range(timerMin, timerMax);
         }

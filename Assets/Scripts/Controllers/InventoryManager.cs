@@ -10,8 +10,7 @@ public class InventoryManager : MonoBehaviour
     public Dictionary<int, Bottle> inventory = new Dictionary<int, Bottle>();
     public int currentNote;
     public TextAsset defaultText;
-    // public List<Bottle> inventory = new List<Bottle>();
-    private GameObject player;
+    // private GameObject player;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -28,7 +27,7 @@ public class InventoryManager : MonoBehaviour
 
     public void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        // player = GameObject.FindGameObjectWithTag("Player");
     }
 
     public TextAsset ParseNote(int noteId)

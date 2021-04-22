@@ -8,9 +8,9 @@ public class PlayerController : MonoBehaviour
     public static PlayerController pC;
     
     // Movement variables
-    [SerializeField] private float maxSpeed = 2.2f;
-    [SerializeField] private float rotationSpeed = 2.4f;
-    [SerializeField] private float acceleration = 0.02f;
+    [SerializeField] private float maxSpeed = 2.3f;
+    [SerializeField] private float rotationSpeed = 2.6f;
+    [SerializeField] private float acceleration = 0.017f;
     [SerializeField] private float fastRowMultiplier = 1.6f;
     public bool canSteer;
     private bool rowFast;
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     private Animator lightAnim;
 
     // Components
-    private Collider2D col;
+    // private Collider2D col;
     private Rigidbody2D rb;
     private Animator anim;
 
@@ -43,8 +43,8 @@ public class PlayerController : MonoBehaviour
     public List<GameObject> hearts = new List<GameObject>();
     private int health;
     private bool isInvulnerable;
+    private float invulnerableTimerMax = 1.5f;
     private float invulnerableTimer;
-    private float invulnerableTime;
 
     // Audio variables
     private float creakTimer;
@@ -54,14 +54,13 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        col = GetComponent<Collider2D>();
+        // col = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
         lightAnim = boatLight.GetComponent<Animator>();
 
         rowFast = false;
-        StartCoroutine(allowSteerTimer(3f));
 
         aState = animState.idle;
         
@@ -69,16 +68,17 @@ public class PlayerController : MonoBehaviour
 
         bounceDir = Vector2.zero;
 
-        invulnerableTime = 1.5f;
-
         creakTimer = avgCreakTime;
+        
+        // Prevent player from steering for first 3 seconds of scene.
+        StartCoroutine(allowSteerTimer(3f));
     }
 
     private void FixedUpdate()
     {
         MoveCharacter();
 
-        // FixedUpdate happens before OnTriggerStay so this defaults to false each frame
+        // FixedUpdate happens before OnTriggerStay so this defaults to false each frame.
         isTouchingWall = false;
     }
 
@@ -270,17 +270,17 @@ public class PlayerController : MonoBehaviour
 
         if (health < 1)
         {
-            invulnerableTime = 2f;
+            invulnerableTimerMax = 2f;
             EffectsController.eC.StartCoroutine(EffectsController.eC.PlayerDeath(2f, transform.position));
             Destroy(gameObject, 2f);
         }
 
-        invulnerableTimer = invulnerableTime;
+        invulnerableTimer = invulnerableTimerMax;
         isInvulnerable = true;
         speed = 0f;
 
-        CinemachineShake.cSInstance.ShakeCamera(5f, invulnerableTime);
-        invulnerableTime = 1.5f;
+        CinemachineShake.cSInstance.ShakeCamera(5f, invulnerableTimerMax);
+        invulnerableTimerMax = 1.5f;
     }
 
     void Heal()

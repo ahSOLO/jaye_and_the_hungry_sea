@@ -28,10 +28,12 @@ public class AudioController : MonoBehaviour
     public AudioClip rainSoft;
     public AudioClip rainHard;
     public AudioClip rainThunder;
+    public AudioClip[] thunderOneShot;
     public AudioClip playerDeath;
     public AudioClip openNotes;
     public AudioClip closeNotes;
     public AudioClip[] changeNotes;
+    public AudioClip[] cutsceneBarks;
 
     void OnEnable()
     {
@@ -57,7 +59,7 @@ public class AudioController : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoad;
     }
 
-    public void PlayMusic(AudioClip clip, float volume) // Plays clip on Music Audiosource
+    public void PlayMusic(AudioClip clip, float volume) // Plays clip on music audiosource
     {
         musicSource.volume = volume;
         musicSource.clip = clip;

@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoad;
     }
 
-    // On Scene Load, do the following...
+    // Set default game state for scene and initialize any scene-start coroutines
     public void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
         if (SceneManager.GetActiveScene().name == "0_Title")
@@ -82,6 +82,7 @@ public class GameController : MonoBehaviour
         }
     }
 
+    // PauseGame is used by the pause menu as well as the note screen.
     public void PauseGame()
     {
         Time.timeScale = 0;
@@ -108,6 +109,8 @@ public class GameController : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
+    // Asynchronously load the next scene and delay scene switch until the timer is completed
     public IEnumerator LoadNextSceneAsync(float timer)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
@@ -128,6 +131,7 @@ public class GameController : MonoBehaviour
         Application.Quit();
     }
 
+    // Tutorial for the first level
     public IEnumerator Tutorial()
     {
         yield return new WaitForSeconds(4f);

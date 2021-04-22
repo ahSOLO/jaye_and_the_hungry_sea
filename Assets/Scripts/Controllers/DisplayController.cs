@@ -10,8 +10,8 @@ public class DisplayController : MonoBehaviour
     
     private CinemachineVirtualCamera cVC = null;
     private Camera mainCam;
-    private float orthoMinimum = 5f;
-    private float orthoMaximum = 7.5f;
+    private float orthoMinimum = 5f; // Orthographic camera size for a 720p display with 1 unit = 72 pixels
+    private float orthoMaximum = 7.5f; // Orthographic camera size for a 1080p display with 1 unit = 72 pixels
     private float startScreenHeight;
 
     private void OnEnable()
@@ -37,6 +37,7 @@ public class DisplayController : MonoBehaviour
 
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
+        // Set the default screen height if the game is not initially ran in 720p.
         if (Screen.height > 720)
         {
             float orthoTarget = Mathf.Clamp(Screen.height / 144, orthoMinimum, orthoMaximum);
@@ -53,7 +54,7 @@ public class DisplayController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            RefreshResolution();
+            ToggleFullScreen();
         }
     }
 
@@ -62,7 +63,7 @@ public class DisplayController : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoad;
     }
 
-    void RefreshResolution()
+    void ToggleFullScreen()
     {
         if (Screen.fullScreen)
         {
