@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     public enum GameState {title, cutscene, pauseMenu, boating, notes};
     public GameState gState;
 
-    private bool isPauseAxisInUse = false;
+    public int progress;
     
     // Start is called before the first frame update
     void OnEnable()
@@ -24,14 +24,14 @@ public class GameController : MonoBehaviour
         Application.targetFrameRate = 60;
 
         gState = GameState.title;
+        progress = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxisRaw("PauseMenu") == 1 && (gState == GameState.boating || gState == GameState.pauseMenu))
+        if (PlayerController.pC != null && PlayerController.pC.pActions.PauseMenu.WasPressed && (gState == GameState.boating || gState == GameState.pauseMenu))
         {
-            if (isPauseAxisInUse) return;
             switch (gState)
             {
                 case GameState.boating:
@@ -45,11 +45,6 @@ public class GameController : MonoBehaviour
                     UIManager.uIM.ClosePauseMenu();
                     break;
             }
-            isPauseAxisInUse = true;
-        }
-        else
-        {
-            isPauseAxisInUse = false;
         }
     }
 
@@ -69,6 +64,7 @@ public class GameController : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "1_Introduction")
         {
             gState = GameState.cutscene;
+            progress = Mathf.Max(progress, 1);
         }
 
         else if (SceneManager.GetActiveScene().name == "2_Level1")
@@ -76,7 +72,30 @@ public class GameController : MonoBehaviour
             StartCoroutine(Tutorial());
             gState = GameState.boating;
         }
+
         else if (SceneManager.GetActiveScene().name == "3_Cutscene1")
+        {
+            gState = GameState.cutscene;
+            progress = Mathf.Max(progress, 2);
+        }
+
+        else if (SceneManager.GetActiveScene().name == "4_Level2")
+        {
+            gState = GameState.boating;
+        }
+
+        else if (SceneManager.GetActiveScene().name == "5_Cutscene2")
+        {
+            gState = GameState.cutscene;
+            progress = Mathf.Max(progress, 3);
+        }
+
+        else if (SceneManager.GetActiveScene().name == "6_Level3")
+        {
+            gState = GameState.boating;
+        }
+
+        else if (SceneManager.GetActiveScene().name == "Epilogue")
         {
             gState = GameState.cutscene;
         }
@@ -113,9 +132,17 @@ public class GameController : MonoBehaviour
     // Asynchronously load the next scene and delay scene switch until the timer is completed
     public IEnumerator LoadNextSceneAsync(float timer)
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        AsyncOperation asyncLoad;
+        if (SceneManager.sceneCountInBuildSettings > SceneManager.GetActiveScene().buildIndex + 1)
+        {
+            asyncLoad = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        else
+        {
+            asyncLoad = SceneManager.LoadSceneAsync(0);
+        }
         asyncLoad.allowSceneActivation = false;
-
+        
         yield return new WaitForSeconds(timer);
 
         asyncLoad.allowSceneActivation = true;
@@ -123,7 +150,23 @@ public class GameController : MonoBehaviour
 
     public void LoadTitle()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
+    }
+    
+    public void LoadLevelOne()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void LoadLevelTwo()
+    {
+        SceneManager.LoadScene(4);
+    }
+
+    public void LoadLevelThree()
+    {
+        SceneManager.LoadScene(6);
     }
 
     public void Quit()
@@ -137,16 +180,21 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(4f);
 
         UIManager.uIM.helperMessage.text = "Move with WASD or the Controller left-stick";
-        UIManager.uIM.helperMessageTimer = 5f;
+        UIManager.uIM.helperMessageTimer = 7f;
 
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(9f);
 
         UIManager.uIM.helperMessage.text = "To turn without moving, press Q and E, or use the Left and Right controller triggers";
-        UIManager.uIM.helperMessageTimer = 9f;
+        UIManager.uIM.helperMessageTimer = 12f;
 
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(14f);
 
         UIManager.uIM.helperMessage.text = "To row faster, hold Left-Shift, A (XBox), or X (PlayStation)";
-        UIManager.uIM.helperMessageTimer = 8f;
+        UIManager.uIM.helperMessageTimer = 12f;
+
+        yield return new WaitForSeconds(14f);
+
+        UIManager.uIM.helperMessage.text = "Press F to toggle fullscreen";
+        UIManager.uIM.helperMessageTimer = 12f;
     }
 }

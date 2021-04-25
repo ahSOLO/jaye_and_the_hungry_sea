@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using InControl;
 
 public class PlayerController : MonoBehaviour
 {
     // Static var
     public static PlayerController pC;
-    
+
+    // Actions
+    public PlayerActions pActions;
+
     // Movement variables
     [SerializeField] private float maxSpeed = 2.3f;
     [SerializeField] private float rotationSpeed = 2.6f;
@@ -17,6 +21,8 @@ public class PlayerController : MonoBehaviour
     private float speed;
     private Vector3 inputDirection;
     private Vector3 lastDirection;
+    private bool turnLeft;
+    private bool turnRight;
 
     // Physics variables
     private Vector2 bounceDir;
@@ -54,6 +60,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
+        pC = this;
+        
         // col = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -72,6 +80,9 @@ public class PlayerController : MonoBehaviour
         
         // Prevent player from steering for first 3 seconds of scene.
         StartCoroutine(allowSteerTimer(3f));
+
+        // Bind control mappings
+        CreatePlayerActions();
     }
 
     private void FixedUpdate()
@@ -85,10 +96,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        var inputDevice = InputManager.ActiveDevice;
+        
         if (canSteer)
         {
-            inputDirection.x = Input.GetAxisRaw("Horizontal");
-            inputDirection.y = Input.GetAxisRaw("Vertical");
+            inputDirection.x = pActions.Horizontal.RawValue;
+            inputDirection.y = pActions.Vertical.RawValue;
+            turnLeft = pActions.TurnLeft.IsPressed;
+            turnRight = pActions.TurnRight.IsPressed;
         }
 
         if (invulnerableTimer > 0)
@@ -100,7 +115,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetAxisRaw("Row Fast") != 0)
+        if (pActions.RowFast.IsPressed)
         {
             rowFast = true;
         }
@@ -122,6 +137,11 @@ public class PlayerController : MonoBehaviour
                 creakTimer = Random.Range(avgCreakTime - 1f, avgCreakTime + 1f);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        pActions.Destroy();
     }
 
     // Move function
@@ -158,11 +178,11 @@ public class PlayerController : MonoBehaviour
         {
             speed = Mathf.Lerp(speed, 0, acceleration);
 
-            if (Input.GetAxisRaw("Turn Left") != 0)
+            if (turnLeft)
             {
                 rb.MoveRotation(rb.rotation + (rotationSpeed / 2));
             }
-            else if (Input.GetAxisRaw("Turn Right") != 0)
+            else if (turnRight)
             {
                 rb.MoveRotation(rb.rotation - (rotationSpeed / 2));
             }
@@ -170,6 +190,7 @@ public class PlayerController : MonoBehaviour
             aState = animState.idle;
         }
 
+        // Decrease velocity offset by 2x default acceleration if player is not touching a wall
         if (!isTouchingWall && velocityOffset != Vector3.zero)
         {
             velocityOffset += -velocityOffset * acceleration * 2;
@@ -223,7 +244,9 @@ public class PlayerController : MonoBehaviour
         else if (collision.gameObject.tag == "LevelEnd")
         {
             StartCoroutine(GameController.gC.LoadNextSceneAsync(3f));
-            StartCoroutine(EffectsController.eC.Fade(1f, 3f));
+            StartCoroutine(FadeController.fC.Fade(1f, 3f));
+            StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.musicSource, 3f, 0f));
+            AudioController.aC.FadeRainSources(0f, 3f);
         }
         else if (collision.gameObject.tag == "Dialogue")
         {
@@ -299,5 +322,45 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(timer);
 
         canSteer = true;
+    }
+
+    private void CreatePlayerActions()
+    {
+        pActions = new PlayerActions();
+
+        pActions.Up.AddDefaultBinding(InputControlType.LeftStickUp);
+        pActions.Up.AddDefaultBinding(InputControlType.DPadUp);
+        pActions.Up.AddDefaultBinding(Key.W);
+        pActions.Up.AddDefaultBinding(Key.UpArrow);
+
+        pActions.Down.AddDefaultBinding(InputControlType.LeftStickDown);
+        pActions.Down.AddDefaultBinding(InputControlType.DPadDown);
+        pActions.Down.AddDefaultBinding(Key.S);
+        pActions.Down.AddDefaultBinding(Key.DownArrow);
+
+        pActions.Left.AddDefaultBinding(InputControlType.LeftStickLeft);
+        pActions.Left.AddDefaultBinding(InputControlType.DPadLeft);
+        pActions.Left.AddDefaultBinding(Key.A);
+        pActions.Left.AddDefaultBinding(Key.LeftArrow);
+
+        pActions.Right.AddDefaultBinding(InputControlType.LeftStickRight);
+        pActions.Right.AddDefaultBinding(InputControlType.DPadRight);
+        pActions.Right.AddDefaultBinding(Key.D);
+        pActions.Right.AddDefaultBinding(Key.RightArrow);
+
+        pActions.RowFast.AddDefaultBinding(InputControlType.Action1);
+        pActions.RowFast.AddDefaultBinding(Key.LeftShift);
+
+        pActions.Inventory.AddDefaultBinding(InputControlType.Action4);
+        pActions.Inventory.AddDefaultBinding(Key.I);
+
+        pActions.TurnLeft.AddDefaultBinding(InputControlType.LeftTrigger);
+        pActions.TurnLeft.AddDefaultBinding(Key.Q);
+
+        pActions.TurnRight.AddDefaultBinding(InputControlType.RightTrigger);
+        pActions.TurnRight.AddDefaultBinding(Key.E);
+
+        pActions.PauseMenu.AddDefaultBinding(InputControlType.Command);
+        pActions.PauseMenu.AddDefaultBinding(Key.Escape);
     }
 }

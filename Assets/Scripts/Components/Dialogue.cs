@@ -12,5 +12,4 @@ public class Dialogue : MonoBehaviour
     public int barkId;
     public int triggerId;
     public bool pauseGame;
-
 }

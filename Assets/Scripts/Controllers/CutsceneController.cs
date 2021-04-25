@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using InControl;
 
 public class CutsceneController : MonoBehaviour
 {
@@ -13,7 +14,10 @@ public class CutsceneController : MonoBehaviour
     public GameObject middle;
     public GameObject front;
     public GameObject dialogueBox;
-    public GameObject otherText;
+    public GameObject defaultText;
+    public GameObject anxietyText;
+    public GameObject paranoiaText;
+    public GameObject guiltText;
     public GameObject mCText;
     public GameObject mCAvatar;
     public GameObject downTriangle;
@@ -29,8 +33,12 @@ public class CutsceneController : MonoBehaviour
 
     public TextAsset cutsceneScript;
 
-    private TextMeshProUGUI otherTMP;
     private TextMeshProUGUI mcTMP;
+    private TextMeshProUGUI defaultTMP;
+    private TextMeshProUGUI anxietyTMP;
+    private TextMeshProUGUI paranoiaTMP;
+    private TextMeshProUGUI guiltTMP;
+
 
     private Image backgroundImg;
     private Image backImg;
@@ -39,7 +47,7 @@ public class CutsceneController : MonoBehaviour
 
     private Dictionary<int, DialogueNode> dialogueDict = new Dictionary<int, DialogueNode>();
     
-    private List<KeyCode> advanceKeys = new List<KeyCode>() { KeyCode.E, KeyCode.Space, KeyCode.Return, KeyCode.Joystick1Button0, KeyCode.Joystick1Button2, KeyCode.Joystick1Button1 };
+    private List<KeyCode> advanceKeys = new List<KeyCode>() { KeyCode.E, KeyCode.Space, KeyCode.Return};
    
     private bool canAdvance;
     private float canAdvanceTimer;
@@ -56,15 +64,20 @@ public class CutsceneController : MonoBehaviour
 
     private void Start()
     {
-        otherTMP = otherText.GetComponent<TextMeshProUGUI>();
+        defaultTMP = defaultText.GetComponent<TextMeshProUGUI>();
+        anxietyTMP = anxietyText.GetComponent<TextMeshProUGUI>();
+        paranoiaTMP = paranoiaText.GetComponent<TextMeshProUGUI>();
+        guiltTMP = guiltText.GetComponent<TextMeshProUGUI>();
         mcTMP = mCText.GetComponent<TextMeshProUGUI>();
         ParseTextToDialogue();
-        ShowText();
+        StartCoroutine(ShowTextAfterWait(3f));
     }
 
     // Update is called once per frame
     void Update()
     {
+        var inputDevice = InputManager.ActiveDevice;
+
         if (canAdvanceTimer > 0)
         {
             canAdvanceTimer -= Time.deltaTime;
@@ -81,12 +94,22 @@ public class CutsceneController : MonoBehaviour
         else
         {
             downTriangle.SetActive(true);
-            foreach (KeyCode kc in advanceKeys)
+
+            if ((inputDevice.Action1.IsPressed && inputDevice.Action1.HasChanged)
+                || (inputDevice.Action3.IsPressed && inputDevice.Action3.HasChanged))
             {
-                if (Input.GetKeyDown(kc))
+                AdvanceDialogue();
+            }
+
+            else
+            {
+                foreach (KeyCode kc in advanceKeys)
                 {
-                    AdvanceDialogue();
-                    break;
+                    if (Input.GetKeyDown(kc))
+                    {
+                        AdvanceDialogue();
+                        break;
+                    }
                 }
             }
         }
@@ -144,13 +167,23 @@ public class CutsceneController : MonoBehaviour
         }
     }
 
+    private IEnumerator ShowTextAfterWait(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        dialogueBox.SetActive(true);
+        ShowText();
+    }
+
     private void ShowText()
     {
         // If reached end of dictionary, go to next scene after a brief fade-out period.
-        if (dialogueDict.ContainsKey(dialogueNodeNum) == false)
+        if (!dialogueDict.ContainsKey(dialogueNodeNum))
         {
-            StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.musicSource, 2f, 0f));
-            GameController.gC.LoadNextSceneAsync(2f);
+            canAdvance = false;
+            canAdvanceTimer = 5f;
+            StartCoroutine(FadeController.fC.Fade(1f, 2f));
+            // StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.musicSource, 2f, 0f));
+            StartCoroutine(GameController.gC.LoadNextSceneAsync(2f));
             return;
         }
 
@@ -163,11 +196,16 @@ public class CutsceneController : MonoBehaviour
         {
             // Play Trigger
         }
-        
+
+        // Hide all non-MC text
+        defaultText.SetActive(false);
+        anxietyText.SetActive(false);
+        paranoiaText.SetActive(false);
+        guiltText.SetActive(false);
+
         if (dialogueDict[dialogueNodeNum].characterId == 1)
         {
-            // Show main character text
-            otherText.SetActive(false);
+            // Show MC Text
             mCText.SetActive(true);
             mCAvatar.SetActive(true);
 
@@ -176,11 +214,31 @@ public class CutsceneController : MonoBehaviour
         else
         {
             // Show other text
-            otherText.SetActive(true);
             mCText.SetActive(false);
             mCAvatar.SetActive(false);
 
-            otherTMP.text = dialogueDict[dialogueNodeNum].content;
+            switch (dialogueDict[dialogueNodeNum].characterId)
+            {
+                // Little Light
+                case 2:
+                    anxietyText.SetActive(true);
+                    anxietyTMP.text = dialogueDict[dialogueNodeNum].content;
+                    break;
+                // Thousand Eyes
+                case 3:
+                    paranoiaText.SetActive(true);
+                    paranoiaTMP.text = dialogueDict[dialogueNodeNum].content;
+                    break;
+                // The Albatross
+                case 4:
+                    guiltText.SetActive(true);
+                    guiltTMP.text = dialogueDict[dialogueNodeNum].content;
+                    break;
+                default:
+                    defaultText.SetActive(true);
+                    defaultTMP.text = dialogueDict[dialogueNodeNum].content;
+                    break;
+            }
         }
     }
 

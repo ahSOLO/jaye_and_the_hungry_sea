@@ -30,7 +30,7 @@ public class InventoryManager : MonoBehaviour
         // player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    public TextAsset ParseNote(int noteId)
+    public TextAsset GetNoteContent(int noteId)
     {
         if (inventory.ContainsKey(currentNote) && inventory[currentNote].isCollected)
         {
@@ -39,7 +39,7 @@ public class InventoryManager : MonoBehaviour
         else return defaultText;
     } 
 
-    public string ParseTitle(int nodeId)
+    public string GetNoteTitle(int nodeId)
     {
         if (inventory.ContainsKey(currentNote) && inventory[currentNote].isCollected)
         {
@@ -47,5 +47,4 @@ public class InventoryManager : MonoBehaviour
         }
         else return "Note #" + currentNote.ToString();
     }
-
 }

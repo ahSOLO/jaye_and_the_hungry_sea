@@ -4975,6 +4975,7 @@ MonoBehaviour:
   bottleId: 0
   text: {fileID: 0}
   title: 
+  messageType: 1
 --- !u!82 &-7423831024225661945
 AudioSource:
   m_ObjectHideFlags: 0

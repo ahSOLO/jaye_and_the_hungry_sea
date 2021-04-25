@@ -42,7 +42,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -180,9 +180,11 @@ MonoBehaviour:
   rainSource1: {fileID: 3697865484961532423}
   rainSource2: {fileID: 3697865486095000259}
   rainSource3: {fileID: 3697865486964228905}
+  titleMusic: {fileID: 8300000, guid: 06d91c826ec3e3749bd5b1b031fcffc1, type: 3}
   firstLevelMusic: {fileID: 8300000, guid: ea8263b06c31940438a7937cbe5cfba5, type: 3}
-  secondLevelMusic: {fileID: 0}
-  thirdLevelMusic: {fileID: 0}
+  secondLevelMusic: {fileID: 8300000, guid: 0728a1403fbeb074e87239415c7a09a4, type: 3}
+  thirdLevelMusic: {fileID: 8300000, guid: 22b71fabf5ac9e544bf6d84cddaf6647, type: 3}
+  endingMusic: {fileID: 0}
   bottlePickUp: {fileID: 8300000, guid: 8325bbf8cdfc2624fbf740c831820447, type: 3}
   boatCreak:
   - {fileID: 8300000, guid: 6d5bc7c607e318b43bae612f6db6c171, type: 3}
@@ -203,12 +205,27 @@ MonoBehaviour:
   rainSoft: {fileID: 8300000, guid: 858f562cd572d024eabc08f6446507e8, type: 3}
   rainHard: {fileID: 8300000, guid: e55e57ce9607e284482bba85d7226227, type: 3}
   rainThunder: {fileID: 8300000, guid: 14cd5e5ad8fdef542957b88202db9c1f, type: 3}
+  thunderOneShot:
+  - {fileID: 8300000, guid: 309fa0d31ea007b41b51dc78ade1694d, type: 3}
+  - {fileID: 8300000, guid: ad594a1b36580754faa1d3bdb8be90c5, type: 3}
+  - {fileID: 8300000, guid: 85e56f04c2c75fd44b0168b788fd0718, type: 3}
+  - {fileID: 8300000, guid: 0fac44e897373a94180ca73b028b4526, type: 3}
+  - {fileID: 8300000, guid: 9b254e59b7422f64a9e8ac345ffe7937, type: 3}
   playerDeath: {fileID: 8300000, guid: e9ee7f8a70618434081039a1feba2626, type: 3}
   openNotes: {fileID: 8300000, guid: 6c54f189be4791043a9ae8b3c9a02e94, type: 3}
   closeNotes: {fileID: 8300000, guid: eadfa25f6b899324eb7153cf8d0a2db8, type: 3}
   changeNotes:
   - {fileID: 8300000, guid: 60d4aff860271bf4a8100dd5dada038b, type: 3}
   - {fileID: 8300000, guid: 7252f43b62092d641917e7c73eb81fa5, type: 3}
+  cutsceneBarks:
+  - {fileID: 8300000, guid: 29d0d0fcffe2f514d86f8c7bc2384a4d, type: 3}
+  - {fileID: 8300000, guid: 21c42beecf1c40446aa0d97f284fddc2, type: 3}
+  - {fileID: 8300000, guid: 71ced3fcf6421334c99671f3987fab8f, type: 3}
+  - {fileID: 8300000, guid: e629c626a69eea047b344c56f95e9bf5, type: 3}
+  - {fileID: 8300000, guid: 1cc32fa9c6ecd174d9e9740dc7b4de2a, type: 3}
+  - {fileID: 8300000, guid: 05c6a7ef42100df45893d448a92686f2, type: 3}
+  splash: {fileID: 8300000, guid: c13fbdf783381514693b32f8769288f7, type: 3}
+  clickButton: {fileID: 0}
 --- !u!1 &3697865486019408683
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,7 +268,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -378,7 +395,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -505,7 +522,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -632,7 +649,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1

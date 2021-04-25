@@ -63,7 +63,7 @@ public class DisplayController : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoad;
     }
 
-    void ToggleFullScreen()
+    public void ToggleFullScreen()
     {
         if (Screen.fullScreen)
         {
@@ -86,4 +86,38 @@ public class DisplayController : MonoBehaviour
             mainCam.orthographicSize = orthoTarget;
         }
     }
+
+    /*
+    public void ToggleFullScreenButton()
+    {
+        GameObject vCam = GameObject.FindGameObjectWithTag("vCam");
+        if (vCam != null)
+        {
+            cVC = GameObject.FindGameObjectWithTag("vCam").GetComponent<CinemachineVirtualCamera>();
+        }
+
+        mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
+        if (Screen.fullScreen)
+        {
+            Screen.fullScreenMode = FullScreenMode.Windowed;
+            float orthoTarget = Mathf.Clamp(startScreenHeight / 144, orthoMinimum, orthoMaximum);
+            if (cVC != null)
+            {
+                cVC.m_Lens.OrthographicSize = orthoTarget;
+            }
+            mainCam.orthographicSize = orthoTarget;
+        }
+        else
+        {
+            Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+            float orthoTarget = Mathf.Clamp(Screen.currentResolution.height / 144, orthoMinimum, orthoMaximum);
+            if (cVC != null)
+            {
+                cVC.m_Lens.OrthographicSize = orthoTarget;
+            }
+            mainCam.orthographicSize = orthoTarget;
+        }
+    }
+    */
 }

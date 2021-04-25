@@ -22,11 +22,11 @@ public class EffectsController : MonoBehaviour
     public GameObject particleRainObj;
     public GameObject particleRipplesObj;
     public GameObject globalLightObj;
-    public GameObject fadeToBlackImgObj;
+    // public GameObject fadeToBlackImgObj;
 
     // States
-    private enum RainState { off, soft, medium, heavy, thunderStorm };
-    private RainState rState;
+    public enum RainState { off, soft, medium, heavy, thunderStorm };
+    public RainState rState;
 
     // Lightning vars
     public bool isFlashing;
@@ -34,7 +34,7 @@ public class EffectsController : MonoBehaviour
 
     // Renderers
     private SpriteRenderer bgRenderer;
-    private Image fadeToBlackImg; 
+    // private Image fadeToBlackImg; 
 
     // Tilemap
     private Tilemap surfaceWaveTilemap;
@@ -52,9 +52,6 @@ public class EffectsController : MonoBehaviour
     private float rainHardVolume = 0.15f;
     private float rainThunderVolume = 0.20f;
 
-    // Debug
-    private bool weatherToggleDecrease = false;
-
     private void OnEnable()
     {
         eC = this;
@@ -63,7 +60,6 @@ public class EffectsController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rState = RainState.off;
         isFlashing = false;
         lightningTimer = 0f;
 
@@ -74,13 +70,10 @@ public class EffectsController : MonoBehaviour
         bgRenderer = background.GetComponent<SpriteRenderer>();
         surfaceWaveTilemap = surfaceWaveTilemapObj.GetComponent<Tilemap>();
 
-        fadeToBlackImgObj.SetActive(true);
-        fadeToBlackImg = fadeToBlackImgObj.GetComponent<Image>();
-
         lanternLight = lantern.GetComponent<Light2D>();
-        
-        // Fade in the Scene
-        StartCoroutine(Fade(0f, 3f));
+
+        // Start Rain - dependent on rState - set in Inspector
+        Rain();
     }
 
     // Update is called once per frame
@@ -91,22 +84,24 @@ public class EffectsController : MonoBehaviour
         {
             bgRenderer.color = Color.white;
             surfaceWaveTilemap.color = Color.black;
-            if (lantern != null) lantern.SetActive(false);
+            if (lantern != null) lantern.transform.localPosition = new Vector3(-100, -100, 4);
         }
 
         else
         {
             bgRenderer.color = Color.black;
             surfaceWaveTilemap.color = Color.white;
-            if (lantern != null) lantern.SetActive(true);
+            if (lantern != null) lantern.transform.localPosition = new Vector3(0, 0.833f, 4);
         }
 
         // Debug lightning
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-8f, 8f), player.transform.position.y + Random.Range(2.0f, 7f), 0);
             Instantiate(lightningEffects[Random.Range(0, lightningEffects.Count)], spawnPosition, Quaternion.identity, lightningGenerator.transform);
         }
+        */
 
         // Debug rain
         /*
@@ -161,14 +156,20 @@ public class EffectsController : MonoBehaviour
                 rainEm.rateOverTime = 225f;
                 ripplesEm.rateOverTime = 175f;
 
+                ripplesTilemapObjs[0].SetActive(false);
+
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource2, fadeDuration, 0f));
                 AudioController.aC.Play(AudioController.aC.rainSource1, AudioController.aC.rainSoft, 0f);
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource1, fadeDuration, rainSoftVolume));
 
                 break;
             case RainState.medium:
+                particleRainObj.SetActive(true);
+                particleRipplesObj.SetActive(true);
+
                 rainEm.rateOverTime = 550f;
                 ripplesEm.rateOverTime = 300f;
+
                 ripplesTilemapObjs[0].SetActive(false);
 
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource1, fadeDuration, 0f));
@@ -178,8 +179,12 @@ public class EffectsController : MonoBehaviour
 
                 break;
             case RainState.heavy:
+                particleRainObj.SetActive(true);
+                particleRipplesObj.SetActive(true);
+
                 rainEm.rateOverTime = 1000f;
                 ripplesEm.rateOverTime = 650f;
+
                 ripplesTilemapObjs[0].SetActive(true);
                 lightningTimer = 2f;
 
@@ -189,9 +194,15 @@ public class EffectsController : MonoBehaviour
 
                 break;
             case RainState.thunderStorm:
+                particleRainObj.SetActive(true);
+                particleRipplesObj.SetActive(true);
+
                 rainEm.rateOverTime = 1600f;
                 ripplesEm.rateOverTime = 1000f;
 
+                ripplesTilemapObjs[0].SetActive(true);
+
+                if (!AudioController.aC.rainSource3.isPlaying) AudioController.aC.Play(AudioController.aC.rainSource3, AudioController.aC.rainThunder, AudioController.aC.rainSource3.volume);
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource3, fadeDuration, rainThunderVolume));
 
                 break;
@@ -206,13 +217,13 @@ public class EffectsController : MonoBehaviour
             Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-9f, 9f), player.transform.position.y + Random.Range(2.0f, 9f), 0);
             Instantiate(lightningEffects[Random.Range(0, lightningEffects.Count)], spawnPosition, Quaternion.identity, lightningGenerator.transform);
 
-            float timerMin = 4f;
-            float timerMax = 8f;
+            float timerMin = 3f;
+            float timerMax = 7f;
 
             if (rState == RainState.thunderStorm)
             {
                 timerMin = 2f;
-                timerMax = 4f;
+                timerMax = 3.5f;
             }
 
             AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.thunderOneShot, player.transform.position, 0.5f);
@@ -281,20 +292,5 @@ public class EffectsController : MonoBehaviour
         yield return new WaitForSeconds(4f);
 
         GameController.gC.RestartScene();
-    }
-
-    public IEnumerator Fade(float target, float timer)
-    {
-        float currentTime = 0f;
-        float start = fadeToBlackImg.color.a;
-
-        while (currentTime < timer)
-        {
-            currentTime += Time.deltaTime;
-            Color newColor = new Color(fadeToBlackImg.color.r, fadeToBlackImg.color.g, fadeToBlackImg.color.b, Mathf.SmoothStep(start, target, currentTime / timer));
-            fadeToBlackImg.color = newColor;
-            yield return null;
-        }
-        yield break;
     }
 }

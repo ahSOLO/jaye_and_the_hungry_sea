@@ -14,8 +14,14 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI helperMessage;
     public float helperMessageTimer;
     public GameObject dialogueBox;
-    public GameObject dialogueMsgObj;
-    public TextMeshProUGUI dialogueMsg;
+    public GameObject defaultMsgObj;
+    public TextMeshProUGUI defaultMsgText;
+    public GameObject anxietyMsgObj;
+    public TextMeshProUGUI anxietyMsgText;
+    public GameObject paranoiaMsgObj;
+    public TextMeshProUGUI paranoiaMsgText;
+    public GameObject guiltMsgObj;
+    public TextMeshProUGUI guiltMsgText;
     private float dialogueTimer;
 
     // Pause Menu vars
@@ -30,8 +36,6 @@ public class UIManager : MonoBehaviour
     public GameObject noteTitleObj;
     public TextMeshProUGUI noteTitle;
     private bool noteOpen;
-    private bool isInventoryAxisInUse = false;
-    private bool isHorizontalAxisInUse = false;
     public int maxNotes = 10;
 
     // Start is called before the first frame update
@@ -43,17 +47,20 @@ public class UIManager : MonoBehaviour
 
         noteDisplayText = noteDisplayTextObj.GetComponent<TextMeshProUGUI>();
         noteTitle = noteTitleObj.GetComponent<TextMeshProUGUI>();
+
         helperMessage = helperMessageObj.GetComponent<TextMeshProUGUI>();
-        dialogueMsg = dialogueMsgObj.GetComponent<TextMeshProUGUI>();
+
+        defaultMsgText = defaultMsgObj.GetComponent<TextMeshProUGUI>();
+        anxietyMsgText = anxietyMsgObj.GetComponent<TextMeshProUGUI>();
+        paranoiaMsgText = paranoiaMsgObj.GetComponent<TextMeshProUGUI>();
+        guiltMsgText = guiltMsgObj.GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxisRaw("Inventory") == 1 && (GameController.gC.gState == GameController.GameState.boating || GameController.gC.gState == GameController.GameState.notes))
+        if (PlayerController.pC.pActions.Inventory.WasPressed && (GameController.gC.gState == GameController.GameState.boating || GameController.gC.gState == GameController.GameState.notes))
         {
-            if (isInventoryAxisInUse) return;
-
             switch (noteOpen)
             {
                 case true:
@@ -69,32 +76,17 @@ public class UIManager : MonoBehaviour
                     GameController.gC.gState = GameController.GameState.notes;
                     break;
             }
-
-            isInventoryAxisInUse = true;
         }
-        else
-        {
-            isInventoryAxisInUse = false;
-        }
-
 
         if (GameController.gC.gState == GameController.GameState.notes)
         {
-            if (Input.GetAxisRaw("Horizontal") == -1f)
+            if (PlayerController.pC.pActions.Left.WasPressed)
             {
-                if (isHorizontalAxisInUse) return;
-                isHorizontalAxisInUse = true;
                 PreviousNote();
             }
-            else if (Input.GetAxisRaw("Horizontal") == 1f)
+            else if (PlayerController.pC.pActions.Right.WasPressed)
             {
-                if (isHorizontalAxisInUse) return;
-                isHorizontalAxisInUse = true;
                 NextNote();
-            }
-            else
-            {
-                isHorizontalAxisInUse = false;
             }
         }
 
@@ -134,8 +126,8 @@ public class UIManager : MonoBehaviour
         AudioController.aC.PlaySFXAtPoint(AudioController.aC.openNotes, Camera.main.transform.position, 0.25f);
 
         noteDisplay.SetActive(true);
-        noteDisplayText.text = InventoryManager.iM.ParseNote(InventoryManager.iM.currentNote).text;
-        noteTitle.text = InventoryManager.iM.ParseTitle(InventoryManager.iM.currentNote);
+        noteTitle.text = InventoryManager.iM.GetNoteTitle(InventoryManager.iM.currentNote);
+        noteDisplayText.text = InventoryManager.iM.GetNoteContent(InventoryManager.iM.currentNote).text;
         GameController.gC.gState = GameController.GameState.notes;
         noteOpen = true;
     }
@@ -149,8 +141,8 @@ public class UIManager : MonoBehaviour
         {
             InventoryManager.iM.currentNote -= maxNotes;
         }
-        noteDisplayText.text = InventoryManager.iM.ParseNote(InventoryManager.iM.currentNote).text;
-        noteTitle.text = InventoryManager.iM.ParseTitle(InventoryManager.iM.currentNote);
+        noteDisplayText.text = InventoryManager.iM.GetNoteContent(InventoryManager.iM.currentNote).text;
+        noteTitle.text = InventoryManager.iM.GetNoteTitle(InventoryManager.iM.currentNote);
     }
     public void PreviousNote()
     {
@@ -161,8 +153,8 @@ public class UIManager : MonoBehaviour
         {
             InventoryManager.iM.currentNote += maxNotes;
         }
-        noteDisplayText.text = InventoryManager.iM.ParseNote(InventoryManager.iM.currentNote).text;
-        noteTitle.text = InventoryManager.iM.ParseTitle(InventoryManager.iM.currentNote);
+        noteDisplayText.text = InventoryManager.iM.GetNoteContent(InventoryManager.iM.currentNote).text;
+        noteTitle.text = InventoryManager.iM.GetNoteTitle(InventoryManager.iM.currentNote);
     }
 
     public void HideNote()
@@ -184,6 +176,32 @@ public class UIManager : MonoBehaviour
     {
         dialogueBox.SetActive(true);
         dialogueTimer = timer;
-        dialogueMsg.text = content;
+
+        defaultMsgObj.SetActive(false);
+        anxietyMsgObj.SetActive(false);
+        paranoiaMsgObj.SetActive(false);
+        guiltMsgObj.SetActive(false);
+
+        switch (characterId)
+        {
+            case 2:
+                anxietyMsgObj.SetActive(true);
+                anxietyMsgText.text = content;
+                break;
+            case 3:
+                paranoiaMsgObj.SetActive(true);
+                paranoiaMsgText.text = content;
+                break;
+            case 4:
+                guiltMsgObj.SetActive(true);
+                guiltMsgText.text = content;
+                break;
+            default:
+                defaultMsgObj.SetActive(true);
+                defaultMsgText.text = content;
+                break;
+        }
+
+        // dialogueMsg.text = content;
     }
 }

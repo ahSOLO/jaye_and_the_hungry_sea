@@ -1,0 +1,4 @@
+C1|B0|T0|Thank you for playing our game! This marks the end of the current content.
+C1|B0|T0|We had originally planned on having 4 levels completed by the end of the Jam, but one of our team members encountered serious medical issues halfway through.
+C1|B0|T0|We hope to complete the game within the next few weeks, after they have recovered.
+C1|B0|T0|In the meantime, we would love to get your feedback on the game--please leave a comment or join our discord channel! Details are posted in the description below.
