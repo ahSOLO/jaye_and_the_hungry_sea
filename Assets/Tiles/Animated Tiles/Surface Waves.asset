@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: Surface Waves
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: -5214803063954961562, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
-  - {fileID: -6436185808072783489, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
-  - {fileID: 8624052041708297913, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
-  - {fileID: -3141126259355963467, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
-  - {fileID: 284813294947672180, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
-  - {fileID: 6454056997024921914, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
-  - {fileID: -5724066892083488420, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
-  - {fileID: 5030540075643674783, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
-  - {fileID: -329570660520128298, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
-  - {fileID: 5606726642827807494, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
-  - {fileID: -2513073777995269763, guid: 0763d0e41cfd63741a378f5a13f31d4e, type: 3}
+  - {fileID: 21300000, guid: 0e62049e2ce4e50439f7e365d1a20fdc, type: 3}
+  - {fileID: 21300000, guid: aec50825163b2e64aabcb27388a0da94, type: 3}
+  - {fileID: 21300000, guid: 12e418e9db4181543b2ef095efcac260, type: 3}
+  - {fileID: 21300000, guid: 88716fdc55c3494458d79df64292d9ca, type: 3}
+  - {fileID: 21300000, guid: 6c544896c3f4ab446a91aa677b53be86, type: 3}
+  - {fileID: 21300000, guid: 35e9801d8da3d9245a7db316fd0c282d, type: 3}
+  - {fileID: 21300000, guid: d8e000aa4fe410140abe8275057cd27c, type: 3}
+  - {fileID: 21300000, guid: 5b916b5e77dce084c82fbb781d1878f3, type: 3}
+  - {fileID: 21300000, guid: 02d160e8a4b2b4940935a9cf0ca6f6ae, type: 3}
+  - {fileID: 21300000, guid: f71c7d688e7ad7144b3672aa313124c2, type: 3}
+  - {fileID: 21300000, guid: 6218adc8a32316e47a918c6ab13764aa, type: 3}
   m_MinSpeed: 4
   m_MaxSpeed: 8
   m_AnimationStartTime: 0

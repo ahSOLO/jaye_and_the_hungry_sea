@@ -21,7 +21,6 @@ public class CinemachineShake : MonoBehaviour
 
     public void ShakeCamera(float intensity, float time)
     {
-
         cVCBasicMCPerlin.m_AmplitudeGain = intensity;
         shakeTimer = time;
     }
@@ -31,10 +30,11 @@ public class CinemachineShake : MonoBehaviour
         if (shakeTimer > 0)
         {
             shakeTimer -= Time.deltaTime;
+            // Lerp from start amplitude to no amplitude
             cVCBasicMCPerlin.m_AmplitudeGain = Mathf.Lerp(cVCBasicMCPerlin.m_AmplitudeGain, 0f, Time.deltaTime / shakeTimer);
             if (shakeTimer <= 0f)
             {
-                cVCBasicMCPerlin.m_AmplitudeGain = 0f;    
+                cVCBasicMCPerlin.m_AmplitudeGain = 0f;  
             }
         }
     }
