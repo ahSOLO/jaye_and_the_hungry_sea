@@ -17,7 +17,10 @@ public class LoopSound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!sound.isPlaying) timer -= Time.deltaTime;
+        if (!sound.isPlaying)
+        {
+            timer -= Time.deltaTime;
+        }
 
         if (timer < 0)
         {

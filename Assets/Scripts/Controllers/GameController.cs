@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     public GameState gState;
 
     public int progress;
+    public int fails;
     
     // Start is called before the first frame update
     void OnEnable()
@@ -59,10 +60,12 @@ public class GameController : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "0_Title")
         {
             gState = GameState.title;
+            fails = 0;
         }
         
         else if (SceneManager.GetActiveScene().name == "1_Introduction")
         {
+            fails = 0;
             gState = GameState.cutscene;
             progress = Mathf.Max(progress, 1);
         }
@@ -75,6 +78,7 @@ public class GameController : MonoBehaviour
 
         else if (SceneManager.GetActiveScene().name == "3_Cutscene1")
         {
+            fails = 0;
             gState = GameState.cutscene;
             progress = Mathf.Max(progress, 2);
         }
@@ -86,6 +90,7 @@ public class GameController : MonoBehaviour
 
         else if (SceneManager.GetActiveScene().name == "5_Cutscene2")
         {
+            fails = 0;
             gState = GameState.cutscene;
             progress = Mathf.Max(progress, 3);
         }
@@ -156,17 +161,17 @@ public class GameController : MonoBehaviour
     
     public void LoadLevelOne()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
     }
 
     public void LoadLevelTwo()
     {
-        SceneManager.LoadScene(4);
+        SceneManager.LoadScene(3);
     }
 
     public void LoadLevelThree()
     {
-        SceneManager.LoadScene(6);
+        SceneManager.LoadScene(5);
     }
 
     public void Quit()

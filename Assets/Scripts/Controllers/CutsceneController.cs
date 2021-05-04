@@ -39,7 +39,6 @@ public class CutsceneController : MonoBehaviour
     private TextMeshProUGUI paranoiaTMP;
     private TextMeshProUGUI guiltTMP;
 
-
     private Image backgroundImg;
     private Image backImg;
     private Image middleImg;
@@ -95,8 +94,8 @@ public class CutsceneController : MonoBehaviour
         {
             downTriangle.SetActive(true);
 
-            if ((inputDevice.Action1.IsPressed && inputDevice.Action1.HasChanged)
-                || (inputDevice.Action3.IsPressed && inputDevice.Action3.HasChanged))
+            if ((inputDevice.Action1.WasPressed)
+                || (inputDevice.Action3.WasPressed))
             {
                 AdvanceDialogue();
             }

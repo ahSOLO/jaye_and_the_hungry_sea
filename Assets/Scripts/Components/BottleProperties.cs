@@ -27,5 +27,7 @@ public class BottleProperties : MonoBehaviour
         if (!InventoryManager.iM.inventory.ContainsKey(bottleId)) InventoryManager.iM.inventory.Add(bottleId, bottle);
         InventoryManager.iM.currentNote = bottleId;
         Destroy(gameObject);
+        // Disable the object right away so it does not show up in find results - destroy waits until the end of frame.
+        gameObject.SetActive(false);
     }
 }
