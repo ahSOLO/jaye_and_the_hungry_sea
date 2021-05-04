@@ -202,6 +202,5 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        // dialogueMsg.text = content;
     }
 }

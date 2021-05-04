@@ -20,6 +20,7 @@ public class AudioController : MonoBehaviour
     public AudioClip firstLevelMusic;
     public AudioClip secondLevelMusic;
     public AudioClip thirdLevelMusic;
+    public AudioClip fourthLevelMusic;
     public AudioClip endingMusic;
 
     // Sound Effects
