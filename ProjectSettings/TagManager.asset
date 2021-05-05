@@ -55,6 +55,9 @@ TagManager:
   - name: Underwater Lightning
     uniqueID: 1263344073
     locked: 0
+  - name: Skull Light
+    uniqueID: 2439988153
+    locked: 0
   - name: Boat Light
     uniqueID: 2234107835
     locked: 0
@@ -66,6 +69,9 @@ TagManager:
     locked: 0
   - name: Lantern
     uniqueID: 4272950041
+    locked: 0
+  - name: Skull
+    uniqueID: 4125884211
     locked: 0
   - name: Weather
     uniqueID: 2024298291

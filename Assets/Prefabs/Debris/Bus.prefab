@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5408951972097629667}
   - component: {fileID: 5408951972097629664}
   - component: {fileID: 5408951972097629665}
+  - component: {fileID: 3640350171995503440}
   m_Layer: 0
   m_Name: Bus
   m_TagString: HardDebris
@@ -131,3 +132,29 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9305556, y: 2.7777777}
   m_EdgeRadius: 0
+--- !u!114 &3640350171995503440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5408951972097629671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: b9436f91
+  m_ShapePath:
+  - {x: -0.4512953, y: -1.3888888, z: 0}
+  - {x: 0.44430405, y: -1.3888888, z: 0}
+  - {x: 0.3674004, y: 1.3539325, z: 0}
+  - {x: -0.3604092, y: 1.3539326, z: 0}
+  m_ShapePathHash: 2142728422
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -52608

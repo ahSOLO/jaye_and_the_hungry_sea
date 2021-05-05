@@ -22,6 +22,9 @@ public class EffectsController : MonoBehaviour
     public GameObject particleRainObj;
     public GameObject particleRipplesObj;
     public GameObject globalLightObj;
+    public GameObject skullCircle;
+    public GameObject skullLeftEyeLightObj;
+    public GameObject skullRightEyeLightObj;
     // public GameObject fadeToBlackImgObj;
 
     // States
@@ -39,7 +42,7 @@ public class EffectsController : MonoBehaviour
     // Tilemap
     private Tilemap surfaceWaveTilemap;
 
-    // Lantern Variables
+    // Lights
     private Light2D lanternLight;
 
     // Particle Systems
@@ -85,6 +88,9 @@ public class EffectsController : MonoBehaviour
             bgRenderer.color = Color.white;
             surfaceWaveTilemap.color = Color.black;
             if (lantern != null) lantern.transform.localPosition = new Vector3(-100, -100, 4);
+            if (skullCircle != null) skullCircle.SetActive(false);
+            if (skullLeftEyeLightObj != null) skullLeftEyeLightObj.SetActive(false);
+            if (skullRightEyeLightObj != null) skullRightEyeLightObj.SetActive(false);
         }
 
         else
@@ -92,6 +98,9 @@ public class EffectsController : MonoBehaviour
             bgRenderer.color = Color.black;
             surfaceWaveTilemap.color = Color.white;
             if (lantern != null) lantern.transform.localPosition = new Vector3(0, 0.833f, 4);
+            if (skullCircle != null) skullCircle.SetActive(true);
+            if (skullLeftEyeLightObj != null) skullLeftEyeLightObj.SetActive(true);
+            if (skullRightEyeLightObj != null) skullRightEyeLightObj.SetActive(true);
         }
 
         // Debug lightning
