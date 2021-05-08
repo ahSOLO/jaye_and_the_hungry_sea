@@ -262,6 +262,17 @@ public class PlayerController : MonoBehaviour
             UIManager.uIM.showDialogue(d.duration, d.content, d.pauseGame, d.characterId, d.barkId, d.triggerId);
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.tag == "ChasingSkull")
+        {
+            velocityOffset = Vector3.zero;
+            SkullAI.sAI.SkullHit();
+            AudioController.aC.PlaySFXAtPoint(AudioController.aC.skullAttack, transform.position, 0.5f);
+            Vector2 dir = collision.attachedRigidbody.position - new Vector2(transform.position.x, transform.position.y);
+            AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.hitEnemy, transform.position, 0.4f);
+            bounceDir = -dir.normalized;
+            bounceMag = bounceMagMax;
+            TakeDamage();
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -304,7 +315,7 @@ public class PlayerController : MonoBehaviour
             invulnerableTimerMax = 2f;
             EffectsController.eC.StartCoroutine(EffectsController.eC.PlayerDeath(2f, transform.position));
             GameController.gC.fails++;
-            Destroy(gameObject, 2f);
+            Invoke("Deactivate", 2f);
         }
 
         invulnerableTimer = invulnerableTimerMax;
@@ -371,5 +382,10 @@ public class PlayerController : MonoBehaviour
 
         pActions.PauseMenu.AddDefaultBinding(InputControlType.Command);
         pActions.PauseMenu.AddDefaultBinding(Key.Escape);
+    }
+
+    private void Deactivate()
+    {
+        gameObject.SetActive(false);
     }
 }

@@ -39,6 +39,7 @@ public class AudioController : MonoBehaviour
     public AudioClip[] cutsceneBarks;
     public AudioClip splash;
     public AudioClip clickButton;
+    public AudioClip skullAttack;
 
     void OnEnable()
     {

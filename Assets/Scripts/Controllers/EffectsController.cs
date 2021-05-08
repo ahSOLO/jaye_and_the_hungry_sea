@@ -91,6 +91,7 @@ public class EffectsController : MonoBehaviour
             if (skullCircle != null) skullCircle.SetActive(false);
             if (skullLeftEyeLightObj != null) skullLeftEyeLightObj.SetActive(false);
             if (skullRightEyeLightObj != null) skullRightEyeLightObj.SetActive(false);
+            UIManager.uIM.SetHeartIcon(false);
         }
 
         else
@@ -101,6 +102,7 @@ public class EffectsController : MonoBehaviour
             if (skullCircle != null) skullCircle.SetActive(true);
             if (skullLeftEyeLightObj != null) skullLeftEyeLightObj.SetActive(true);
             if (skullRightEyeLightObj != null) skullRightEyeLightObj.SetActive(true);
+            UIManager.uIM.SetHeartIcon(true);
         }
 
         // Debug lightning
@@ -290,6 +292,7 @@ public class EffectsController : MonoBehaviour
         while (timer > 0)
         {
             globalLightObj.SetActive(false);
+            if (SkullAI.sAI != null) SkullAI.sAI.gameObject.SetActive(false);
             lanternLight.pointLightInnerRadius = Mathf.Lerp(lanternLight.pointLightInnerRadius, 0f, Time.deltaTime * 2f);
             lanternLight.pointLightOuterRadius = Mathf.Lerp(lanternLight.pointLightOuterRadius, 0f, Time.deltaTime * 2f);
             timer -= Time.deltaTime;

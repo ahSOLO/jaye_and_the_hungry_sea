@@ -15,6 +15,7 @@ TagManager:
   - vCam
   - Dialogue
   - Fader
+  - ChasingSkull
   layers:
   - Default
   - TransparentFX
@@ -24,8 +25,8 @@ TagManager:
   - UI
   - 
   - Non-Collidable
-  - 
-  - 
+  - Player
+  - BlockSkullVision
   - 
   - 
   - 

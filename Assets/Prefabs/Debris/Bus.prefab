@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5408951972097629664}
   - component: {fileID: 5408951972097629665}
   - component: {fileID: 3640350171995503440}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bus
   m_TagString: HardDebris
   m_Icon: {fileID: 0}
