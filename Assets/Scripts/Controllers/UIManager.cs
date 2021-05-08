@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -23,6 +24,10 @@ public class UIManager : MonoBehaviour
     public GameObject guiltMsgObj;
     public TextMeshProUGUI guiltMsgText;
     private float dialogueTimer;
+    public GameObject[] hearts;
+    private Image[] heartImages = new Image[5];
+    public Sprite heartIcon;
+    public Sprite heartIconInverse;
 
     // Pause Menu vars
     public GameObject pauseMenu;
@@ -54,6 +59,11 @@ public class UIManager : MonoBehaviour
         anxietyMsgText = anxietyMsgObj.GetComponent<TextMeshProUGUI>();
         paranoiaMsgText = paranoiaMsgObj.GetComponent<TextMeshProUGUI>();
         guiltMsgText = guiltMsgObj.GetComponent<TextMeshProUGUI>();
+
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            heartImages[i] = hearts[i].GetComponent<Image>();
+        }
     }
 
     // Update is called once per frame
@@ -202,5 +212,17 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
+    }
+
+    public void SetHeartIcon(bool isInverse)
+    {
+        Sprite icon;
+        if (isInverse) icon = heartIconInverse;
+        else icon = heartIcon;
+
+        foreach (var image in heartImages)
+        {
+            image.sprite = icon;
+        }
     }
 }

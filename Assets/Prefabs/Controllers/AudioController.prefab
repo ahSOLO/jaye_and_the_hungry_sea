@@ -183,8 +183,9 @@ MonoBehaviour:
   titleMusic: {fileID: 8300000, guid: 06d91c826ec3e3749bd5b1b031fcffc1, type: 3}
   firstLevelMusic: {fileID: 8300000, guid: ea8263b06c31940438a7937cbe5cfba5, type: 3}
   secondLevelMusic: {fileID: 8300000, guid: 0728a1403fbeb074e87239415c7a09a4, type: 3}
-  thirdLevelMusic: {fileID: 8300000, guid: 22b71fabf5ac9e544bf6d84cddaf6647, type: 3}
-  endingMusic: {fileID: 0}
+  thirdLevelMusic: {fileID: 8300000, guid: d98ea6b86b59be942a4e975d3581d524, type: 3}
+  fourthLevelMusic: {fileID: 8300000, guid: 22b71fabf5ac9e544bf6d84cddaf6647, type: 3}
+  endingMusic: {fileID: 8300000, guid: 082252a26b667e74e8c5718c9f9e3d0b, type: 3}
   bottlePickUp: {fileID: 8300000, guid: 8325bbf8cdfc2624fbf740c831820447, type: 3}
   boatCreak:
   - {fileID: 8300000, guid: 6d5bc7c607e318b43bae612f6db6c171, type: 3}
@@ -225,7 +226,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1cc32fa9c6ecd174d9e9740dc7b4de2a, type: 3}
   - {fileID: 8300000, guid: 05c6a7ef42100df45893d448a92686f2, type: 3}
   splash: {fileID: 8300000, guid: c13fbdf783381514693b32f8769288f7, type: 3}
-  clickButton: {fileID: 0}
+  clickButton: {fileID: 8300000, guid: 13b9b296707c21446a52331786f0e1bc, type: 3}
+  skullAttack: {fileID: 8300000, guid: d27b8afcf1acb304ebef4853ab6a6975, type: 3}
 --- !u!1 &3697865486019408683
 GameObject:
   m_ObjectHideFlags: 0
