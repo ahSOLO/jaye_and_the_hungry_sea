@@ -16,6 +16,7 @@ TagManager:
   - Dialogue
   - Fader
   - ChasingSkull
+  - SkullCancelChase
   layers:
   - Default
   - TransparentFX
