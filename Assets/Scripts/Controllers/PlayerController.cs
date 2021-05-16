@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using InControl;
+using ScriptableObjectArchitecture;
 
 public class PlayerController : MonoBehaviour
 {
@@ -46,7 +47,10 @@ public class PlayerController : MonoBehaviour
     private bool isTouchingWall;
 
     // Health variables
+    
     public List<GameObject> hearts = new List<GameObject>();
+
+    [SerializeField] private IntReference maxHealth;
     private int health;
     private bool isInvulnerable;
     private float invulnerableTimerMax = 1.5f;
@@ -56,6 +60,10 @@ public class PlayerController : MonoBehaviour
     private float creakTimer;
     [SerializeField] private float avgCreakTime = 4f;
     [SerializeField] private float creakVolume = 0.4f;
+
+    // Events
+    [SerializeField] BottleGameEvent CollectBottle;
+    [SerializeField] Vector2GameEvent DamagedByEnemy;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -215,20 +223,12 @@ public class PlayerController : MonoBehaviour
 
         if (colObject.tag == "Bottle")
         {
-            Heal();
-            colObject.GetComponent<BottleProperties>().Collect();
-            AudioController.aC.PlaySFXAtPoint(AudioController.aC.bottlePickUp, collision.contacts[0].point, 0.25f);
-            UIManager.uIM.SetHelperMessageText("To Read Notes: Press 'i' or the ▲|Y Button", 4f);
-            Pointer.p.UpdateTarget();
+            CollectBottle.Raise(colObject.GetComponent<BottleProperties>().bottle);
+            colObject.SetActive(false);
         }
         else if (colObject.tag == "Enemy" && !isInvulnerable)
         {
-            velocityOffset = Vector3.zero;
-            Vector2 dir = collision.contacts[0].point - new Vector2(transform.position.x, transform.position.y);
-            AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.hitEnemy, collision.contacts[0].point, 0.4f);
-            bounceDir = -dir.normalized;
-            bounceMag = bounceMagMax;
-            TakeDamage();
+            DamagedByEnemy.Raise(collision.contacts[0].point);
         }
         else if (colObject.tag == "HardDebris")
         {
@@ -264,13 +264,9 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.tag == "ChasingSkull")
         {
-            velocityOffset = Vector3.zero;
             SkullAI.sAI.SkullHit();
             AudioController.aC.PlaySFXAtPoint(AudioController.aC.skullAttack, transform.position, 0.5f);
-            Vector2 dir = collision.attachedRigidbody.position - new Vector2(transform.position.x, transform.position.y);
-            AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.hitEnemy, transform.position, 0.4f);
-            bounceDir = -dir.normalized;
-            bounceMag = bounceMagMax;
+            BounceAway(collision.attachedRigidbody.position);
             TakeDamage();
         }
     }
@@ -305,7 +301,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void TakeDamage()
+    public void BounceAway(Vector2 colPoint)
+    {
+        velocityOffset = Vector3.zero;
+        Vector2 dir = colPoint - new Vector2(transform.position.x, transform.position.y);
+        bounceDir = -dir.normalized;
+        bounceMag = bounceMagMax;
+    }
+
+    public void TakeDamage()
     {
         health--;
         hearts[health].SetActive(false);
@@ -326,11 +330,10 @@ public class PlayerController : MonoBehaviour
         invulnerableTimerMax = 1.5f;
     }
 
-    void Heal()
+    public void Heal()
     {
-        if (health < hearts.Count)
+        if (health < maxHealth.Value)
         {
-            hearts[health].SetActive(true);
             health++;
         }
     }

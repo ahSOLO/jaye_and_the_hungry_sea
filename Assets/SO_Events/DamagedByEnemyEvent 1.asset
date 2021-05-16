@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eba744646b835a148b528a8090e1843b, type: 3}
+  m_Name: DamagedByEnemyEvent 1
+  m_EditorClassIdentifier: 
+  sentString: 
+  sentInt: 0
+  sentFloat: 0
+  sentBool: 0

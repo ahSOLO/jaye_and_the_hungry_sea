@@ -43,3 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed2cb57fa724ac4192096b3d4003fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gState: 0
+  progress: 0
+  fails: 0
+  maxHealth: 5
+  currentHealth: 3

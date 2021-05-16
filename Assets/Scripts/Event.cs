@@ -4,6 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newEvent", menuName = "Game Event", order = 52)]
 public class Event : ScriptableObject
 {
+    public string sentString;
+    public int sentInt;
+    public float sentFloat;
+    public bool sentBool;
+
     private HashSet<EventListener> eListeners = new HashSet<EventListener>();
 
     public void Register(EventListener listener)
@@ -20,7 +25,7 @@ public class Event : ScriptableObject
     {
         foreach (var eListener in eListeners)
         {
-            eListener.OnEventOccurs();
+            eListener.OnEventOccurs(this);
         }
     }
 
@@ -28,7 +33,10 @@ public class Event : ScriptableObject
     {
         foreach (var eListener in eListeners)
         {
-            eListener.gEvent.Unregister(eListener);
+            foreach (var eAndR in eListener.eventAndResponses)
+            {
+                eAndR.gameEvent.Unregister(eListener);
+            }
         }
     }
 }

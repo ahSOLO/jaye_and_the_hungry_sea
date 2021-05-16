@@ -225,4 +225,33 @@ public class UIManager : MonoBehaviour
             image.sprite = icon;
         }
     }
+
+    public void AddHeart()
+    {
+        foreach (var heart in hearts)
+        {
+            if (heart.activeSelf == false)
+            {
+                heart.SetActive(true);
+                break;
+            }
+        }
+    }
+
+    public void RemoveHeart()
+    {
+        for (int i = hearts.Length - 1; i >= 0; i--)
+        {
+            if (hearts[i].activeSelf == true)
+            {
+                hearts[i].SetActive(false);
+                break;
+            }
+        }
+    }
+
+    public void ShowBottleCollectHelperText()
+    {
+        SetHelperMessageText("To Read Notes: Press 'i' or the ▲|Y Button", 4f);
+    }
 }

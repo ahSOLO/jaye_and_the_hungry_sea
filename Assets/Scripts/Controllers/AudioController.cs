@@ -127,7 +127,7 @@ public class AudioController : MonoBehaviour
     public AudioSource PlayRandomSFXAtPoint(AudioClip[] audioClips, Vector3 position, float volume)
     {
         GameObject tempAudioClip = new GameObject("TempAudio");
-        tempAudioClip.transform.position = position;
+        tempAudioClip.transform.position = new Vector3(position.x, position.y, Camera.main.transform.position.z);
         AudioSource aSource = tempAudioClip.AddComponent<AudioSource>();
         AudioClip audioClip = GetRandomClip(audioClips);
         aSource.clip = audioClip;
@@ -141,7 +141,7 @@ public class AudioController : MonoBehaviour
     public AudioSource PlaySFXAtPoint(AudioClip audioClip, Vector3 position, float volume)
     {
         GameObject tempAudioClip = new GameObject("TempAudio");
-        tempAudioClip.transform.position = position;
+        tempAudioClip.transform.position = new Vector3(position.x, position.y, Camera.main.transform.position.z);
         AudioSource aSource = tempAudioClip.AddComponent<AudioSource>();
         aSource.clip = audioClip;
         aSource.volume = volume;
@@ -185,5 +185,15 @@ public class AudioController : MonoBehaviour
         StartCoroutine(FadeAudioSource.StartFade(rainSource1, timer, target));
         StartCoroutine(FadeAudioSource.StartFade(rainSource2, timer, target));
         StartCoroutine(FadeAudioSource.StartFade(rainSource3, timer, target));
+    }
+
+    public void PlayBottlePickupSound()
+    {
+        PlaySFXAtPoint(bottlePickUp, GameObject.FindGameObjectWithTag("Player").transform.position, 0.25f);
+    }
+
+    public void PlayHitEnemySound(Vector2 colPoint)
+    {
+        PlayRandomSFXAtPoint(hitEnemy, colPoint, 0.4f);
     }
 }
