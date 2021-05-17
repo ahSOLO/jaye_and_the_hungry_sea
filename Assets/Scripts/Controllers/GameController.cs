@@ -11,9 +11,13 @@ public class GameController : MonoBehaviour
     public enum GameState {title, cutscene, pauseMenu, boating, notes};
     public GameState gState;
 
+    // Progression and health tracking
     public int progress;
     public int fails;
     [SerializeField] IntVariable currentPlayerHealth;
+
+    // Events
+    [SerializeField] GameEvent TutorialStart;
 
     void OnEnable()
     {
@@ -75,7 +79,7 @@ public class GameController : MonoBehaviour
 
         else if (SceneManager.GetActiveScene().name == "2_Level1")
         {
-            StartCoroutine(Tutorial());
+            TutorialStart.Raise();
             gState = GameState.boating;
         }
 
@@ -180,30 +184,6 @@ public class GameController : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
-    }
-
-    // Tutorial for the first level
-    public IEnumerator Tutorial()
-    {
-        yield return new WaitForSeconds(4f);
-
-        UIManager.uIM.helperMessage.text = "Move with WASD or the Controller left-stick";
-        UIManager.uIM.helperMessageTimer = 7f;
-
-        yield return new WaitForSeconds(9f);
-
-        UIManager.uIM.helperMessage.text = "To turn without moving, press Q and E, or use the Left and Right controller triggers";
-        UIManager.uIM.helperMessageTimer = 12f;
-
-        yield return new WaitForSeconds(14f);
-
-        UIManager.uIM.helperMessage.text = "To row faster, hold Left-Shift, A (XBox), or X (PlayStation)";
-        UIManager.uIM.helperMessageTimer = 12f;
-
-        yield return new WaitForSeconds(14f);
-
-        UIManager.uIM.helperMessage.text = "Press F to toggle fullscreen";
-        UIManager.uIM.helperMessageTimer = 12f;
     }
 
     public void EndLevel()

@@ -13,17 +13,19 @@ public class UIManager : MonoBehaviour
 
     // UI vars
     public GameObject helperMessageObj;
-    public TextMeshProUGUI helperMessage;
-    public float helperMessageTimer;
+    private TextMeshProUGUI helperMessage;
+    private float helperMessageTimer;
     public GameObject dialogueBox;
     public GameObject defaultMsgObj;
-    public TextMeshProUGUI defaultMsgText;
+    private TextMeshProUGUI defaultMsgText;
     public GameObject anxietyMsgObj;
-    public TextMeshProUGUI anxietyMsgText;
+    private TextMeshProUGUI anxietyMsgText;
     public GameObject paranoiaMsgObj;
-    public TextMeshProUGUI paranoiaMsgText;
+    private TextMeshProUGUI paranoiaMsgText;
     public GameObject guiltMsgObj;
-    public TextMeshProUGUI guiltMsgText;
+    private TextMeshProUGUI guiltMsgText;
+    public GameObject liesMsgObj;
+    private TextMeshProUGUI liesMsgText;
     private float dialogueTimer;
     public GameObject[] hearts;
     private Image[] heartImages = new Image[5];
@@ -40,9 +42,9 @@ public class UIManager : MonoBehaviour
     // Note menu vars
     public GameObject noteDisplay;
     public GameObject noteDisplayTextObj;
-    public TextMeshProUGUI noteDisplayText;
+    private TextMeshProUGUI noteDisplayText;
     public GameObject noteTitleObj;
-    public TextMeshProUGUI noteTitle;
+    private TextMeshProUGUI noteTitle;
     private bool noteOpen;
     public int maxNotes = 10;
 
@@ -52,15 +54,16 @@ public class UIManager : MonoBehaviour
 
         noteOpen = false;
 
+        helperMessage = helperMessageObj.GetComponent<TextMeshProUGUI>();
+        
         noteDisplayText = noteDisplayTextObj.GetComponent<TextMeshProUGUI>();
         noteTitle = noteTitleObj.GetComponent<TextMeshProUGUI>();
-
-        helperMessage = helperMessageObj.GetComponent<TextMeshProUGUI>();
 
         defaultMsgText = defaultMsgObj.GetComponent<TextMeshProUGUI>();
         anxietyMsgText = anxietyMsgObj.GetComponent<TextMeshProUGUI>();
         paranoiaMsgText = paranoiaMsgObj.GetComponent<TextMeshProUGUI>();
         guiltMsgText = guiltMsgObj.GetComponent<TextMeshProUGUI>();
+        liesMsgText = liesMsgObj.GetComponent<TextMeshProUGUI>();
 
         for (int i = 0; i < hearts.Length; i++)
         {
@@ -126,6 +129,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Pause Menu
     public void OpenPauseMenu()
     {
         pauseMenu.SetActive(true);
@@ -138,6 +142,7 @@ public class UIManager : MonoBehaviour
         pauseMenu.SetActive(false);
     }
 
+    // Notes
     public void DisplayNote()
     {
         AudioController.aC.PlaySFXAtPoint(AudioController.aC.openNotes, Camera.main.transform.position, 0.25f);
@@ -183,12 +188,14 @@ public class UIManager : MonoBehaviour
         noteOpen = false;
     }
 
+    // Helper Message
     public void SetHelperMessageText(string text, float timer)
     {
         helperMessage.text = text;
         helperMessageTimer = timer;
     }
 
+    // Dialogue
     public void ShowDialogue(Dialogue d)
     {
         dialogueBox.SetActive(true);
@@ -212,6 +219,10 @@ public class UIManager : MonoBehaviour
             case 4:
                 guiltMsgObj.SetActive(true);
                 guiltMsgText.text = d.content;
+                break;
+            case 5:
+                liesMsgObj.SetActive(true);
+                liesMsgText.text = d.content;
                 break;
             default:
                 defaultMsgObj.SetActive(true);
@@ -269,5 +280,34 @@ public class UIManager : MonoBehaviour
     public void ShowBottleCollectHelperText()
     {
         SetHelperMessageText("To Read Notes: Press 'i' or the ▲|Y Button", 4f);
+    }
+
+    public void StartTutorial()
+    {
+        // Tutorial for the first level
+        IEnumerator Tutorial()
+        {
+            yield return new WaitForSeconds(4f);
+
+            uIM.helperMessage.text = "Move with WASD or the Controller left-stick";
+            uIM.helperMessageTimer = 7f;
+
+            yield return new WaitForSeconds(9f);
+
+            uIM.helperMessage.text = "To turn without moving, press Q and E, or use the Left and Right controller triggers";
+            uIM.helperMessageTimer = 12f;
+
+            yield return new WaitForSeconds(14f);
+
+            uIM.helperMessage.text = "To row faster, hold Left-Shift, A (XBox), or X (PlayStation)";
+            uIM.helperMessageTimer = 12f;
+
+            yield return new WaitForSeconds(14f);
+
+            uIM.helperMessage.text = "Press F to toggle fullscreen";
+            uIM.helperMessageTimer = 12f;
+        }
+
+        StartCoroutine(Tutorial());
     }
 }
