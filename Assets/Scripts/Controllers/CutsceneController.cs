@@ -9,35 +9,43 @@ using InControl;
 
 public class CutsceneController : MonoBehaviour
 {
+    [SerializeField] int backgroundCharacterId;
+    
     public GameObject background;
     public GameObject back;
     public GameObject middle;
     public GameObject front;
+
     public GameObject dialogueBox;
     public GameObject defaultText;
-    public GameObject anxietyText;
-    public GameObject paranoiaText;
-    public GameObject guiltText;
-    public GameObject mCText;
-    public GameObject mCAvatar;
+    public GameObject avatar;
+    public GameObject avatarText;
+
+    public TMP_FontAsset defaultFont;
+    public TMP_FontAsset anxietyFont;
+    public TMP_FontAsset paranoiaFont;
+    public TMP_FontAsset guiltFont;
+    public TMP_FontAsset liesFont;
+
     public GameObject downTriangle;
 
+    public Sprite mCAvatar;
+    public Sprite anxietyAvatar;
+    public Sprite paranoiaAvatar;
+    public Sprite guiltAvatar;
+    public Sprite liesAvatar;
+    public Sprite adult1Avatar;
+    public Sprite adult2Avatar;
+    
     public Sprite sprite1;
     public Sprite sprite2;
     public Sprite sprite3;
-    public Sprite sprite4;
-    public Sprite sprite5;
-    public Sprite sprite6;
-    public Sprite sprite7;
-    public Sprite sprite8;
 
     public TextAsset cutsceneScript;
 
-    private TextMeshProUGUI mcTMP;
+    private Image avatarImg;
     private TextMeshProUGUI defaultTMP;
-    private TextMeshProUGUI anxietyTMP;
-    private TextMeshProUGUI paranoiaTMP;
-    private TextMeshProUGUI guiltTMP;
+    private TextMeshProUGUI avatarTMP;
 
     private Image backgroundImg;
     private Image backImg;
@@ -63,12 +71,12 @@ public class CutsceneController : MonoBehaviour
 
     private void Start()
     {
+        avatarImg = avatar.GetComponent<Image>();
         defaultTMP = defaultText.GetComponent<TextMeshProUGUI>();
-        anxietyTMP = anxietyText.GetComponent<TextMeshProUGUI>();
-        paranoiaTMP = paranoiaText.GetComponent<TextMeshProUGUI>();
-        guiltTMP = guiltText.GetComponent<TextMeshProUGUI>();
-        mcTMP = mCText.GetComponent<TextMeshProUGUI>();
+        avatarTMP = avatarText.GetComponent<TextMeshProUGUI>();
+
         ParseTextToDialogue();
+        
         StartCoroutine(ShowTextAfterWait(3f));
     }
 
@@ -77,44 +85,40 @@ public class CutsceneController : MonoBehaviour
     {
         var inputDevice = InputManager.ActiveDevice;
 
-        if (canAdvanceTimer > 0)
+        switch (canAdvance)
         {
-            canAdvanceTimer -= Time.deltaTime;
-        }
-        else
-        {
-            canAdvance = true;
-        }
-
-        if (!canAdvance)
-        {
-            downTriangle.SetActive(false);
-        }
-        else
-        {
-            downTriangle.SetActive(true);
-
-            if ((inputDevice.Action1.WasPressed)
-                || (inputDevice.Action3.WasPressed))
-            {
-                AdvanceDialogue();
-            }
-
-            else
-            {
-                foreach (KeyCode kc in advanceKeys)
+            case false:
+                canAdvanceTimer -= Time.deltaTime;
+                // Transition: timer reaches zero.
+                if (canAdvanceTimer <= 0)
                 {
-                    if (Input.GetKeyDown(kc))
+                    canAdvance = true;
+                    downTriangle.SetActive(true);
+                }
+                break;
+            case true:
+                // Transition: An advance key is pressed.
+                if ((inputDevice.Action1.WasPressed)
+                    || (inputDevice.Action3.WasPressed))
+                {
+                    AdvanceDialogue();
+                }
+                else
+                {
+                    foreach (KeyCode kc in advanceKeys)
                     {
-                        AdvanceDialogue();
-                        break;
+                        if (Input.GetKeyDown(kc))
+                        {
+                            AdvanceDialogue();
+                            break;
+                        }
                     }
                 }
-            }
+                break;
         }
     }
     
-    // Play music / initial triggers
+    // Initial triggers
     public void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
         if (SceneManager.GetActiveScene().name == "1_Introduction")
@@ -166,13 +170,6 @@ public class CutsceneController : MonoBehaviour
         }
     }
 
-    private IEnumerator ShowTextAfterWait(float timer)
-    {
-        yield return new WaitForSeconds(timer);
-        dialogueBox.SetActive(true);
-        ShowText();
-    }
-
     private void ShowText()
     {
         // If reached end of dictionary, go to next scene after a brief fade-out period.
@@ -186,62 +183,98 @@ public class CutsceneController : MonoBehaviour
             return;
         }
 
-        if (dialogueDict[dialogueNodeNum].barkId != 0)
+        var currentNode = dialogueDict[dialogueNodeNum];
+
+        if (currentNode.barkId != 0)
         {
-            // Play Bark Audio
+            AudioController.aC.Play(AudioController.aC.sFXSource, AudioController.aC.cutsceneBarks[currentNode.barkId], 0.5f);
         }
 
-        if (dialogueDict[dialogueNodeNum].triggerId != 0)
+        if (currentNode.triggerId != 0)
         {
             // Play Trigger
         }
 
-        // Hide all non-MC text
-        defaultText.SetActive(false);
-        anxietyText.SetActive(false);
-        paranoiaText.SetActive(false);
-        guiltText.SetActive(false);
+        SetAvatarAndText(currentNode.characterId, currentNode.content);
+    }
 
-        if (dialogueDict[dialogueNodeNum].characterId == 1)
+    void SetAvatarAndText(int characterId, string content)
+    {
+        if (characterId == backgroundCharacterId)
         {
-            // Show MC Text
-            mCText.SetActive(true);
-            mCAvatar.SetActive(true);
+            avatar.SetActive(false);
+            avatarText.SetActive(false);
 
-            mcTMP.text = dialogueDict[dialogueNodeNum].content;
+            defaultText.SetActive(true);
+            defaultTMP.text = content;
+            switch (characterId)
+            {
+                case 2: // 2 = Anxiety
+                    defaultTMP.font = anxietyFont;
+                    break;
+                case 3: // 3 = Paranoia
+                    defaultTMP.font = paranoiaFont;
+                    break;
+                case 4: // 4 = Guilt
+                    defaultTMP.font = guiltFont;
+                    break;
+                case 5: // 5 = Lies
+                    defaultTMP.font = liesFont;
+                    break;
+                default: // 1 = MC, 6 = Akir, 7 = Isla
+                    defaultTMP.font = defaultFont;
+                    break;
+            }
         }
         else
         {
-            // Show other text
-            mCText.SetActive(false);
-            mCAvatar.SetActive(false);
+            defaultText.SetActive(false);
 
-            switch (dialogueDict[dialogueNodeNum].characterId)
+            avatar.SetActive(true);
+            avatarText.SetActive(true);
+            avatarTMP.text = content;
+            switch (characterId)
             {
-                // Little Light
-                case 2:
-                    anxietyText.SetActive(true);
-                    anxietyTMP.text = dialogueDict[dialogueNodeNum].content;
+                case 1: // 1 = MC
+                    avatarImg.sprite = mCAvatar;
+                    avatarTMP.font = defaultFont;
                     break;
-                // Thousand Eyes
-                case 3:
-                    paranoiaText.SetActive(true);
-                    paranoiaTMP.text = dialogueDict[dialogueNodeNum].content;
+                case 2: // 2 = Anxiety
+                    avatarImg.sprite = anxietyAvatar;
+                    avatarTMP.font = anxietyFont;
                     break;
-                // The Albatross
-                case 4:
-                    guiltText.SetActive(true);
-                    guiltTMP.text = dialogueDict[dialogueNodeNum].content;
+                case 3: // 3 = Paranoia
+                    avatarImg.sprite = paranoiaAvatar;
+                    avatarTMP.font = paranoiaFont;
                     break;
-                default:
-                    defaultText.SetActive(true);
-                    defaultTMP.text = dialogueDict[dialogueNodeNum].content;
+                case 4: // 4 = Guilt
+                    avatarImg.sprite = guiltAvatar;
+                    avatarTMP.font = guiltFont;
+                    break;
+                case 5: // 5 = Lies
+                    avatarImg.sprite = liesAvatar;
+                    avatarTMP.font = liesFont;
+                    break;
+                case 6: // 6 = Akir
+                    avatarImg.sprite = adult1Avatar;
+                    avatarTMP.font = defaultFont;
+                    break;
+                case 7: // 7 = Isla
+                    avatarImg.sprite = adult2Avatar;
+                    avatarTMP.font = defaultFont;
                     break;
             }
         }
     }
 
-    // Main method for allowing triggers to interact with the cutscene image layers, should be called programmed by a separate script.
+    private IEnumerator ShowTextAfterWait(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        dialogueBox.SetActive(true);
+        ShowText();
+    }
+
+    // Main method for allowing triggers to interact with the cutscene image layers, should be called by a separate script.
     public void SetImage(string layer, Sprite sprite, Dictionary<string, float> options = null)
     {
         switch (layer)
