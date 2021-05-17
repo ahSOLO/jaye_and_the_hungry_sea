@@ -36,4 +36,9 @@ public class FadeController : MonoBehaviour
         }
         yield break;
     }
+
+    public void LevelEnd()
+    {
+        StartCoroutine(Fade(1f, 3f));
+    }
 }

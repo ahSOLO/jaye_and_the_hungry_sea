@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8133850450135753136}
   - component: {fileID: 8133850450135753137}
+  - component: {fileID: 3706567642093232786}
+  - component: {fileID: 824176545164736694}
+  - component: {fileID: 1131675364900000122}
   m_Layer: 0
   m_Name: EffectsController
   m_TagString: Untagged
@@ -51,7 +54,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   surfaceWaveTilemapObj: {fileID: 0}
-  boatLight: {fileID: 0}
   player: {fileID: 0}
   background: {fileID: 0}
   lightningGenerator: {fileID: 0}
@@ -59,5 +61,104 @@ MonoBehaviour:
   particleRainObj: {fileID: 0}
   particleRipplesObj: {fileID: 0}
   globalLightObj: {fileID: 0}
+  skullCircle: {fileID: 0}
+  skullLeftEyeLightObj: {fileID: 0}
+  skullRightEyeLightObj: {fileID: 0}
   rState: 0
-  isFlashing: 0
+--- !u!114 &3706567642093232786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8133850450135753139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5758ca93461aeeb4589456a052b07d74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugFields: 0
+  _enableGizmoDebugging: 1
+  _debugColor: {r: 0, g: 1, b: 1, a: 1}
+  _previouslyRegisteredEvent: {fileID: 0}
+  _event: {fileID: 11400000, guid: 61aec17f26518a0449f17b5d99a91ae1, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8133850450135753137}
+        m_TargetAssemblyTypeName: EffectsController, Assembly-CSharp
+        m_MethodName: IncreaseRainState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &824176545164736694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8133850450135753139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5758ca93461aeeb4589456a052b07d74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugFields: 0
+  _enableGizmoDebugging: 1
+  _debugColor: {r: 0, g: 1, b: 1, a: 1}
+  _previouslyRegisteredEvent: {fileID: 11400000, guid: 222cda227e98a2a48b28b5f8363dff4f, type: 2}
+  _event: {fileID: 11400000, guid: 222cda227e98a2a48b28b5f8363dff4f, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8133850450135753137}
+        m_TargetAssemblyTypeName: EffectsController, Assembly-CSharp
+        m_MethodName: DecreaseRainState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1131675364900000122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8133850450135753139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 791e3eca91bfc2e41b38477d0ecfaf1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugFields: 0
+  _enableGizmoDebugging: 1
+  _debugColor: {r: 0, g: 1, b: 1, a: 1}
+  _previouslyRegisteredEvent: {fileID: 0}
+  _event: {fileID: 11400000, guid: 45c1db4297c72e842850acf8fa411516, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8133850450135753137}
+        m_TargetAssemblyTypeName: EffectsController, Assembly-CSharp
+        m_MethodName: LightningEffect
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _debugValue: 0

@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Dialogue : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     public string content;
     public float duration;
     public int characterId = 1;

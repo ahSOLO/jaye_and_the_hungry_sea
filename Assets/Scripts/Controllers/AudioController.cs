@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ScriptableObjectArchitecture;
 
 public class AudioController : MonoBehaviour
 {
@@ -41,6 +42,11 @@ public class AudioController : MonoBehaviour
     public AudioClip clickButton;
     public AudioClip skullAttack;
 
+    // Player reference
+    private GameObject player;
+    [SerializeField] private FloatVariable playerMaxSpeed;
+    [SerializeField] private FloatVariable playerFastRowMultiplier;
+
     void OnEnable()
     {
         if (aC == null) aC = this;
@@ -55,44 +61,46 @@ public class AudioController : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "0_Title")
         {
-            AudioController.aC.PlayMusic(titleMusic, 0f);
+            aC.PlayMusic(titleMusic, 0f);
             StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
         }
 
         else if (SceneManager.GetActiveScene().name == "1_Introduction")
         {
-            AudioController.aC.Play(sFXSource, splash, 0.5f);
-            AudioController.aC.PlayMusic(firstLevelMusic, 0f);
+            aC.Play(sFXSource, splash, 0.5f);
+            aC.PlayMusic(firstLevelMusic, 0f);
             StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
         }
 
         else if (SceneManager.GetActiveScene().name == "2_Level1")
         {
-            if (!AudioController.aC.musicSource.isPlaying || AudioController.aC.musicSource.clip != AudioController.aC.firstLevelMusic)
+            if (!aC.musicSource.isPlaying || aC.musicSource.clip != aC.firstLevelMusic)
             {
-                AudioController.aC.PlayMusic(firstLevelMusic, 0f);
+                aC.PlayMusic(firstLevelMusic, 0f);
                 StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
             }
+            player = GameObject.FindGameObjectWithTag("Player");
         }
 
         else if (SceneManager.GetActiveScene().name == "3_Cutscene1")
         {
-            AudioController.aC.PlayMusic(secondLevelMusic, 0f);
+            aC.PlayMusic(secondLevelMusic, 0f);
             StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
         }
 
         else if (SceneManager.GetActiveScene().name == "4_Level2")
         {
-            if (!AudioController.aC.musicSource.isPlaying || AudioController.aC.musicSource.clip != AudioController.aC.secondLevelMusic)
+            if (!aC.musicSource.isPlaying || aC.musicSource.clip != aC.secondLevelMusic)
             {
-                AudioController.aC.PlayMusic(secondLevelMusic, 0f);
+                aC.PlayMusic(secondLevelMusic, 0f);
                 StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
             }
+            player = GameObject.FindGameObjectWithTag("Player");
         }
 
         else if (SceneManager.GetActiveScene().name == "5_Cutscene2")
         {
-            AudioController.aC.PlayMusic(thirdLevelMusic, 0f);
+            aC.PlayMusic(thirdLevelMusic, 0f);
             StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
         }
     }
@@ -187,13 +195,35 @@ public class AudioController : MonoBehaviour
         StartCoroutine(FadeAudioSource.StartFade(rainSource3, timer, target));
     }
 
-    public void PlayBottlePickupSound()
+    public void PlayCreakSound()
     {
-        PlaySFXAtPoint(bottlePickUp, GameObject.FindGameObjectWithTag("Player").transform.position, 0.25f);
+        aC.PlayRandomSFXAtPoint(boatCreak, player.transform.position, 0.4f);
     }
 
-    public void PlayHitEnemySound(Vector2 colPoint)
+    public void PlayBottlePickupSound()
     {
-        PlayRandomSFXAtPoint(hitEnemy, colPoint, 0.4f);
+        aC.PlaySFXAtPoint(bottlePickUp, player.transform.position, 0.25f);
+    }
+
+    public void PlayHitEnemySound(Collision2D collision)
+    {
+        aC.PlayRandomSFXAtPoint(hitEnemy, collision.contacts[0].point, 0.4f);
+    }
+
+    public void PlayHitSkullSound()
+    {
+        aC.PlaySFXAtPoint(skullAttack, player.transform.position, 0.5f);
+    }
+
+    public void PlayHitHardDebrisSound(Collision2D collision)
+    {
+        float impactVolume = collision.relativeVelocity.sqrMagnitude / Mathf.Pow(playerMaxSpeed.Value * playerFastRowMultiplier.Value, 2) * 0.6f;
+        aC.PlayRandomSFXAtPoint(hitHardDebris, collision.contacts[0].point, impactVolume);
+    }
+
+    public void LevelEnd()
+    {
+        StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0f));
+        aC.FadeRainSources(0f, 3f);
     }
 }
