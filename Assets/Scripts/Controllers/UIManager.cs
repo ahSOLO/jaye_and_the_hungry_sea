@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using ScriptableObjectArchitecture;
 
 public class UIManager : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class UIManager : MonoBehaviour
     public Sprite heartIcon;
     public Sprite heartIconInverse;
 
+    [SerializeField] IntVariable playerCurrentHealth;
+
     // Pause Menu vars
     public GameObject pauseMenu;
     public GameObject resumeButton;
@@ -43,7 +46,6 @@ public class UIManager : MonoBehaviour
     private bool noteOpen;
     public int maxNotes = 10;
 
-    // Start is called before the first frame update
     void OnEnable()
     {
         uIM = this;
@@ -64,6 +66,11 @@ public class UIManager : MonoBehaviour
         {
             heartImages[i] = hearts[i].GetComponent<Image>();
         }
+    }
+
+    private void Start()
+    {
+        InitializeHearts();
     }
 
     // Update is called once per frame
@@ -182,47 +189,85 @@ public class UIManager : MonoBehaviour
         helperMessageTimer = timer;
     }
 
-    public void showDialogue(float timer, string content, bool pauseGame = false, int characterId = 1, int barkId = 0, int triggerId = 0)
+    public void ShowDialogue(Dialogue d)
     {
         dialogueBox.SetActive(true);
-        dialogueTimer = timer;
+        dialogueTimer = d.duration;
 
         defaultMsgObj.SetActive(false);
         anxietyMsgObj.SetActive(false);
         paranoiaMsgObj.SetActive(false);
         guiltMsgObj.SetActive(false);
 
-        switch (characterId)
+        switch (d.characterId)
         {
             case 2:
                 anxietyMsgObj.SetActive(true);
-                anxietyMsgText.text = content;
+                anxietyMsgText.text = d.content;
                 break;
             case 3:
                 paranoiaMsgObj.SetActive(true);
-                paranoiaMsgText.text = content;
+                paranoiaMsgText.text = d.content;
                 break;
             case 4:
                 guiltMsgObj.SetActive(true);
-                guiltMsgText.text = content;
+                guiltMsgText.text = d.content;
                 break;
             default:
                 defaultMsgObj.SetActive(true);
-                defaultMsgText.text = content;
+                defaultMsgText.text = d.content;
                 break;
         }
 
+        // Unused: d.barkId, d.triggerId, d.pauseGame
     }
 
-    public void SetHeartIcon(bool isInverse)
+    public void SetHeartIcon(bool lightningIsFlashing)
     {
         Sprite icon;
-        if (isInverse) icon = heartIconInverse;
-        else icon = heartIcon;
+        if (lightningIsFlashing) icon = heartIcon;
+        else icon = heartIconInverse;
 
         foreach (var image in heartImages)
         {
             image.sprite = icon;
         }
+    }
+
+    public void InitializeHearts()
+    {
+        for (int i = 0; i < playerCurrentHealth.Value; i++)
+        {
+            hearts[i].SetActive(true);
+        }
+    }
+
+    public void AddHeart()
+    {
+        foreach (var heart in hearts)
+        {
+            if (heart.activeSelf == false)
+            {
+                heart.SetActive(true);
+                break;
+            }
+        }
+    }
+
+    public void RemoveHeart()
+    {
+        for (int i = hearts.Length - 1; i >= 0; i--)
+        {
+            if (hearts[i].activeSelf == true)
+            {
+                hearts[i].SetActive(false);
+                break;
+            }
+        }
+    }
+
+    public void ShowBottleCollectHelperText()
+    {
+        SetHelperMessageText("To Read Notes: Press 'i' or the ▲|Y Button", 4f);
     }
 }

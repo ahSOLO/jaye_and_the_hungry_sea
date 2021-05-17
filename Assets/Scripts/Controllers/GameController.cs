@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ScriptableObjectArchitecture;
 
 public class GameController : MonoBehaviour
 {
@@ -12,8 +13,8 @@ public class GameController : MonoBehaviour
 
     public int progress;
     public int fails;
-    
-    // Start is called before the first frame update
+    [SerializeField] IntVariable currentPlayerHealth;
+
     void OnEnable()
     {
         //Assign Singleton
@@ -26,6 +27,7 @@ public class GameController : MonoBehaviour
 
         gState = GameState.title;
         progress = 0;
+        fails = 0;
     }
 
     // Update is called once per frame
@@ -61,13 +63,14 @@ public class GameController : MonoBehaviour
         {
             gState = GameState.title;
             fails = 0;
+            currentPlayerHealth.Value = 3;
         }
         
         else if (SceneManager.GetActiveScene().name == "1_Introduction")
         {
             fails = 0;
             gState = GameState.cutscene;
-            progress = Mathf.Max(progress, 1);
+            progress = Mathf.Min(progress, 1);
         }
 
         else if (SceneManager.GetActiveScene().name == "2_Level1")
@@ -80,7 +83,7 @@ public class GameController : MonoBehaviour
         {
             fails = 0;
             gState = GameState.cutscene;
-            progress = Mathf.Max(progress, 2);
+            progress = Mathf.Min(progress, 2);
         }
 
         else if (SceneManager.GetActiveScene().name == "4_Level2")
@@ -92,7 +95,7 @@ public class GameController : MonoBehaviour
         {
             fails = 0;
             gState = GameState.cutscene;
-            progress = Mathf.Max(progress, 3);
+            progress = Mathf.Min(progress, 3);
         }
 
         else if (SceneManager.GetActiveScene().name == "6_Level3")
@@ -117,7 +120,7 @@ public class GameController : MonoBehaviour
     public void UnPauseGame()
     {
         // Must refer to singleton for use on button
-        GameController.gC.gState = GameState.boating;
+        gC.gState = GameState.boating;
         Time.timeScale = 1;
         AudioController.aC.musicSource.volume = 0.6f;
         AudioController.aC.UnPauseAudioSources();
@@ -201,5 +204,10 @@ public class GameController : MonoBehaviour
 
         UIManager.uIM.helperMessage.text = "Press F to toggle fullscreen";
         UIManager.uIM.helperMessageTimer = 12f;
+    }
+
+    public void EndLevel()
+    {
+        StartCoroutine(LoadNextSceneAsync(3f));
     }
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3109741001192001823}
   - component: {fileID: 3109741001192001822}
+  - component: {fileID: 5938260307289284631}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -43,3 +44,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed2cb57fa724ac4192096b3d4003fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gState: 0
+  progress: 0
+  fails: 0
+  currentPlayerHealth: {fileID: 11400000, guid: 6325848d072c57d42b59876b751e0dda, type: 2}
+--- !u!114 &5938260307289284631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3109741001192001821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5758ca93461aeeb4589456a052b07d74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugFields: 0
+  _enableGizmoDebugging: 1
+  _debugColor: {r: 0, g: 1, b: 1, a: 1}
+  _previouslyRegisteredEvent: {fileID: 11400000, guid: ad9b3fab4783559448c702ba09bd24d3, type: 2}
+  _event: {fileID: 11400000, guid: ad9b3fab4783559448c702ba09bd24d3, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3109741001192001822}
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
+        m_MethodName: EndLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

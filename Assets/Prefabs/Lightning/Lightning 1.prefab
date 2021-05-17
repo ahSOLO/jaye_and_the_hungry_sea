@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2024298291
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -2834339324649021870, guid: da7d548f68f7ad34480e22828e393ff8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -115,3 +115,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a142f89d6285334c8297bf12828ee64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LightningEffect: {fileID: 11400000, guid: 45c1db4297c72e842850acf8fa411516, type: 2}

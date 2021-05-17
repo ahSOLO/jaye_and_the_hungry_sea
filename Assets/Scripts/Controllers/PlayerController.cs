@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using InControl;
+using ScriptableObjectArchitecture;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,11 +13,14 @@ public class PlayerController : MonoBehaviour
     public PlayerActions pActions;
 
     // Movement variables
-    [SerializeField] private float maxSpeed = 2.3f;
+    [SerializeField] FloatVariable maxSpeedVar;
+    [SerializeField] FloatVariable fastRowMultiplierVar;
     [SerializeField] private float rotationSpeed = 2.6f;
     [SerializeField] private float acceleration = 0.017f;
-    [SerializeField] private float fastRowMultiplier = 1.6f;
     public bool canSteer;
+
+    private float maxSpeed;
+    private float fastRowMultiplier;
     private bool rowFast;
     private float speed;
     private Vector3 inputDirection;
@@ -36,26 +40,37 @@ public class PlayerController : MonoBehaviour
     private Animator lightAnim;
 
     // Components
-    // private Collider2D col;
     private Rigidbody2D rb;
     private Animator anim;
 
-    // Wall variables
-    [SerializeField] private GameObject background;   
+    // Wall variables  
     private Vector3 velocityOffset;
     private bool isTouchingWall;
 
     // Health variables
-    public List<GameObject> hearts = new List<GameObject>();
-    private int health;
+    [SerializeField] private IntVariable maxHealth;
+    [SerializeField] private IntVariable currentHealth;
     private bool isInvulnerable;
     private float invulnerableTimerMax = 1.5f;
     private float invulnerableTimer;
 
-    // Audio variables
+    // Creak variables
     private float creakTimer;
     [SerializeField] private float avgCreakTime = 4f;
-    [SerializeField] private float creakVolume = 0.4f;
+
+    // Events
+    [SerializeField] GameEvent Creak;
+    [SerializeField] BottleGameEvent CollectBottle;
+    [SerializeField] Collision2DGameEvent HitByEnemy;
+    [SerializeField] Collision2DGameEvent HitHardDebris;
+    [SerializeField] Collider2DGameEvent HitBySkull;
+    [SerializeField] GameEvent PlayerDamaged;
+    [SerializeField] GameEvent PlayerHealed;
+    [SerializeField] GameEvent SkullCancelChase;
+    [SerializeField] DialogueGameEvent EnterDialogue;
+    [SerializeField] GameEvent RainIncrease;
+    [SerializeField] GameEvent RainDecrease;
+    [SerializeField] GameEvent LevelEnd;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -71,24 +86,22 @@ public class PlayerController : MonoBehaviour
         rowFast = false;
 
         aState = animState.idle;
-        
-        health = 3;
 
         bounceDir = Vector2.zero;
 
         creakTimer = avgCreakTime;
-        
+
+        maxSpeed = maxSpeedVar.Value;
+        fastRowMultiplier = fastRowMultiplierVar.Value;
+
         // Prevent player from steering for first 3 seconds of scene.
         StartCoroutine(allowSteerTimer(3f));
 
         // Bind control mappings
         CreatePlayerActions();
-
-        // Add extra health for previous failures
-        if (GameController.gC.fails > 0)
-            Heal();
-        if (GameController.gC.fails > 1)
-            Heal();
+        
+        // Default starting health is 3, add extra health for previous failures, carry over health from previous levels if higher.
+        currentHealth.Value = Mathf.Max(3 + Mathf.Min(GameController.gC.fails, 2), currentHealth.Value);
     }
 
     private void FixedUpdate()
@@ -134,12 +147,12 @@ public class PlayerController : MonoBehaviour
         lightAnim.SetInteger("state", (int) aState);
 
         // Creak sound
-        if (rb.velocity.magnitude > 1)
+        if (rb.velocity.sqrMagnitude > 4)
         {
             creakTimer -= Time.deltaTime;
             if (creakTimer < 0)
             {
-                AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.boatCreak, transform.position, creakVolume);
+                Creak.Raise();
                 creakTimer = Random.Range(avgCreakTime - 1f, avgCreakTime + 1f);
             }
         }
@@ -215,25 +228,16 @@ public class PlayerController : MonoBehaviour
 
         if (colObject.tag == "Bottle")
         {
-            Heal();
-            colObject.GetComponent<BottleProperties>().Collect();
-            AudioController.aC.PlaySFXAtPoint(AudioController.aC.bottlePickUp, collision.contacts[0].point, 0.25f);
-            UIManager.uIM.SetHelperMessageText("To Read Notes: Press 'i' or the ▲|Y Button", 4f);
-            Pointer.p.UpdateTarget();
+            CollectBottle.Raise(colObject.GetComponent<BottleProperties>().bottle);
+            colObject.SetActive(false);
         }
         else if (colObject.tag == "Enemy" && !isInvulnerable)
         {
-            velocityOffset = Vector3.zero;
-            Vector2 dir = collision.contacts[0].point - new Vector2(transform.position.x, transform.position.y);
-            AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.hitEnemy, collision.contacts[0].point, 0.4f);
-            bounceDir = -dir.normalized;
-            bounceMag = bounceMagMax;
-            TakeDamage();
+            HitByEnemy.Raise(collision);
         }
         else if (colObject.tag == "HardDebris")
         {
-            float impactVolume = collision.relativeVelocity.sqrMagnitude / Mathf.Pow(maxSpeed * fastRowMultiplier, 2) * 0.6f;
-            AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.hitHardDebris, collision.contacts[0].point, impactVolume);
+            HitHardDebris.Raise(collision);
         }
     }
 
@@ -241,37 +245,32 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "RainUp")
         {
-            EffectsController.eC.IncreaseRainState();
+            RainIncrease.Raise();
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "RainDown")
         {
-            EffectsController.eC.DecreaseRainState();
+            RainDecrease.Raise();
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "LevelEnd")
         {
-            StartCoroutine(GameController.gC.LoadNextSceneAsync(3f));
-            StartCoroutine(FadeController.fC.Fade(1f, 3f));
-            StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.musicSource, 3f, 0f));
-            AudioController.aC.FadeRainSources(0f, 3f);
+            LevelEnd.Raise();
         }
         else if (collision.gameObject.tag == "Dialogue")
         {
             Dialogue d = collision.gameObject.GetComponent<Dialogue>();
-            UIManager.uIM.showDialogue(d.duration, d.content, d.pauseGame, d.characterId, d.barkId, d.triggerId);
+            EnterDialogue.Raise(d);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "ChasingSkull")
         {
-            velocityOffset = Vector3.zero;
-            SkullAI.sAI.SkullHit();
-            AudioController.aC.PlaySFXAtPoint(AudioController.aC.skullAttack, transform.position, 0.5f);
-            Vector2 dir = collision.attachedRigidbody.position - new Vector2(transform.position.x, transform.position.y);
-            AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.hitEnemy, transform.position, 0.4f);
-            bounceDir = -dir.normalized;
-            bounceMag = bounceMagMax;
-            TakeDamage();
+            HitBySkull.Raise(collision);
+        }
+        else if (collision.gameObject.tag == "SkullCancelChase")
+        {
+            SkullCancelChase.Raise();
+            Destroy(collision.gameObject);
         }
     }
 
@@ -305,12 +304,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void TakeDamage()
+    public void BounceAway(Collision2D collision)
     {
-        health--;
-        hearts[health].SetActive(false);
+        velocityOffset = Vector3.zero;
+        Vector2 dir = collision.contacts[0].point - new Vector2(transform.position.x, transform.position.y);
+        bounceDir = -dir.normalized;
+        bounceMag = bounceMagMax;
+    }
 
-        if (health < 1)
+    public void BounceAway(Collider2D collider)
+    {
+        velocityOffset = Vector3.zero;
+        Vector2 dir = collider.attachedRigidbody.position - new Vector2(transform.position.x, transform.position.y);
+        bounceDir = -dir.normalized;
+        bounceMag = bounceMagMax;
+    }
+
+    public void TakeDamage()
+    {
+        currentHealth.Value--;
+        PlayerDamaged.Raise();
+
+        if (currentHealth.Value < 1)
         {
             invulnerableTimerMax = 2f;
             EffectsController.eC.StartCoroutine(EffectsController.eC.PlayerDeath(2f, transform.position));
@@ -326,12 +341,12 @@ public class PlayerController : MonoBehaviour
         invulnerableTimerMax = 1.5f;
     }
 
-    void Heal()
+    public void Heal()
     {
-        if (health < hearts.Count)
+        if (currentHealth.Value < maxHealth.Value)
         {
-            hearts[health].SetActive(true);
-            health++;
+            currentHealth.Value++;
+            PlayerHealed.Raise();
         }
     }
 

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3335800487557957077}
   - component: {fileID: 3335800487557957074}
+  - component: {fileID: 4197255434216117603}
   m_Layer: 0
   m_Name: InventoryManager
   m_TagString: Untagged
@@ -45,3 +46,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentNote: 0
   defaultText: {fileID: 4900000, guid: 59a2cca86f4215f4d909547f23907bed, type: 3}
+--- !u!114 &4197255434216117603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3335800487557957076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4c9ecaeed430e4d82163b4ddf9c87c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugFields: 0
+  _enableGizmoDebugging: 1
+  _debugColor: {r: 0, g: 1, b: 1, a: 1}
+  _previouslyRegisteredEvent: {fileID: 0}
+  _event: {fileID: 11400000, guid: 831ef09d2cae47549819026e034a5e25, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3335800487557957074}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
+        m_MethodName: AddNote
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _debugValue:
+    id: 0
+    textAsset: {fileID: 0}
+    title: 

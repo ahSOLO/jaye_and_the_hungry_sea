@@ -16,7 +16,6 @@ public class InventoryManager : MonoBehaviour
     void OnEnable()
     {
         DontDestroyOnLoad(gameObject); // Persist between scenes
-        SceneManager.sceneLoaded += OnSceneLoad;
 
         //Assign Singleton
         if (iM == null) iM = this;
@@ -25,14 +24,9 @@ public class InventoryManager : MonoBehaviour
         currentNote = 1;
     }
 
-    public void OnSceneLoad(Scene scene, LoadSceneMode mode)
-    {
-        // player = GameObject.FindGameObjectWithTag("Player");
-    }
-
     public TextAsset GetNoteContent(int noteId)
     {
-        if (inventory.ContainsKey(currentNote) && inventory[currentNote].isCollected)
+        if (inventory.ContainsKey(currentNote))
         {
             return inventory[currentNote].textAsset;
         }
@@ -41,10 +35,16 @@ public class InventoryManager : MonoBehaviour
 
     public string GetNoteTitle(int nodeId)
     {
-        if (inventory.ContainsKey(currentNote) && inventory[currentNote].isCollected)
+        if (inventory.ContainsKey(currentNote))
         {
             return inventory[currentNote].title;
         }
         else return "Note #" + currentNote.ToString();
+    }
+
+    public void AddNote(Bottle bottle)
+    {
+        if (!inventory.ContainsKey(bottle.id)) inventory.Add(bottle.id, bottle);
+        currentNote = bottle.id;
     }
 }

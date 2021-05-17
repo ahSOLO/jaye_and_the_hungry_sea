@@ -10,6 +10,9 @@ public class SkullAI : MonoBehaviour
     
     GameObject player;
     public GameObject hitParticle;
+
+    public bool cancelChase;
+
     [SerializeField] GameObject patrolDestination;
     
     [SerializeField] GameObject leftEye;
@@ -137,4 +140,8 @@ public class SkullAI : MonoBehaviour
         }
     }
 
+    public void CancelChase()
+    {
+        cancelChase = true;
+    }
 }

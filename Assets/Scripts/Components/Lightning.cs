@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ScriptableObjectArchitecture;
 
 public class Lightning : MonoBehaviour
 {
+    [SerializeField] BoolGameEvent LightningEffect;
+    
     // Called in Lightning animation event.
     void StartFlash()
     {
-        EffectsController.eC.isFlashing = true;
+        LightningEffect.Raise(true);
     }
 
     void StopFlash()
     {
-        EffectsController.eC.isFlashing = false;
+        LightningEffect.Raise(false);
     }
 
     void Destroy()

@@ -14,7 +14,6 @@ public class EffectsController : MonoBehaviour
     public List<GameObject> lightningEffects;
     public List<GameObject> ripplesTilemapObjs;
     public GameObject surfaceWaveTilemapObj;
-    public GameObject boatLight;
     public GameObject player;
     public GameObject background;
     public GameObject lightningGenerator;
@@ -32,7 +31,6 @@ public class EffectsController : MonoBehaviour
     public RainState rState;
 
     // Lightning vars
-    public bool isFlashing;
     private float lightningTimer;
 
     // Renderers
@@ -63,7 +61,6 @@ public class EffectsController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isFlashing = false;
         lightningTimer = 0f;
 
         particleRain = particleRainObj.GetComponent<ParticleSystem>();
@@ -75,6 +72,9 @@ public class EffectsController : MonoBehaviour
 
         lanternLight = lantern.GetComponent<Light2D>();
 
+        // Set background to black (it is grey for editing purposes)
+        bgRenderer.color = Color.black;
+
         // Start Rain - dependent on rState - set in Inspector
         Rain();
     }
@@ -82,29 +82,6 @@ public class EffectsController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Lightning color inversion effect
-        if (isFlashing == true)
-        {
-            bgRenderer.color = Color.white;
-            surfaceWaveTilemap.color = Color.black;
-            if (lantern != null) lantern.transform.localPosition = new Vector3(-100, -100, 4);
-            if (skullCircle != null) skullCircle.SetActive(false);
-            if (skullLeftEyeLightObj != null) skullLeftEyeLightObj.SetActive(false);
-            if (skullRightEyeLightObj != null) skullRightEyeLightObj.SetActive(false);
-            UIManager.uIM.SetHeartIcon(false);
-        }
-
-        else
-        {
-            bgRenderer.color = Color.black;
-            surfaceWaveTilemap.color = Color.white;
-            if (lantern != null) lantern.transform.localPosition = new Vector3(0, 0.833f, 4);
-            if (skullCircle != null) skullCircle.SetActive(true);
-            if (skullLeftEyeLightObj != null) skullLeftEyeLightObj.SetActive(true);
-            if (skullRightEyeLightObj != null) skullRightEyeLightObj.SetActive(true);
-            UIManager.uIM.SetHeartIcon(true);
-        }
-
         // Debug lightning
         /*
         if (Input.GetKeyDown(KeyCode.Space))
@@ -114,34 +91,7 @@ public class EffectsController : MonoBehaviour
         }
         */
 
-        // Debug rain
-        /*
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            var rainEm = particleRain.emission;
-            var ripplesEm = particleRipples.emission;
-
-            if (!weatherToggleDecrease)
-            {
-                IncreaseRainState();
-                if (rState == RainState.thunderStorm)
-                {
-                    weatherToggleDecrease = true;
-                }
-            } 
-            else
-            {
-                DecreaseRainState();
-                if (rState == RainState.off)
-                {
-                    weatherToggleDecrease = false;
-                }
-            }
-            Rain();
-        }
-        */
-
-        Lightning();
+        LightningTick();
     }
 
     void Rain()
@@ -220,7 +170,7 @@ public class EffectsController : MonoBehaviour
         }
     }
 
-    void Lightning()
+    void LightningTick()
     {
         lightningTimer -= Time.deltaTime;
         if (lightningTimer <= 0f && rState >= RainState.heavy && player != null)
@@ -240,6 +190,31 @@ public class EffectsController : MonoBehaviour
             AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.thunderOneShot, player.transform.position, 0.5f);
 
             lightningTimer = Random.Range(timerMin, timerMax);
+        }
+    }
+
+    // Called from lightning animation
+    public void LightningEffect(bool isFlashing)
+    {
+        if (isFlashing)
+        {
+            // Invert background and waves
+            bgRenderer.color = Color.white;
+            surfaceWaveTilemap.color = Color.black;
+            // Move/Deactivate all lights
+            if (lantern != null) lantern.transform.localPosition = new Vector3(-100, -100, 4);
+            if (skullCircle != null) skullCircle.SetActive(false);
+            if (skullLeftEyeLightObj != null) skullLeftEyeLightObj.SetActive(false);
+            if (skullRightEyeLightObj != null) skullRightEyeLightObj.SetActive(false);
+        }
+        else
+        {
+            bgRenderer.color = Color.black;
+            surfaceWaveTilemap.color = Color.white;
+            if (lantern != null) lantern.transform.localPosition = new Vector3(0, 0.833f, 4);
+            if (skullCircle != null) skullCircle.SetActive(true);
+            if (skullLeftEyeLightObj != null) skullLeftEyeLightObj.SetActive(true);
+            if (skullRightEyeLightObj != null) skullRightEyeLightObj.SetActive(true);
         }
     }
 
