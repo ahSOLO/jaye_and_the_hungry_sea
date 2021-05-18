@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 9117536446182077971}
   - component: {fileID: 9117536446182077970}
   - component: {fileID: 9117536446182077981}
-  - component: {fileID: 9117536446182077980}
   m_Layer: 0
   m_Name: Snake Head Top
   m_TagString: Enemy
@@ -379,18 +378,3 @@ PolygonCollider2D:
       - {x: 4.486111, y: 1.25}
       - {x: 4.4444447, y: 1.263889}
       - {x: 4.4166665, y: 1.2361112}
---- !u!114 &9117536446182077980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9117536446182077982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5453980cf083ae4f953595e5062d3fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  swayHorizontal: 0
-  startLeft: 0
-  swaySpeed: 0.1
