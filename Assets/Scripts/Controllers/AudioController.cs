@@ -54,6 +54,8 @@ public class AudioController : MonoBehaviour
 
         DontDestroyOnLoad(gameObject); // Persist between scenes
         SceneManager.sceneLoaded += OnSceneLoad;
+
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Default music for each scene
@@ -102,6 +104,16 @@ public class AudioController : MonoBehaviour
         {
             aC.PlayMusic(thirdLevelMusic, 0f);
             StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
+        }
+
+        else if (SceneManager.GetActiveScene().name == "6_Level3")
+        {
+            if (!aC.musicSource.isPlaying || aC.musicSource.clip != aC.thirdLevelMusic)
+            {
+                aC.PlayMusic(thirdLevelMusic, 0f);
+                StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
+            }
+            player = GameObject.FindGameObjectWithTag("Player");
         }
     }
 

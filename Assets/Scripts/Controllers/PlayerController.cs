@@ -263,7 +263,7 @@ public class PlayerController : MonoBehaviour
             EnterDialogue.Raise(d);
             Destroy(collision.gameObject);
         }
-        else if (collision.gameObject.tag == "ChasingSkull")
+        else if (collision.gameObject.tag == "ChasingSkull" && !isInvulnerable)
         {
             HitBySkull.Raise(collision);
         }
