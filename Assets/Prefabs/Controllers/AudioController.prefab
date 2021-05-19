@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 435519461055734973}
   - component: {fileID: 638432330318788015}
   - component: {fileID: 1475747369826237814}
+  - component: {fileID: 4090761182605646709}
   m_Layer: 0
   m_Name: AudioController
   m_TagString: Untagged
@@ -225,12 +226,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 60d4aff860271bf4a8100dd5dada038b, type: 3}
   - {fileID: 8300000, guid: 7252f43b62092d641917e7c73eb81fa5, type: 3}
   cutsceneBarks:
-  - {fileID: 8300000, guid: 29d0d0fcffe2f514d86f8c7bc2384a4d, type: 3}
-  - {fileID: 8300000, guid: 21c42beecf1c40446aa0d97f284fddc2, type: 3}
+  - {fileID: 0}
+  - {fileID: 8300000, guid: ba716ccbbf55d414c94275ac2a9d38b1, type: 3}
   - {fileID: 8300000, guid: 71ced3fcf6421334c99671f3987fab8f, type: 3}
-  - {fileID: 8300000, guid: e629c626a69eea047b344c56f95e9bf5, type: 3}
   - {fileID: 8300000, guid: 1cc32fa9c6ecd174d9e9740dc7b4de2a, type: 3}
-  - {fileID: 8300000, guid: 05c6a7ef42100df45893d448a92686f2, type: 3}
+  - {fileID: 8300000, guid: 9aa70fdcc0378614c87bba69f6bc05cd, type: 3}
   splash: {fileID: 8300000, guid: c13fbdf783381514693b32f8769288f7, type: 3}
   clickButton: {fileID: 8300000, guid: 13b9b296707c21446a52331786f0e1bc, type: 3}
   skullAttack: {fileID: 8300000, guid: d27b8afcf1acb304ebef4853ab6a6975, type: 3}
@@ -433,6 +433,39 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4090761182605646709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3697865485930570213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 791e3eca91bfc2e41b38477d0ecfaf1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugFields: 0
+  _enableGizmoDebugging: 1
+  _debugColor: {r: 0, g: 1, b: 1, a: 1}
+  _previouslyRegisteredEvent: {fileID: 0}
+  _event: {fileID: 11400000, guid: 45c1db4297c72e842850acf8fa411516, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3697865485930570215}
+        m_TargetAssemblyTypeName: AudioController, Assembly-CSharp
+        m_MethodName: PlayOneShotThunder
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _debugValue: 0
 --- !u!1 &3697865486019408683
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,5 @@
 C1|B0|T0|Jaye: Where am I? These waters are strange.
-C2|B0|T0|Little Light: And this weight... so heavy.
+C2|B1|T0|Little Light: And this weight... so heavy.
 C1|B0|T0|Jaye: I should keep rowing... there must be an end somewhere.
 C2|B0|T0|Little Light: You don't have the strength, and even if you do... there is no end. This burden will follow you, always...
 C2|B0|T0|Just let the waters swallow you whole, and then we can finally rest...
