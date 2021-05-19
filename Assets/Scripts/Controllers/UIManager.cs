@@ -32,7 +32,13 @@ public class UIManager : MonoBehaviour
     public Sprite heartIcon;
     public Sprite heartIconInverse;
 
+    public GameObject StormMeterObj;
+    public GameObject StormMeterFillObj;
+    private Image StormMeterFillImg;
+    private float stormMeterRefillRate = 0.1f;
+
     [SerializeField] IntVariable playerCurrentHealth;
+    [SerializeField] GameEvent callLightning;
 
     // Pause Menu vars
     public GameObject pauseMenu;
@@ -64,6 +70,8 @@ public class UIManager : MonoBehaviour
         paranoiaMsgText = paranoiaMsgObj.GetComponent<TextMeshProUGUI>();
         guiltMsgText = guiltMsgObj.GetComponent<TextMeshProUGUI>();
         liesMsgText = liesMsgObj.GetComponent<TextMeshProUGUI>();
+
+        StormMeterFillImg = StormMeterFillObj.GetComponent<Image>();
 
         for (int i = 0; i < hearts.Length; i++)
         {
@@ -126,6 +134,21 @@ public class UIManager : MonoBehaviour
         else if (dialogueTimer <= 0)
         {
             dialogueBox.SetActive(false);
+        }
+
+        if (StormMeterObj.activeSelf == true)
+        {
+            // Less than 1 because the meter looks full before the fill reaches 100%
+            if (StormMeterFillImg.fillAmount != 1f)
+            {
+                StormMeterFillImg.fillAmount = Mathf.MoveTowards(StormMeterFillImg.fillAmount, 1, stormMeterRefillRate * Time.deltaTime);
+            }
+            
+            else if (PlayerController.pC.pActions.CallLightning.WasPressed)
+            {
+                callLightning.Raise();
+                StormMeterFillImg.fillAmount = 0;
+            }
         }
     }
 
@@ -309,5 +332,25 @@ public class UIManager : MonoBehaviour
         }
 
         StartCoroutine(Tutorial());
+    }
+
+    public void StartCallLightningHelperText()
+    {
+
+        IEnumerator CallLightningHelperText()
+        {
+            yield return new WaitForSeconds(4f);
+
+            StormMeterObj.SetActive(true);
+            uIM.helperMessage.text = "Press Space, X (XBox), or ⬜ (PlayStation) to call lightning.";
+            uIM.helperMessageTimer = 10f;
+
+            yield return new WaitForSeconds(12f);
+            
+            uIM.helperMessage.text = "You may only call lightning when your storm meter is full.";
+            uIM.helperMessageTimer = 12f;
+        }
+
+        StartCoroutine(CallLightningHelperText());
     }
 }

@@ -1,7 +1,7 @@
-C3|B0|T0|Thousand Eyes: You've come far enough--there is nothing but pain past here.
+C3|B2|T0|Thousand Eyes: You've come far enough--there is nothing but pain past here.
 C1|B0|T0|Jaye: I can't give up now, I have to leave this place!
 C3|B0|T0|Thousand Eyes: This is the only place that guards you--keeping you protected from your own self, and from what you did.
 C1|B0|T0|Jaye: What are you even talking about? What did I do?
 C3|B0|T0|Thousand Eyes: You sacrificed others for your tiny little soul.
-C2|B0|T0|Little Light: Please, stop! Anything but this. It's to be forgotten!
+C2|B1|T0|Little Light: Please, stop! Anything but this. It's to be forgotten!
 C1|B0|T0|Jaye: Speak clearly, or let me pass... I have to press on.

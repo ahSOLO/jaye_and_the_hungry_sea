@@ -228,7 +228,9 @@ public class PlayerController : MonoBehaviour
 
         if (colObject.tag == "Bottle")
         {
-            CollectBottle.Raise(colObject.GetComponent<BottleProperties>().bottle);
+            var bottleProperties = colObject.GetComponent<BottleProperties>();
+            CollectBottle.Raise(bottleProperties.bottle);
+            bottleProperties.onPickUp?.Raise();
             colObject.SetActive(false);
         }
         else if (colObject.tag == "Enemy" && !isInvulnerable)
@@ -261,9 +263,10 @@ public class PlayerController : MonoBehaviour
         {
             Dialogue d = collision.gameObject.GetComponent<Dialogue>();
             EnterDialogue.Raise(d);
+            d.onPickUp?.Raise();
             Destroy(collision.gameObject);
         }
-        else if (collision.gameObject.tag == "ChasingSkull")
+        else if (collision.gameObject.tag == "ChasingSkull" && !isInvulnerable)
         {
             HitBySkull.Raise(collision);
         }
@@ -394,6 +397,9 @@ public class PlayerController : MonoBehaviour
 
         pActions.TurnRight.AddDefaultBinding(InputControlType.RightTrigger);
         pActions.TurnRight.AddDefaultBinding(Key.E);
+
+        pActions.CallLightning.AddDefaultBinding(InputControlType.Action3);
+        pActions.CallLightning.AddDefaultBinding(Key.Space);
 
         pActions.PauseMenu.AddDefaultBinding(InputControlType.Command);
         pActions.PauseMenu.AddDefaultBinding(Key.Escape);
