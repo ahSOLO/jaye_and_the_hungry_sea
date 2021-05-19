@@ -174,9 +174,8 @@ public class EffectsController : MonoBehaviour
     {
         lightningTimer -= Time.deltaTime;
         if (lightningTimer <= 0f && rState >= RainState.heavy && player != null)
-        {            
-            Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-9f, 9f), player.transform.position.y + Random.Range(2.0f, 9f), 0);
-            Instantiate(lightningEffects[Random.Range(0, lightningEffects.Count)], spawnPosition, Quaternion.identity, lightningGenerator.transform);
+        {
+            InstantiateLightning();
 
             float timerMin = 3f;
             float timerMax = 7f;
@@ -187,10 +186,14 @@ public class EffectsController : MonoBehaviour
                 timerMax = 3.5f;
             }
 
-            AudioController.aC.PlayRandomSFXAtPoint(AudioController.aC.thunderOneShot, player.transform.position, 0.5f);
-
             lightningTimer = Random.Range(timerMin, timerMax);
         }
+    }
+
+    public void InstantiateLightning()
+    {
+        Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-9f, 9f), player.transform.position.y + Random.Range(2.0f, 9f), 0);
+        Instantiate(lightningEffects[Random.Range(0, lightningEffects.Count)], spawnPosition, Quaternion.identity, lightningGenerator.transform);
     }
 
     // Called from lightning animation

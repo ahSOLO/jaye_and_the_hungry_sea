@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ScriptableObjectArchitecture;
 
 [System.Serializable]
 public class Dialogue : MonoBehaviour
@@ -11,4 +12,5 @@ public class Dialogue : MonoBehaviour
     public int barkId;
     public int triggerId;
     public bool pauseGame;
+    public GameEvent onPickUp = null;
 }

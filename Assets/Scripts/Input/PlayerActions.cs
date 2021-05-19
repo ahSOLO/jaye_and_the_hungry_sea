@@ -13,6 +13,7 @@ public class PlayerActions : PlayerActionSet
     public PlayerAction RowFast;
     public PlayerAction TurnLeft;
     public PlayerAction TurnRight;
+    public PlayerAction CallLightning;
 
     public PlayerAction PauseMenu;
     public PlayerAction Inventory;
@@ -31,6 +32,7 @@ public class PlayerActions : PlayerActionSet
         RowFast = CreatePlayerAction("Row Fast");
         TurnLeft = CreatePlayerAction("Turn Left");
         TurnRight = CreatePlayerAction("Turn Right");
+        CallLightning = CreatePlayerAction("Call Lightning");
 
         Inventory = CreatePlayerAction("Inventory");
         PauseMenu = CreatePlayerAction("Pause Menu");

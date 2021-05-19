@@ -126,16 +126,16 @@ public class SkullAI : MonoBehaviour
         switch (UnityEngine.Random.Range(0, 4))
         {
             case 0:
-                transform.position = new Vector3(player.transform.position.x - 30f, player.transform.position.y, transform.position.z);
+                transform.position = new Vector3(player.transform.position.x - 35f, player.transform.position.y, transform.position.z);
                 break;
             case 1:
-                transform.position = new Vector3(player.transform.position.x + 30f, player.transform.position.y, transform.position.z);
+                transform.position = new Vector3(player.transform.position.x + 35f, player.transform.position.y, transform.position.z);
                 break;
             case 2: 
-                transform.position = new Vector3(player.transform.position.x - 20f, player.transform.position.y - 20f, transform.position.z);
+                transform.position = new Vector3(player.transform.position.x - 20f, player.transform.position.y - 25f, transform.position.z);
                 break;
             case 3:
-                transform.position = new Vector3(player.transform.position.x + 20f, player.transform.position.y + 20f, transform.position.z);
+                transform.position = new Vector3(player.transform.position.x + 20f, player.transform.position.y - 25f, transform.position.z);
                 break;
         }
     }

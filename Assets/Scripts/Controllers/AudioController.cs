@@ -207,6 +207,11 @@ public class AudioController : MonoBehaviour
         StartCoroutine(FadeAudioSource.StartFade(rainSource3, timer, target));
     }
 
+    public void PlayOneShotThunder(bool isFlashing)
+    {
+        if (isFlashing) aC.PlayRandomSFXAtPoint(aC.thunderOneShot, player.transform.position, 0.5f);
+    }
+
     public void PlayCreakSound()
     {
         aC.PlayRandomSFXAtPoint(boatCreak, player.transform.position, 0.4f);
