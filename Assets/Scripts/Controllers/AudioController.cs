@@ -115,6 +115,12 @@ public class AudioController : MonoBehaviour
             }
             player = GameObject.FindGameObjectWithTag("Player");
         }
+
+        else if (SceneManager.GetActiveScene().name == "7_Cutscene3")
+        {
+            aC.PlayMusic(fourthLevelMusic, 0f);
+            StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
+        }
     }
 
     private void OnDestroy()

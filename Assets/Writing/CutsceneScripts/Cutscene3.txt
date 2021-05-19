@@ -1,0 +1,12 @@
+C1|B0|T0|Jaye: Another one. Out of my way.
+C5|B4|T0|The Snake: Big fellow, with your magic tricksss. Do you think they make you great? You already achieved real greatness that day on the boat. You can do it again and again, if you wanted to.
+C1|B0|T0|Jaye: There was a mistake. I wouldn't have harmed anyone.
+C5|B0|T0|The Snake: No mistake--you did what you did because you were ssstrong, and because they were weak. 
+C3|B2|T0|Thousand Eyes: This is how they'll see you, a deluded monster revelling in the pain of others.
+C1|B0|T0|Jaye: That isn't me.
+C5|B4|T0|The Snake: But it isss, I was there--I heard you laugh as their lungs filled up with saltwater.
+C1|B0|T0|Jaye: That's not true!
+C5|B0|T0|The Snake: You know it isss.
+C3|B0|T0|Thousand Eyes: And the others know too.
+C5|B0|T0|The Snake: We are predatorsss, are we not? Do not carry the dead weight of prey. Take a bite of this beautiful bird with me.
+C1|B0|T0|Jaye: Get away from me, I'm nothing like you!
