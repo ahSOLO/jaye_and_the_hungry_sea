@@ -82,14 +82,6 @@ public class EffectsController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Debug lightning
-        /*
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Vector3 spawnPosition = new Vector3(player.transform.position.x + Random.Range(-8f, 8f), player.transform.position.y + Random.Range(2.0f, 7f), 0);
-            Instantiate(lightningEffects[Random.Range(0, lightningEffects.Count)], spawnPosition, Quaternion.identity, lightningGenerator.transform);
-        }
-        */
 
         LightningTick();
     }

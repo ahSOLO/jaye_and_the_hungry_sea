@@ -17,6 +17,10 @@ TagManager:
   - Fader
   - ChasingSkull
   - SkullCancelChase
+  - Body
+  - BodyTriggerLarge
+  - BodyTriggerMedium
+  - BodyTriggerSmall
   layers:
   - Default
   - TransparentFX
