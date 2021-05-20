@@ -107,6 +107,18 @@ public class GameController : MonoBehaviour
             gState = GameState.boating;
         }
 
+        else if (SceneManager.GetActiveScene().name == "7_Cutscene3")
+        {
+            fails = 0;
+            gState = GameState.cutscene;
+            progress = Mathf.Min(progress, 4);
+        }
+
+        else if (SceneManager.GetActiveScene().name == "8_Level4")
+        {
+            gState = GameState.boating;
+        }
+
         else if (SceneManager.GetActiveScene().name == "Epilogue")
         {
             gState = GameState.cutscene;
