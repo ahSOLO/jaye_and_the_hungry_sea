@@ -41,6 +41,7 @@ public class AudioController : MonoBehaviour
     public AudioClip splash;
     public AudioClip clickButton;
     public AudioClip skullAttack;
+    public AudioClip detachBodies;
 
     // Player reference
     private GameObject player;
@@ -111,6 +112,22 @@ public class AudioController : MonoBehaviour
             if (!aC.musicSource.isPlaying || aC.musicSource.clip != aC.thirdLevelMusic)
             {
                 aC.PlayMusic(thirdLevelMusic, 0f);
+                StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
+            }
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+
+        else if (SceneManager.GetActiveScene().name == "7_Cutscene3")
+        {
+            aC.PlayMusic(fourthLevelMusic, 0f);
+            StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
+        }
+
+        else if (SceneManager.GetActiveScene().name == "8_Level4")
+        {
+            if (!aC.musicSource.isPlaying || aC.musicSource.clip != aC.fourthLevelMusic)
+            {
+                aC.PlayMusic(fourthLevelMusic, 0f);
                 StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
             }
             player = GameObject.FindGameObjectWithTag("Player");
@@ -236,6 +253,11 @@ public class AudioController : MonoBehaviour
     {
         float impactVolume = collision.relativeVelocity.sqrMagnitude / Mathf.Pow(playerMaxSpeed.Value * playerFastRowMultiplier.Value, 2) * 0.6f;
         aC.PlayRandomSFXAtPoint(hitHardDebris, collision.contacts[0].point, impactVolume);
+    }
+
+    public void PlayDetachBodiesSound()
+    {
+        aC.PlaySFXAtPoint(detachBodies, player.transform.position, 0.5f);
     }
 
     public void LevelEnd()

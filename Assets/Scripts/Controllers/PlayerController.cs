@@ -58,6 +58,9 @@ public class PlayerController : MonoBehaviour
     private float creakTimer;
     [SerializeField] private float avgCreakTime = 4f;
 
+    // Body variables
+    public List<BodyAI> attachedBodies = new List<BodyAI>();
+
     // Events
     [SerializeField] GameEvent Creak;
     [SerializeField] BottleGameEvent CollectBottle;
@@ -71,6 +74,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameEvent RainIncrease;
     [SerializeField] GameEvent RainDecrease;
     [SerializeField] GameEvent LevelEnd;
+    [SerializeField] GameEvent DetachBodies;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -81,7 +85,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        lightAnim = boatLight.GetComponent<Animator>();
+        if (boatLight)
+            lightAnim = boatLight.GetComponent<Animator>();
 
         rowFast = false;
 
@@ -144,7 +149,8 @@ public class PlayerController : MonoBehaviour
         }
 
         anim.SetInteger("state", (int) aState);
-        lightAnim.SetInteger("state", (int) aState);
+        if (lightAnim)
+            lightAnim.SetInteger("state", (int) aState);
 
         // Creak sound
         if (rb.velocity.sqrMagnitude > 4)
@@ -360,6 +366,27 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(timer);
 
         canSteer = true;
+    }
+
+    public void attachBody(BodyAI body)
+    {
+        attachedBodies.Add(body);
+        maxSpeed *= body.slowDownMultiplier;
+    }
+
+    public void detachBodies()
+    {
+        if (attachedBodies.Count == 0) return;
+
+        DetachBodies.Raise();
+
+        foreach (var body in attachedBodies)
+        {
+            body.DetachBody();
+        }
+
+        attachedBodies.Clear();
+        maxSpeed = maxSpeedVar.Value;
     }
 
     private void CreatePlayerActions()

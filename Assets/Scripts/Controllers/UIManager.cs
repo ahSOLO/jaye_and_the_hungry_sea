@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
     public GameObject StormMeterObj;
     public GameObject StormMeterFillObj;
     private Image StormMeterFillImg;
-    private float stormMeterRefillRate = 0.1f;
+    [SerializeField] private float stormMeterRefillRate = 0.1f;
 
     [SerializeField] IntVariable playerCurrentHealth;
     [SerializeField] GameEvent callLightning;

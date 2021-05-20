@@ -391,6 +391,7 @@ MonoBehaviour:
   maxHealth: {fileID: 11400000, guid: 512f8f123cce7b54c9ddae2f9639d816, type: 2}
   currentHealth: {fileID: 11400000, guid: 6325848d072c57d42b59876b751e0dda, type: 2}
   avgCreakTime: 7
+  attachedBodies: []
   Creak: {fileID: 11400000, guid: 0ae82434bca57fd45850351dde72940c, type: 2}
   CollectBottle: {fileID: 11400000, guid: 831ef09d2cae47549819026e034a5e25, type: 2}
   HitByEnemy: {fileID: 11400000, guid: e97fad83e6cda2741b84d2e4e404989c, type: 2}
@@ -403,6 +404,7 @@ MonoBehaviour:
   RainIncrease: {fileID: 11400000, guid: 61aec17f26518a0449f17b5d99a91ae1, type: 2}
   RainDecrease: {fileID: 11400000, guid: 222cda227e98a2a48b28b5f8363dff4f, type: 2}
   LevelEnd: {fileID: 11400000, guid: ad9b3fab4783559448c702ba09bd24d3, type: 2}
+  DetachBodies: {fileID: 11400000, guid: fe6e741ca58ab1143a92693e2098727d, type: 2}
 --- !u!50 &1693043199989408501
 Rigidbody2D:
   serializedVersion: 4
