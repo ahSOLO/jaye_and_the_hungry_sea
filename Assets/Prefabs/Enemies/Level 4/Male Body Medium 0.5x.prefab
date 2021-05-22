@@ -792,7 +792,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7744475531648751891}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.89, y: 5.67, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
@@ -825,9 +825,9 @@ MonoBehaviour:
   rightPalm: {fileID: 381405309437443959}
   torso: {fileID: 7744475531192598869}
   wristRotationSpeed: 2.9
-  chasingSpeed: 2.4
+  chasingSpeed: 3
   attachmentSpeed: 12
-  slowDownMultiplier: 0.85
+  slowDownMultiplier: 0.75
   bodyAttached: {fileID: 11400000, guid: 65d34cebea464694393a0d233ec8ebf3, type: 2}
   bodyType: 1
 --- !u!1 &7744475531855085609

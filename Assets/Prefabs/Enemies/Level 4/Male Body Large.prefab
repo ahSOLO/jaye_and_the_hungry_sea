@@ -867,11 +867,10 @@ MonoBehaviour:
   rightWrist: {fileID: 1475824177664784504}
   rightPalm: {fileID: 3508133415647637609}
   torso: {fileID: 1475824177840203202}
-  wristRotationSpeed: 3
-  squaredDetectionRadius: 22.5
-  chasingSpeed: 3.3
+  wristRotationSpeed: 2
+  chasingSpeed: 3.5
   attachmentSpeed: 14
-  slowDownMultiplier: 0.85
+  slowDownMultiplier: 0.5
   bodyAttached: {fileID: 11400000, guid: 65d34cebea464694393a0d233ec8ebf3, type: 2}
   bodyType: 2
 --- !u!1 &1475824178746336926

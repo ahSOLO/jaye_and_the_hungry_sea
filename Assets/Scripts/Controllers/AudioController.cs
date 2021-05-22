@@ -42,6 +42,7 @@ public class AudioController : MonoBehaviour
     public AudioClip clickButton;
     public AudioClip skullAttack;
     public AudioClip detachBodies;
+    public AudioClip touchWOH;
 
     // Player reference
     private GameObject player;
@@ -247,6 +248,11 @@ public class AudioController : MonoBehaviour
     public void PlayHitSkullSound()
     {
         aC.PlaySFXAtPoint(skullAttack, player.transform.position, 0.5f);
+    }
+
+    public void PlayTouchWOHSound()
+    {
+        aC.PlaySFXAtPoint(touchWOH, player.transform.position, 1f);
     }
 
     public void PlayHitHardDebrisSound(Collision2D collision)

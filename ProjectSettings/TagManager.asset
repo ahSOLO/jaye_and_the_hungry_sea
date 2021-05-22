@@ -21,6 +21,7 @@ TagManager:
   - BodyTriggerLarge
   - BodyTriggerMedium
   - BodyTriggerSmall
+  - WOH
   layers:
   - Default
   - TransparentFX

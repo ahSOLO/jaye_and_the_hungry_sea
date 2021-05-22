@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     public static UIManager uIM;
 
     // UI vars
+    public GameObject levelUI;
+
     public GameObject helperMessageObj;
     private TextMeshProUGUI helperMessage;
     private float helperMessageTimer;
@@ -300,6 +302,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void DeactivateUI()
+    {
+        levelUI.SetActive(false);
+    }
+
     public void ShowBottleCollectHelperText()
     {
         SetHelperMessageText("To Read Notes: Press 'i' or the ▲|Y Button", 4f);
@@ -352,5 +359,24 @@ public class UIManager : MonoBehaviour
         }
 
         StartCoroutine(CallLightningHelperText());
+    }
+
+    public void StartDetachBodiesHelperText()
+    {
+
+        IEnumerator DetachBodiesHelperText()
+        {
+            yield return new WaitForSeconds(2f);
+
+            uIM.helperMessage.text = "Call lightning to detach clinging bodies.";
+            uIM.helperMessageTimer = 7f;
+
+            yield return new WaitForSeconds(9f);
+
+            uIM.helperMessage.text = "Jaye is tired. The storm meter will fill up slower than before.";
+            uIM.helperMessageTimer = 10f;
+        }
+
+        StartCoroutine(DetachBodiesHelperText());
     }
 }
