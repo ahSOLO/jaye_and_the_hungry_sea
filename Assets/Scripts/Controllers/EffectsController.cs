@@ -100,6 +100,8 @@ public class EffectsController : MonoBehaviour
                 particleRipplesObj.SetActive(false);
 
                 StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource1, fadeDuration, 0f));
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource2, fadeDuration, 0f));
+                StartCoroutine(FadeAudioSource.StartFade(AudioController.aC.rainSource3, fadeDuration, 0f));
 
                 break;
             case RainState.soft:
@@ -261,6 +263,8 @@ public class EffectsController : MonoBehaviour
     {
         while (timer > 0)
         {
+            rState = RainState.off;
+            Rain();
             globalLightObj.SetActive(false);
             if (SkullAI.sAI != null) SkullAI.sAI.gameObject.SetActive(false);
             lanternLight.pointLightInnerRadius = Mathf.Lerp(lanternLight.pointLightInnerRadius, 0f, Time.deltaTime * 2f);

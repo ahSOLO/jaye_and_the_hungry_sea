@@ -235,7 +235,7 @@ MonoBehaviour:
   splash: {fileID: 8300000, guid: c13fbdf783381514693b32f8769288f7, type: 3}
   clickButton: {fileID: 8300000, guid: 13b9b296707c21446a52331786f0e1bc, type: 3}
   skullAttack: {fileID: 8300000, guid: d27b8afcf1acb304ebef4853ab6a6975, type: 3}
-  detachBodies: {fileID: 0}
+  detachBodies: {fileID: 8300000, guid: d682eb2a9b0d31445b67e2177f566160, type: 3}
   playerMaxSpeed: {fileID: 11400000, guid: 6a2d5cf9cb250544b9d1f838e3be2013, type: 2}
   playerFastRowMultiplier: {fileID: 11400000, guid: 7af614b292c2f514e956e00c2d0c8149, type: 2}
 --- !u!114 &2031401447847236793

@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameEvent RainDecrease;
     [SerializeField] GameEvent LevelEnd;
     [SerializeField] GameEvent DetachBodies;
+    [SerializeField] GameEvent TouchWOH;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -281,6 +282,10 @@ public class PlayerController : MonoBehaviour
             SkullCancelChase.Raise();
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.tag == "WOH")
+        {
+            TouchWOH.Raise();
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -348,6 +353,20 @@ public class PlayerController : MonoBehaviour
 
         CinemachineShake.cSInstance.ShakeCamera(5f, invulnerableTimerMax);
         invulnerableTimerMax = 1.5f;
+    }
+
+    public void InstantDeath()
+    {
+        invulnerableTimerMax = 2f;
+        EffectsController.eC.StartCoroutine(EffectsController.eC.PlayerDeath(2f, transform.position));
+        GameController.gC.fails++;
+        Invoke("Deactivate", 2f);
+
+        invulnerableTimer = invulnerableTimerMax;
+        isInvulnerable = true;
+        speed = 0f;
+
+        CinemachineShake.cSInstance.ShakeCamera(5f, invulnerableTimerMax);
     }
 
     public void Heal()
