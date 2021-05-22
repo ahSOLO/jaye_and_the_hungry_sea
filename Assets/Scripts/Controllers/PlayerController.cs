@@ -77,6 +77,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameEvent DetachBodies;
     [SerializeField] GameEvent TouchWOH;
 
+    // Particles
+    public GameObject bodyDetachmentParticles;
+
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -387,7 +390,7 @@ public class PlayerController : MonoBehaviour
         canSteer = true;
     }
 
-    public void attachBody(BodyAI body)
+    public void AttachBody(BodyAI body)
     {
         attachedBodies.Add(body);
         maxSpeed *= body.slowDownMultiplier;
@@ -406,6 +409,14 @@ public class PlayerController : MonoBehaviour
 
         attachedBodies.Clear();
         maxSpeed = maxSpeedVar.Value;
+    }
+
+    public void CreateBodyAttachmentParticles()
+    {
+        Instantiate(bodyDetachmentParticles, transform.position, Quaternion.identity);
+        var blackParticles = Instantiate(bodyDetachmentParticles, transform.position, Quaternion.identity);
+        var blackParticlesMain = blackParticles.GetComponent<ParticleSystem>().main;
+        blackParticlesMain.startColor = Color.black;
     }
 
     private void CreatePlayerActions()
