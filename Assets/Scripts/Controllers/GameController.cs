@@ -199,6 +199,11 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene(5);
     }
 
+    public void LoadLevelFour()
+    {
+        SceneManager.LoadScene(7);
+    }
+
     public void Quit()
     {
         Application.Quit();
