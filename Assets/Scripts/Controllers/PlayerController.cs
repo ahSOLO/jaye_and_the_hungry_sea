@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 2.6f;
     [SerializeField] private float acceleration = 0.017f;
     public bool canSteer;
+    private bool isWalking = false;
 
     private float maxSpeed;
     private float fastRowMultiplier;
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
     private animState aState;
     [SerializeField] private GameObject boatLight;
     private Animator lightAnim;
+    [SerializeField] private RuntimeAnimatorController epilogueWalkingController;
 
     // Components
     private Rigidbody2D rb;
@@ -55,6 +57,7 @@ public class PlayerController : MonoBehaviour
     private float invulnerableTimer;
 
     // Creak variables
+    bool isCreaking = true;
     private float creakTimer;
     [SerializeField] private float avgCreakTime = 4f;
 
@@ -157,7 +160,7 @@ public class PlayerController : MonoBehaviour
             lightAnim.SetInteger("state", (int) aState);
 
         // Creak sound
-        if (rb.velocity.sqrMagnitude > 4)
+        if (isCreaking && rb.velocity.sqrMagnitude > 4)
         {
             creakTimer -= Time.deltaTime;
             if (creakTimer < 0)
@@ -205,7 +208,10 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            speed = Mathf.Lerp(speed, 0, acceleration);
+            if (isWalking)
+                speed = Mathf.Lerp(speed, 0, acceleration * 3);
+            else
+                speed = Mathf.Lerp(speed, 0, acceleration);
 
             if (turnLeft)
             {
@@ -409,6 +415,14 @@ public class PlayerController : MonoBehaviour
 
         attachedBodies.Clear();
         maxSpeed = maxSpeedVar.Value;
+    }
+
+    public void TransitionToWalkingAnimation()
+    {
+        isCreaking = false;
+        GetComponent<Animator>().runtimeAnimatorController = epilogueWalkingController;
+        maxSpeed = maxSpeed * 0.7f;
+        isWalking = true;
     }
 
     public void CreateBodyAttachmentParticles()

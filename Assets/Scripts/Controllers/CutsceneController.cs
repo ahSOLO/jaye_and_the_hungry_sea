@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
 using InControl;
+using ScriptableObjectArchitecture;
 
 public class CutsceneController : MonoBehaviour
 {
@@ -60,6 +61,11 @@ public class CutsceneController : MonoBehaviour
     private float canAdvanceTimer;
 
     private int dialogueNodeNum;
+
+    // Trigger Events
+    [SerializeField] private GameEvent trigger1Event;
+    [SerializeField] private GameEvent trigger2Event;
+    [SerializeField] private GameEvent trigger3Event;
 
     void OnEnable()
     {
@@ -187,12 +193,23 @@ public class CutsceneController : MonoBehaviour
 
         if (currentNode.barkId != 0)
         {
-            AudioController.aC.Play(AudioController.aC.sFXSource, AudioController.aC.cutsceneBarks[currentNode.barkId], 0.5f);
+            AudioController.aC.Play(AudioController.aC.sFXSource, AudioController.aC.cutsceneBarks[currentNode.barkId], 0.4f);
         }
 
         if (currentNode.triggerId != 0)
         {
-            // Play Trigger
+            switch (currentNode.triggerId)
+            {
+                case 1:
+                    trigger1Event.Raise();
+                    break;
+                case 2:
+                    trigger2Event.Raise();
+                    break;
+                case 3:
+                    trigger3Event.Raise();
+                    break;
+            }
         }
 
         SetAvatarAndText(currentNode.characterId, currentNode.content);

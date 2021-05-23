@@ -170,4 +170,12 @@ public class BodyAI : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+    public void AddGravityAndDestroy()
+    {
+        leftWristRB.gravityScale = 3f;
+        rightWristRB.gravityScale = 3f;
+        torso.GetComponent<Rigidbody2D>().gravityScale = 7f;
+        Destroy(gameObject, 3f);
+    }
 }
