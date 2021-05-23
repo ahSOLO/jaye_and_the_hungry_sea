@@ -28,6 +28,12 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI guiltMsgText;
     public GameObject liesMsgObj;
     private TextMeshProUGUI liesMsgText;
+
+    public GameObject adult1MsgObj;
+    private TextMeshProUGUI adult1MsgText;
+    public GameObject adult2MsgObj;
+    private TextMeshProUGUI adult2MsgText;
+
     private float dialogueTimer;
     public GameObject[] hearts;
     private Image[] heartImages = new Image[5];
@@ -72,6 +78,11 @@ public class UIManager : MonoBehaviour
         paranoiaMsgText = paranoiaMsgObj.GetComponent<TextMeshProUGUI>();
         guiltMsgText = guiltMsgObj.GetComponent<TextMeshProUGUI>();
         liesMsgText = liesMsgObj.GetComponent<TextMeshProUGUI>();
+
+        if (adult1MsgObj) 
+            adult1MsgText = adult1MsgObj.GetComponent<TextMeshProUGUI>();
+        if (adult2MsgObj)
+            adult2MsgText = adult2MsgObj.GetComponent<TextMeshProUGUI>();
 
         StormMeterFillImg = StormMeterFillObj.GetComponent<Image>();
 
@@ -231,6 +242,11 @@ public class UIManager : MonoBehaviour
         paranoiaMsgObj.SetActive(false);
         guiltMsgObj.SetActive(false);
 
+        if (adult1MsgObj)
+            adult1MsgObj.SetActive(false);
+        if (adult2MsgObj)
+            adult2MsgObj.SetActive(false);
+
         switch (d.characterId)
         {
             case 2:
@@ -248,6 +264,14 @@ public class UIManager : MonoBehaviour
             case 5:
                 liesMsgObj.SetActive(true);
                 liesMsgText.text = d.content;
+                break;
+            case 6:
+                adult1MsgObj?.SetActive(true);
+                adult1MsgText.text = d.content;
+                break;
+            case 7:
+                adult2MsgObj?.SetActive(true);
+                adult2MsgText.text = d.content;
                 break;
             default:
                 defaultMsgObj.SetActive(true);

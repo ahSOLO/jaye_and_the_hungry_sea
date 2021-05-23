@@ -119,9 +119,15 @@ public class GameController : MonoBehaviour
             gState = GameState.boating;
         }
 
-        else if (SceneManager.GetActiveScene().name == "Epilogue")
+        else if (SceneManager.GetActiveScene().name == "9_Cutscene4")
         {
+            fails = 0;
             gState = GameState.cutscene;
+        }
+
+        else if (SceneManager.GetActiveScene().name == "10_Epilogue")
+        {
+            gState = GameState.boating;
         }
     }
 
@@ -191,6 +197,11 @@ public class GameController : MonoBehaviour
     public void LoadLevelThree()
     {
         SceneManager.LoadScene(5);
+    }
+
+    public void LoadLevelFour()
+    {
+        SceneManager.LoadScene(7);
     }
 
     public void Quit()

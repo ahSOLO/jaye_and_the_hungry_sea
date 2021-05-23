@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 1475747369826237814}
   - component: {fileID: 4090761182605646709}
   - component: {fileID: 633764481256781169}
+  - component: {fileID: 5123957024527771539}
   m_Layer: 0
   m_Name: AudioController
   m_TagString: Untagged
@@ -236,6 +237,7 @@ MonoBehaviour:
   clickButton: {fileID: 8300000, guid: 13b9b296707c21446a52331786f0e1bc, type: 3}
   skullAttack: {fileID: 8300000, guid: d27b8afcf1acb304ebef4853ab6a6975, type: 3}
   detachBodies: {fileID: 8300000, guid: d682eb2a9b0d31445b67e2177f566160, type: 3}
+  touchWOH: {fileID: 8300000, guid: bbe84a4d3b2015e43a00cbfe86dd1b7d, type: 3}
   playerMaxSpeed: {fileID: 11400000, guid: 6a2d5cf9cb250544b9d1f838e3be2013, type: 2}
   playerFastRowMultiplier: {fileID: 11400000, guid: 7af614b292c2f514e956e00c2d0c8149, type: 2}
 --- !u!114 &2031401447847236793
@@ -491,6 +493,38 @@ MonoBehaviour:
       - m_Target: {fileID: 3697865485930570215}
         m_TargetAssemblyTypeName: AudioController, Assembly-CSharp
         m_MethodName: PlayDetachBodiesSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5123957024527771539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3697865485930570213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5758ca93461aeeb4589456a052b07d74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugFields: 0
+  _enableGizmoDebugging: 1
+  _debugColor: {r: 0, g: 1, b: 1, a: 1}
+  _previouslyRegisteredEvent: {fileID: 11400000, guid: 197580e375cad254d8544d4b13d2ba0b, type: 2}
+  _event: {fileID: 11400000, guid: 197580e375cad254d8544d4b13d2ba0b, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3697865485930570215}
+        m_TargetAssemblyTypeName: AudioController, Assembly-CSharp
+        m_MethodName: PlayTouchWOHSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

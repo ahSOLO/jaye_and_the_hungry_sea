@@ -10,6 +10,7 @@ public class TitleMenu : MonoBehaviour
     public GameObject levelOneButton;
     public GameObject levelTwoButton;
     public GameObject levelThreeButton;
+    public GameObject levelFourButton;
     public GameObject selectLevelButton;
     public GameObject howToButton;
     public GameObject howToPopup;
@@ -30,6 +31,11 @@ public class TitleMenu : MonoBehaviour
         if (GameController.gC.progress > 2)
         {
             levelThreeButton.SetActive(true);
+        }
+
+        if (GameController.gC.progress > 3)
+        {
+            levelFourButton.SetActive(true);
         }
     }
 

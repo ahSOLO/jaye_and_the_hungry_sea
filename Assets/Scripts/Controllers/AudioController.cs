@@ -56,8 +56,6 @@ public class AudioController : MonoBehaviour
 
         DontDestroyOnLoad(gameObject); // Persist between scenes
         SceneManager.sceneLoaded += OnSceneLoad;
-
-        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Default music for each scene
@@ -99,6 +97,9 @@ public class AudioController : MonoBehaviour
                 aC.PlayMusic(secondLevelMusic, 0f);
                 StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
             }
+            aC.rainSource1.volume = 0f;
+            aC.rainSource2.volume = 0f;
+            aC.rainSource3.volume = 0f;
             player = GameObject.FindGameObjectWithTag("Player");
         }
 
@@ -115,6 +116,9 @@ public class AudioController : MonoBehaviour
                 aC.PlayMusic(thirdLevelMusic, 0f);
                 StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
             }
+            aC.rainSource1.volume = 0f;
+            aC.rainSource2.volume = 0f;
+            aC.rainSource3.volume = 0f;
             player = GameObject.FindGameObjectWithTag("Player");
         }
 
@@ -131,8 +135,31 @@ public class AudioController : MonoBehaviour
                 aC.PlayMusic(fourthLevelMusic, 0f);
                 StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
             }
+            aC.rainSource1.volume = 0f;
+            aC.rainSource2.volume = 0f;
+            aC.rainSource3.volume = 0f;
             player = GameObject.FindGameObjectWithTag("Player");
         }
+
+        else if (SceneManager.GetActiveScene().name == "9_Cutscene4")
+        {
+            aC.PlayMusic(endingMusic, 0f);
+            StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
+        }
+
+        else if (SceneManager.GetActiveScene().name == "10_Epilogue")
+        {
+            if (!aC.musicSource.isPlaying || aC.musicSource.clip != aC.endingMusic)
+            {
+                aC.PlayMusic(endingMusic, 0f);
+                StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0.55f));
+            }
+            aC.rainSource1.volume = 0f;
+            aC.rainSource2.volume = 0f;
+            aC.rainSource3.volume = 0f;
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+
     }
 
     private void OnDestroy()
@@ -227,7 +254,7 @@ public class AudioController : MonoBehaviour
 
     public void PlayOneShotThunder(bool isFlashing)
     {
-        if (isFlashing) aC.PlayRandomSFXAtPoint(aC.thunderOneShot, player.transform.position, 0.5f);
+        if (isFlashing) aC.PlayRandomSFXAtPoint(thunderOneShot, player.transform.position, 0.5f);
     }
 
     public void PlayCreakSound()

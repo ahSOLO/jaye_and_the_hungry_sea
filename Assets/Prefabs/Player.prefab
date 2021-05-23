@@ -405,6 +405,8 @@ MonoBehaviour:
   RainDecrease: {fileID: 11400000, guid: 222cda227e98a2a48b28b5f8363dff4f, type: 2}
   LevelEnd: {fileID: 11400000, guid: ad9b3fab4783559448c702ba09bd24d3, type: 2}
   DetachBodies: {fileID: 11400000, guid: fe6e741ca58ab1143a92693e2098727d, type: 2}
+  TouchWOH: {fileID: 11400000, guid: 197580e375cad254d8544d4b13d2ba0b, type: 2}
+  bodyDetachmentParticles: {fileID: 527639142436291062, guid: 251438c575416174da9e10787063ead2, type: 3}
 --- !u!50 &1693043199989408501
 Rigidbody2D:
   serializedVersion: 4
