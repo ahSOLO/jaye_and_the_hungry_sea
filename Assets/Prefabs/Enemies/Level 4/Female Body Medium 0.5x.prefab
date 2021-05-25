@@ -57,7 +57,7 @@ MonoBehaviour:
   rightPalm: {fileID: 7450991903155705666}
   torso: {fileID: 2668169639946562873}
   wristRotationSpeed: 2.9
-  chasingSpeed: 3
+  chasingSpeed: 3.1
   attachmentSpeed: 12
   slowDownMultiplier: 0.75
   bodyAttached: {fileID: 11400000, guid: 65d34cebea464694393a0d233ec8ebf3, type: 2}

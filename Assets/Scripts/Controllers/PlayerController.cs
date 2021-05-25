@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
             lastDirection = inputDirection;
             float angle = -90 + Mathf.Atan2(lastDirection.y, lastDirection.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-            rb.MoveRotation(Quaternion.RotateTowards(this.transform.rotation, rotation, rotationSpeed));
+            rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed));
 
             if (rowFast)
             {

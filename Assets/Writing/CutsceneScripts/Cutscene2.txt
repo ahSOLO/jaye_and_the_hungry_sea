@@ -4,3 +4,8 @@ C1|B0|T0|Jaye: I just need to keep going.
 C4|B0|T0|The Albatross: Go where? To the house you didn't pay for? The food you don't deserve? This life, this neighborhood, this safety... all this space for you and your memories, and you offered nothing in return.
 C2|B1|T0|Little Light: It's t-too much...
 C3|B0|T0|Thousand Eyes: Everyone else here worked for their lives, and they all know you didn't.
+C4|B3|T0|The Albatross: And let's not forget what you did... killer.
+C1|B0|T0|Jaye: Why would you call me that?
+C2|B1|T0|Little Light: Don't say it, please...
+C4|B0|T0|The Albatross: People died because of you.
+C1|B0|T0|Jaye: You're lying--I would never harm anyone!

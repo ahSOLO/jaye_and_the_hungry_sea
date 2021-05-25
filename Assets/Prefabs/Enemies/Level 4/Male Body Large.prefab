@@ -870,7 +870,7 @@ MonoBehaviour:
   wristRotationSpeed: 2
   chasingSpeed: 3.5
   attachmentSpeed: 14
-  slowDownMultiplier: 0.5
+  slowDownMultiplier: 0.4
   bodyAttached: {fileID: 11400000, guid: 65d34cebea464694393a0d233ec8ebf3, type: 2}
   bodyType: 2
 --- !u!1 &1475824178746336926

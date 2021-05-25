@@ -822,9 +822,9 @@ MonoBehaviour:
   eyeRotationLeftBound: -45
   eyeRotationRightBound: 45
   eyeRotationTimeMax: 5
-  eyeRotationSpeed: 0.6
-  moveSpeed: 0.025
-  rotationSpeed: 0.45
+  eyeRotationSpeed: 30
+  moveSpeed: 1.25
+  rotationSpeed: 22.5
 --- !u!50 &1586499069072033001
 Rigidbody2D:
   serializedVersion: 4

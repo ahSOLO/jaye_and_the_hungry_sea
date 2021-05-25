@@ -69,7 +69,6 @@ public class CutsceneController : MonoBehaviour
 
     void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoad;
         canAdvanceTimer = 1f;
         canAdvance = false;
         dialogueNodeNum = 0;
@@ -123,30 +122,11 @@ public class CutsceneController : MonoBehaviour
                 break;
         }
     }
-    
-    // Initial triggers
-    public void OnSceneLoad(Scene scene, LoadSceneMode mode)
-    {
-        if (SceneManager.GetActiveScene().name == "1_Introduction")
-        {
-         
-        }
-
-        else if (SceneManager.GetActiveScene().name == "3_Cutscene1")
-        {
-
-        }
-    }
-
-    private void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoad;
-    }
 
     private void AdvanceDialogue()
     {
         canAdvance = false;
-        canAdvanceTimer = 0.5f;
+        canAdvanceTimer = 0.75f;
         dialogueNodeNum++;
         ShowText();
     }
@@ -286,6 +266,7 @@ public class CutsceneController : MonoBehaviour
 
     private IEnumerator ShowTextAfterWait(float timer)
     {
+        canAdvanceTimer = timer;
         yield return new WaitForSeconds(timer);
         dialogueBox.SetActive(true);
         ShowText();
