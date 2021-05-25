@@ -15,6 +15,9 @@ public class GameController : MonoBehaviour
     public int progress;
     public int fails;
     [SerializeField] IntVariable currentPlayerHealth;
+    int currentLevel = 1;
+    public float[] levelTimes = new float[4];
+
 
     // Events
     [SerializeField] GameEvent TutorialStart;
@@ -31,7 +34,6 @@ public class GameController : MonoBehaviour
 
         gState = GameState.title;
         progress = 0;
-        fails = 0;
     }
 
     // Update is called once per frame
@@ -52,6 +54,11 @@ public class GameController : MonoBehaviour
                     UIManager.uIM.ClosePauseMenu();
                     break;
             }
+        }
+
+        if (gState == GameState.boating && currentLevel < 5)
+        {
+            levelTimes[currentLevel - 1] += Time.deltaTime;
         }
     }
 
@@ -74,49 +81,53 @@ public class GameController : MonoBehaviour
         {
             fails = 0;
             gState = GameState.cutscene;
-            progress = Mathf.Min(progress, 1);
+            progress = Mathf.Max(progress, 1);
         }
 
         else if (SceneManager.GetActiveScene().name == "2_Level1")
         {
             TutorialStart.Raise();
             gState = GameState.boating;
+            currentLevel = 1;
         }
 
         else if (SceneManager.GetActiveScene().name == "3_Cutscene1")
         {
             fails = 0;
             gState = GameState.cutscene;
-            progress = Mathf.Min(progress, 2);
+            progress = Mathf.Max(progress, 2);
         }
 
         else if (SceneManager.GetActiveScene().name == "4_Level2")
         {
             gState = GameState.boating;
+            currentLevel = 2;
         }
 
         else if (SceneManager.GetActiveScene().name == "5_Cutscene2")
         {
             fails = 0;
             gState = GameState.cutscene;
-            progress = Mathf.Min(progress, 3);
+            progress = Mathf.Max(progress, 3);
         }
 
         else if (SceneManager.GetActiveScene().name == "6_Level3")
         {
             gState = GameState.boating;
+            currentLevel = 3;
         }
 
         else if (SceneManager.GetActiveScene().name == "7_Cutscene3")
         {
             fails = 0;
             gState = GameState.cutscene;
-            progress = Mathf.Min(progress, 4);
+            progress = Mathf.Max(progress, 4);
         }
 
         else if (SceneManager.GetActiveScene().name == "8_Level4")
         {
             gState = GameState.boating;
+            currentLevel = 4;
         }
 
         else if (SceneManager.GetActiveScene().name == "9_Cutscene4")
@@ -128,6 +139,12 @@ public class GameController : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "10_Epilogue")
         {
             gState = GameState.boating;
+            currentLevel = 5;
+        }
+
+        else if (SceneManager.GetActiveScene().name == "11_ThankYou")
+        {
+            gState = GameState.cutscene;
         }
     }
 

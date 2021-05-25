@@ -52,6 +52,7 @@ public class UIManager : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject resumeButton;
     public GameObject backToTitleButton;
+    public GameObject howToPopup;
 
     // Note menu vars
     public GameObject noteDisplay;
@@ -60,7 +61,7 @@ public class UIManager : MonoBehaviour
     public GameObject noteTitleObj;
     private TextMeshProUGUI noteTitle;
     private bool noteOpen;
-    public int maxNotes = 10;
+    public int maxNotes;
 
     void OnEnable()
     {
@@ -176,6 +177,20 @@ public class UIManager : MonoBehaviour
     public void ClosePauseMenu()
     {
         pauseMenu.SetActive(false);
+    }
+
+    public void OpenHowTo()
+    {
+        howToPopup.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(howToPopup);
+    }
+
+    public void CloseHowTo()
+    {
+        howToPopup.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(resumeButton);
     }
 
     // Notes

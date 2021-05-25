@@ -295,6 +295,9 @@ public class AudioController : MonoBehaviour
 
     public void LevelEnd()
     {
+        if (SceneManager.GetActiveScene().name == "10_Epilogue")
+            return;
+
         StartCoroutine(FadeAudioSource.StartFade(musicSource, 3f, 0f));
         aC.FadeRainSources(0f, 3f);
     }

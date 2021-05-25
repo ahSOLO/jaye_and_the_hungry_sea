@@ -19,6 +19,8 @@ public class Patrol : IState
     float rotationTime;
     bool rotateLeft;
 
+    float speedDifficultyAdjustment;
+
 
     public Patrol(SkullAI skull, GameObject patrolDestination, GameObject player, GameObject leftEye, GameObject rightEye, float eyeRotationLeftBound, float eyeRotationRightBound, float eyeRotationTimeMax, float eyeRotationSpeed,
     float moveSpeed, float rotationSpeed)
@@ -37,6 +39,8 @@ public class Patrol : IState
         _eyeRotationSpeed = eyeRotationSpeed;
         _moveSpeed = moveSpeed;
         _rotationSpeed = rotationSpeed;
+
+        speedDifficultyAdjustment = GameController.gC.fails * -0.15f;
     }
 
     public void OnEnter()
@@ -48,15 +52,15 @@ public class Patrol : IState
     public void FixedTick()
     {
         // Head forward and rotate towards the patrol destination
-        _skull.transform.position += -_skull.transform.up * _moveSpeed;
-        _skull.transform.rotation = Helper.RotateTowardsOnZAxis(_patrolDestination, _skull.gameObject, 90f, _rotationSpeed);
+        _skull.transform.position += -_skull.transform.up * Mathf.Max(_moveSpeed + speedDifficultyAdjustment, 1) * Time.fixedDeltaTime;
+        _skull.transform.rotation = Helper.RotateTowardsOnZAxis(_patrolDestination, _skull.gameObject, 90f, _rotationSpeed * Time.fixedDeltaTime);
 
         // Rotate the eyes in a scanning pattern from side to side
         float eyeRotationBound;
         if (rotateLeft) eyeRotationBound = _eyeRotationLeftBound;
         else eyeRotationBound = _eyeRotationRightBound;
 
-        float eyeZ = Mathf.MoveTowardsAngle(_leftEye.transform.localEulerAngles.z, eyeRotationBound, _eyeRotationSpeed);
+        float eyeZ = Mathf.MoveTowardsAngle(_leftEye.transform.localEulerAngles.z, eyeRotationBound, _eyeRotationSpeed * Time.fixedDeltaTime);
 
         Vector3 eyeRotateDestination = new Vector3(0, 0, eyeZ);
         _leftEye.transform.localEulerAngles = eyeRotateDestination;
